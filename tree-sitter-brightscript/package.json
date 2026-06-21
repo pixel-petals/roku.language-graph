@@ -1,0 +1,35 @@
+{
+  "name": "tree-sitter-brightscript",
+  "version": "0.1.0",
+  "description": "Tree-sitter grammar for Roku BrightScript",
+  "main": "bindings/node/index.js",
+  "files": [
+    "grammar.js",
+    "src",
+    "bindings/node"
+  ],
+  "scripts": {
+    "build": "npx tree-sitter generate && npx node-gyp configure && npx node-gyp build",
+    "test": "npx tree-sitter test",
+    "parse": "npx tree-sitter parse"
+  },
+  "dependencies": {
+    "nan": "^2.27.0"
+  },
+  "devDependencies": {
+    "node-gyp": "^9.4.0",
+    "tree-sitter-cli": "^0.20.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/addison-adler/roku-graphify"
+  },
+  "keywords": [
+    "roku",
+    "brightscript",
+    "tree-sitter",
+    "parser"
+  ],
+  "author": "",
+  "license": "MIT"
+}

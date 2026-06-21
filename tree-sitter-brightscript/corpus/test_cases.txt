@@ -1,0 +1,267 @@
+==================
+Simple Assignment
+==================
+
+x = 5
+y = "hello"
+
+---
+
+(source_file
+  (assignment_statement
+    left: (identifier)
+    right: (integer))
+  (assignment_statement
+    left: (identifier)
+    right: (string)))
+
+==================
+Function Definition
+==================
+
+function add(a as Integer, b as Integer) as Integer
+  return a + b
+end function
+
+---
+
+(source_file
+  (function_statement
+    name: (identifier)
+    parameters: (parameter_list
+      (parameter
+        name: (identifier)
+        type: (type))
+      (parameter
+        name: (identifier)
+        type: (type)))
+    return_type: (type)
+    (return_statement
+      value: (additive_expression))))
+
+==================
+If Statement
+==================
+
+if x > 5 then
+  print "x is greater than 5"
+else if x = 5 then
+  print "x equals 5"
+else
+  print "x is less than 5"
+end if
+
+---
+
+(source_file
+  (if_statement
+    condition: (relational_expression)
+    (print_statement
+      (string))
+    (else_if_clause
+      condition: (equality_expression)
+      (print_statement
+        (string)))
+    (else_clause
+      (print_statement
+        (string)))))
+
+==================
+While Loop
+==================
+
+while true
+  x = x + 1
+  if x > 100 then
+    exit while
+  end if
+end while
+
+---
+
+(source_file
+  (while_statement
+    condition: (boolean)
+    (assignment_statement)
+    (if_statement
+      condition: (relational_expression)
+      (exit_while_statement))))
+
+==================
+For Loop
+==================
+
+for i = 1 to 10 step 2
+  print i
+end for
+
+---
+
+(source_file
+  (for_statement
+    variable: (identifier)
+    start: (integer)
+    end: (integer)
+    step: (integer)
+    (print_statement)))
+
+==================
+For Each Loop
+==================
+
+for each item in array
+  print item
+end for
+
+---
+
+(source_file
+  (for_each_statement
+    variable: (identifier)
+    collection: (identifier)
+    (print_statement)))
+
+==================
+Array Literal
+==================
+
+arr = [1, 2, 3, "four"]
+
+---
+
+(source_file
+  (assignment_statement
+    left: (identifier)
+    right: (array_literal)))
+
+==================
+Associative Array
+==================
+
+obj = {name: "John", age: 30}
+
+---
+
+(source_file
+  (assignment_statement
+    left: (identifier)
+    right: (associative_array_literal
+      (key_value_pair
+        key: (identifier)
+        value: (string))
+      (key_value_pair
+        key: (identifier)
+        value: (integer)))))
+
+==================
+Member Access
+==================
+
+obj.property
+obj?.optional_property
+
+---
+
+(source_file
+  (member_access)
+  (optional_chaining_expression))
+
+==================
+Comments
+==================
+
+' This is a comment
+x = 5 ' inline comment
+REM Another comment style
+
+---
+
+(source_file
+  (comment)
+  (assignment_statement)
+  (comment))
+
+==================
+Subroutine
+==================
+
+sub printGreeting(name as String)
+  print "Hello, " + name
+end sub
+
+---
+
+(source_file
+  (sub_statement
+    name: (identifier)
+    parameters: (parameter_list
+      (parameter
+        name: (identifier)
+        type: (type)))
+    (print_statement)))
+
+==================
+Type Designators
+==================
+
+x% = 5
+s$ = "string"
+f! = 3.14
+d# = 2.71828
+
+---
+
+(source_file
+  (assignment_statement
+    left: (identifier)
+    right: (integer))
+  (assignment_statement
+    left: (identifier)
+    right: (string))
+  (assignment_statement
+    left: (identifier)
+    right: (float))
+  (assignment_statement
+    left: (identifier)
+    right: (double)))
+
+==================
+Create Object
+==================
+
+screen = CreateObject("roScreen")
+
+---
+
+(source_file
+  (assignment_statement
+    left: (identifier)
+    right: (create_object)))
+
+==================
+Logical Operators
+==================
+
+if a and b or c then
+  print "ok"
+end if
+
+---
+
+(source_file
+  (if_statement
+    condition: (logical_or_expression)
+    (print_statement)))
+
+==================
+Complex Expression
+==================
+
+result = (a + b) * c ^ 2 - d / e
+
+---
+
+(source_file
+  (assignment_statement
+    left: (identifier)
+    right: (additive_expression)))
