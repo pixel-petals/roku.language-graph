@@ -1,0 +1,161 @@
+(* ═══════════════════════════════════════════════════════════════
+   BrightScript Language Grammar — EBNF
+   Derived from tree-sitter-brightscript grammar.js
+   W3C-style notation: , = seq  | = alt  [ ] = opt  { } = repeat
+   ═══════════════════════════════════════════════════════════════ *)
+
+(* ─── Program Structure ───────────────────────────────── *)
+
+source_file                         ::= { statement } ;
+
+(* ─── Statements ──────────────────────────────────────── *)
+
+statement                           ::= if_statement
+    | while_statement
+    | for_statement
+    | for_each_statement
+    | sub_statement
+    | function_statement
+    | return_statement
+    | goto_statement
+    | assignment_statement
+    | exit_while_statement
+    | exit_for_statement
+    | print_statement
+    | empty_statement ;
+if_statement                        ::= "if", expression, "then", { statement }, { else_if_clause }, [ else_clause ], "end", "if" ;
+else_if_clause                      ::= "else", "if", expression, "then", { statement } ;
+else_clause                         ::= "else", { statement } ;
+while_statement                     ::= "while", expression, { statement }, "end", "while" ;
+exit_while_statement                ::= "exit", "while" ;
+for_statement                       ::= "for", identifier, "=", expression, "to", expression, [ "step", expression ], { statement }, "end", "for" ;
+exit_for_statement                  ::= "exit", "for" ;
+for_each_statement                  ::= "for", "each", identifier, "in", expression, { statement }, "end", "for" ;
+goto_statement                      ::= "goto", identifier ;
+return_statement                    ::= "return", [ expression ] ;
+print_statement                     ::= ( "print"
+    | "?" ), [ expression ] ;
+assignment_statement                ::= assignment_target, "=", expression ;
+assignment_target                   ::= identifier
+    | member_access
+    | subscript_access ;
+empty_statement                     ::= ";" ;
+
+(* ─── Functions & Subroutines ─────────────────────────── *)
+
+function_statement                  ::= "function", identifier, parameter_list, [ "as", type ], { statement }, "end", "function" ;
+sub_statement                       ::= "sub", identifier, parameter_list, { statement }, "end", "sub" ;
+parameter_list                      ::= "(", [ [ parameter, { ",", parameter } ] ], ")" ;
+parameter                           ::= identifier, [ "as", type ] ;
+
+(* ─── Expressions ─────────────────────────────────────── *)
+
+expression                          ::= ternary_expression
+    | logical_or_expression
+    | logical_and_expression
+    | bitwise_or_expression
+    | bitwise_xor_expression
+    | bitwise_and_expression
+    | equality_expression
+    | relational_expression
+    | shift_expression
+    | additive_expression
+    | multiplicative_expression
+    | exponentiation_expression
+    | unary_expression
+    | call_expression
+    | member_access
+    | subscript_access
+    | optional_chaining_expression
+    | primary_expression ;
+ternary_expression                  ::= expression, "?", expression, ":", expression ;
+logical_or_expression               ::= expression, ( "or"
+    | "OR" ), expression ;
+logical_and_expression              ::= expression, ( "and"
+    | "AND" ), expression ;
+bitwise_or_expression               ::= expression, "|", expression ;
+bitwise_xor_expression              ::= expression, "XOR", expression ;
+bitwise_and_expression              ::= expression, "&", expression ;
+equality_expression                 ::= expression, ( "="
+    | "<>"
+    | "!=" ), expression ;
+relational_expression               ::= expression, ( "<"
+    | ">"
+    | "<="
+    | ">=" ), expression ;
+shift_expression                    ::= expression, ( "<<"
+    | ">>" ), expression ;
+additive_expression                 ::= expression, ( "+"
+    | "-" ), expression ;
+multiplicative_expression           ::= expression, ( "*"
+    | "/"
+    | "mod"
+    | "MOD" ), expression ;
+exponentiation_expression           ::= expression, "^", expression ;
+unary_expression                    ::= ( "-"
+    | "+"
+    | "not"
+    | "NOT" ), expression ;
+call_expression                     ::= identifier, arguments ;
+member_access                       ::= expression, ".", identifier ;
+subscript_access                    ::= expression, "[", expression, "]" ;
+optional_chaining_expression        ::= ( expression, "?.", identifier )
+    | ( expression, "?@", identifier )
+    | ( expression, "?[", expression, "]" )
+    | ( expression, "?(", [ [ expression, { ",", expression } ] ], ")" ) ;
+arguments                           ::= "(", [ [ expression, { ",", expression } ] ], ")" ;
+
+(* ─── Primary Expressions ─────────────────────────────── *)
+
+primary_expression                  ::= identifier
+    | number
+    | string
+    | boolean
+    | invalid_literal
+    | array_literal
+    | associative_array_literal
+    | parenthesized_expression
+    | create_object ;
+parenthesized_expression            ::= "(", expression, ")" ;
+array_literal                       ::= "[", [ [ expression, { ",", expression } ] ], "]" ;
+associative_array_literal           ::= "{", [ [ key_value_pair, { ",", key_value_pair } ] ], "}" ;
+key_value_pair                      ::= ( identifier
+    | string ), ":", expression ;
+create_object                       ::= "CreateObject", "(", string, ")" ;
+
+(* ─── Types ───────────────────────────────────────────── *)
+
+type                                ::= "Boolean"
+    | "Integer"
+    | "LongInteger"
+    | "Float"
+    | "Double"
+    | "String"
+    | "Object"
+    | "Dynamic"
+    | "Void"
+    | "Invalid"
+    | identifier ;
+
+(* ─── Literals & Terminals ────────────────────────────── *)
+
+number                              ::= hexadecimal
+    | double
+    | long_integer
+    | float
+    | integer ;
+hexadecimal                         ::= HEX_LITERAL ;
+double                              ::= DOUBLE_LITERAL ;
+long_integer                        ::= LONG_INTEGER_LITERAL ;
+float                               ::= FLOAT_LITERAL ;
+integer                             ::= DIGITS ;
+string                              ::= "\"", { STRING_CHAR }, "\"" ;
+boolean                             ::= "true"
+    | "false"
+    | "TRUE"
+    | "FALSE" ;
+invalid_literal                     ::= "invalid"
+    | "INVALID" ;
+identifier                          ::= IDENTIFIER ;
+comment                             ::= ( "'", REST_OF_LINE )
+    | ( "rem", REST_OF_LINE ) ;

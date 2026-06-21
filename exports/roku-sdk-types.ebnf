@@ -1,0 +1,2049 @@
+(* ═══════════════════════════════════════════════════════════════
+   Roku SDK Type Grammar — EBNF
+   Derived from Roku SDK documentation
+   Describes valid SDK type names, interface methods, and node fields
+   ═══════════════════════════════════════════════════════════════ *)
+
+(* ─── BrightScript Component Types ────────────────────────────── *)
+
+ro_component                        ::= "roAppInfo"
+  | "roAppManager"
+  | "roAppMemoryMonitor"
+  | "roArray"
+  | "roAssociativeArray"
+  | "roAudioGuide"
+  | "roAudioMetadata"
+  | "roAudioPlayer"
+  | "roAudioResource"
+  | "roBitmap"
+  | "roBoolean"
+  | "roByteArray"
+  | "roCECStatus"
+  | "roChannelStore"
+  | "roCompositor"
+  | "roDataGramSocket"
+  | "roDateTime"
+  | "roDeviceCrypto"
+  | "roDeviceInfo"
+  | "roDouble"
+  | "roDsa"
+  | "roEVPCipher"
+  | "roEVPDigest"
+  | "roFileSystem"
+  | "roFloat"
+  | "roFont"
+  | "roFontRegistry"
+  | "roFunction"
+  | "roHMAC"
+  | "roHdmiStatus"
+  | "roHttpAgent"
+  | "roImageMetadata"
+  | "roInput"
+  | "roInt"
+  | "roInvalid"
+  | "roList"
+  | "roLocalization"
+  | "roLongInteger"
+  | "roMessagePort"
+  | "roMicrophone"
+  | "roPath"
+  | "roProgramGuide"
+  | "roRSA"
+  | "roRegex"
+  | "roRegion"
+  | "roRegistry"
+  | "roRegistrySection"
+  | "roRemoteInfo"
+  | "roRenderThreadQueue"
+  | "roSGNode"
+  | "roSGScreen"
+  | "roScreen"
+  | "roSocketAddress"
+  | "roSprite"
+  | "roStreamSocket"
+  | "roString"
+  | "roSystemLog"
+  | "roTextToSpeech"
+  | "roTextureManager"
+  | "roTextureRequest"
+  | "roTimespan"
+  | "roUrlTransfer"
+  | "roUtils"
+  | "roVideoPlayer"
+  | "roXMLElement"
+  | "roXMLList" ;
+
+(* ─── BrightScript Interface Names ────────────────────────────── *)
+
+interface_name                      ::= "IfUtils"
+  | "Ifrenderthreadqueue"
+  | "ifAppInfo"
+  | "ifAppManager"
+  | "ifAppMemoryMonitor"
+  | "ifArray"
+  | "ifArrayGet"
+  | "ifArrayJoin"
+  | "ifArraySet"
+  | "ifArraySizeInfo"
+  | "ifArraySlice"
+  | "ifArraySort"
+  | "ifAssociativeArray"
+  | "ifAudioGuide"
+  | "ifAudioMetadata"
+  | "ifAudioPlayer"
+  | "ifAudioResource"
+  | "ifBoolean"
+  | "ifByteArray"
+  | "ifCECStatus"
+  | "ifChannelStore"
+  | "ifCompositor"
+  | "ifDateTime"
+  | "ifDeviceCrypto"
+  | "ifDeviceInfo"
+  | "ifDouble"
+  | "ifDraw2D"
+  | "ifDsa"
+  | "ifEVPCipher"
+  | "ifEVPDigest"
+  | "ifEnum"
+  | "ifFileSystem"
+  | "ifFloat"
+  | "ifFont"
+  | "ifFontRegistry"
+  | "ifFunction"
+  | "ifGetMessagePort"
+  | "ifHMAC"
+  | "ifHdmiStatus"
+  | "ifHttpAgent"
+  | "ifImageMetadata"
+  | "ifInput"
+  | "ifInt"
+  | "ifIntOps"
+  | "ifList"
+  | "ifListToArray"
+  | "ifLocalization"
+  | "ifLongInt"
+  | "ifMessagePort"
+  | "ifMicrophone"
+  | "ifPath"
+  | "ifProgramGuide"
+  | "ifRSA"
+  | "ifRegex"
+  | "ifRegion"
+  | "ifRegistry"
+  | "ifRegistrySection"
+  | "ifRemoteInfo"
+  | "ifSGNodeBoundingRect"
+  | "ifSGNodeChildren"
+  | "ifSGNodeDict"
+  | "ifSGNodeField"
+  | "ifSGNodeFocus"
+  | "ifSGNodeHttpAgentAccess"
+  | "ifSGScreen"
+  | "ifScreen"
+  | "ifSetMessagePort"
+  | "ifSocket"
+  | "ifSocketAddress"
+  | "ifSocketAsync"
+  | "ifSocketCastOption"
+  | "ifSocketConnection"
+  | "ifSocketConnectionOption"
+  | "ifSocketConnectionStatus"
+  | "ifSocketOption"
+  | "ifSocketStatus"
+  | "ifSourceIdentity"
+  | "ifSprite"
+  | "ifString"
+  | "ifStringOps"
+  | "ifSystemLog"
+  | "ifTextToSpeech"
+  | "ifTextureManager"
+  | "ifTextureRequest"
+  | "ifTimeSpan"
+  | "ifToStr"
+  | "ifUrlTransfer"
+  | "ifVideoPlayer"
+  | "ifXMLElement"
+  | "ifXMLList" ;
+
+(* ─── SceneGraph Node Types ────────────────────────────────────── *)
+
+scenegraph_node_type                ::= "Animation"
+  | "AnimationBase"
+  | "ArrayGrid"
+  | "Audio"
+  | "BusySpinner"
+  | "Button"
+  | "ButtonGroup"
+  | "ChannelStore"
+  | "CheckList"
+  | "ColorFieldInterpolator"
+  | "ComponentLibrary"
+  | "ContentNode"
+  | "Dialog"
+  | "DynamicCustomKeyboard"
+  | "DynamicKeyGrid"
+  | "DynamicKeyboard"
+  | "DynamicKeyboardBase"
+  | "DynamicMiniKeyboard"
+  | "DynamicPinPad"
+  | "FloatFieldInterpolator"
+  | "Font"
+  | "GridPanel"
+  | "Group"
+  | "InfoPane"
+  | "Key Definition File"
+  | "Keyboard"
+  | "KeyboardDialog"
+  | "Label"
+  | "LabelBase"
+  | "LabelList"
+  | "LayoutGroup"
+  | "ListPanel"
+  | "MarkupGrid"
+  | "MarkupList"
+  | "MaskGroup"
+  | "MiniKeyboard"
+  | "MonospaceLabel"
+  | "MultiStyleLabel"
+  | "Node"
+  | "Overhang"
+  | "OverhangPanelSetScene"
+  | "Panel"
+  | "PanelSet"
+  | "ParallelAnimation"
+  | "ParentalControlPinPad"
+  | "PinDialog"
+  | "PinPad"
+  | "Poster"
+  | "PosterGrid"
+  | "ProgressDialog"
+  | "RadioButtonList"
+  | "Rectangle"
+  | "RowList"
+  | "Scene"
+  | "ScrollableText"
+  | "ScrollingLabel"
+  | "SequentialAnimation"
+  | "SimpleLabel"
+  | "SoundEffect"
+  | "StandardDialog"
+  | "StandardKeyboardDialog"
+  | "StandardMessageDialog"
+  | "StandardPinPadDialog"
+  | "StandardProgressDialog"
+  | "StdDlgActionCardItem"
+  | "StdDlgAreaBase"
+  | "StdDlgBulletTextItem"
+  | "StdDlgButton"
+  | "StdDlgButtonArea"
+  | "StdDlgContentArea"
+  | "StdDlgCustomItem"
+  | "StdDlgDeterminateProgressItem"
+  | "StdDlgGraphicItem"
+  | "StdDlgItemBase"
+  | "StdDlgItemGroup"
+  | "StdDlgKeyboardItem"
+  | "StdDlgMultiStyleTextItem"
+  | "StdDlgProgressItem"
+  | "StdDlgSideCardArea"
+  | "StdDlgTextItem"
+  | "StdDlgTitleArea"
+  | "TargetGroup"
+  | "TargetList"
+  | "TargetSet"
+  | "Task"
+  | "TextEditBox"
+  | "TimeGrid"
+  | "Timer"
+  | "Vector2DFieldInterpolator"
+  | "Video"
+  | "VoiceTextEditBox"
+  | "ZoomRowList" ;
+
+(* ─── Interface Method Signatures ─────────────────────────────── *)
+(* Each rule lists the valid method call signatures for that interface *)
+
+IfUtils                             ::= "DeepCopy(data as Object) as Object"
+    | "IsSameObject(data1 as Object, data2 as Object) as Boolean"
+    | "HasComponent(componentName as String) as Boolean" ;
+
+ifAppInfo                           ::= "GetID() As String"
+    | "IsDev() As Boolean"
+    | "GetVersion() As String"
+    | "GetTitle() As String"
+    | "GetDevID() As String"
+    | "GetValue(key As String) As String" ;
+
+ifAppManager                        ::= "GetUptime() as Object"
+    | "GetScreensaverTimeout() as Integer"
+    | "SetUserSignedIn(signedIn as Boolean) as Void"
+    | "SetAutomaticAudioGuideEnabled(enabled as Boolean) as Void"
+    | "IsAppInstalled(channelID as String, version As String) as Bo"
+    | "SetNowPlayingContentMetaData(contentMetaData as Object) as V"
+    | "StartVoiceActionSelectionRequest() as Void"
+    | "SetVoiceActionStrings(actions as Object) as Void"
+    | "GetLastExitInfo() as Object" ;
+
+ifAppMemoryMonitor                  ::= "EnableMemoryWarningEvent(enable as Boolean) as Boolean"
+    | "GetMemoryLimitPercent() as Int"
+    | "GetChannelAvailableMemory() as Int"
+    | "GetChannelMemoryLimit() as Object" ;
+
+ifArray                             ::= "Peek() As Dynamic"
+    | "Pop() As Dynamic"
+    | "Push(value As Dynamic) As Void"
+    | "Shift() As Dynamic"
+    | "Unshift(value As Dynamic) As Void"
+    | "Delete(index as Integer) As Boolean"
+    | "Count() As Integer"
+    | "Clear() As Void"
+    | "Append(array As Object) As Void" ;
+
+ifArrayGet                          ::= "GetEntry(index As Integer) As Dynamic" ;
+
+ifArrayJoin                         ::= "Join(separator as String) as String" ;
+
+ifArraySet                          ::= "SetEntry(index As Integer, tvalue As Dynamic) As Void" ;
+
+ifArraySizeInfo                     ::= "IsResizable() As Boolean"
+    | "Capacity() As Integer"
+    | "Reserve(minSize As Integer) As Boolean"
+    | "ShrinkToFit() As Boolean" ;
+
+ifArraySlice                        ::= "Slice([start_pos as Integer[, end_pos as Integer]]) As Objec" ;
+
+ifArraySort                         ::= "Sort(flags as String = __) as Void"
+    | "SortBy(fieldName as String, flags as String = __) as Void"
+    | "Reverse() as Void" ;
+
+ifAssociativeArray                  ::= "AddReplace(key as String, value as Dynamic) as Void"
+    | "Lookup(key as String) as Dynamic"
+    | "LookupCI(key as String) as Dynamic"
+    | "DoesExist(key as String) as Boolean"
+    | "Delete(key as String) as Boolean"
+    | "Clear() as Void"
+    | "Keys() as Object"
+    | "Items() as Object"
+    | "SetModeCaseSensitive() as Void"
+    | "Append(aa as Object) as Void"
+    | "Count() As Integer" ;
+
+ifAudioGuide                        ::= "Say(text as String, flushSpeech as Boolean, dontRepeat as Bo"
+    | "Flush()"
+    | "Silence(duration as Integer) as Integer" ;
+
+ifAudioMetadata                     ::= "SetUrl(url as String) as Void"
+    | "GetTags() as Object"
+    | "GetAudioProperties() as Object"
+    | "GetCoverArt() as Object" ;
+
+ifAudioPlayer                       ::= "SetContentList(contentList as Object) as Void"
+    | "AddContent(contentItem as Object) as Void"
+    | "ClearContent() as Void"
+    | "Play() as Boolean"
+    | "Stop() as Boolean"
+    | "Pause() as Boolean"
+    | "Resume() as Boolean"
+    | "SetLoop(enable as Boolean) as Void"
+    | "SetNext(item as Integer) as Void"
+    | "Seek(offsetMs as Integer) as Boolean"
+    | "SetTimedMetaDataForKeys(keys[] as Dynamic) as Void" ;
+
+ifAudioResource                     ::= "Trigger(volume as Integer, index as Integer) as Void"
+    | "Trigger(volume as Integer, index as Integer) as Void"
+    | "IsPlaying() as Boolean"
+    | "Stop() as Void"
+    | "MaxSimulStreams() as Integer"
+    | "GetMetaData() as Object" ;
+
+ifBoolean                           ::= "GetBoolean() As Boolean"
+    | "SetBoolean(value As Boolean) As Void" ;
+
+ifByteArray                         ::= "WriteFile(path as String, start_index as Integer, length as "
+    | "WriteFile(path as String, start_index as Integer, length as "
+    | "ReadFile(path as String, start_pos as Integer, length as Int"
+    | "ReadFile(path as String, start_pos as Integer, length as Int" ;
+
+ifCECStatus                         ::= "IsActiveSource() As Boolean" ;
+
+ifChannelStore                      ::= "GetIdentity() as Integer"
+    | "GetCatalog() as Void"
+    | "GetStoreCatalog() as Void"
+    | "GetPurchases() as Void"
+    | "GetAllPurchases() as Void"
+    | "SetOrder(order as Object, orderInfo as Object) as Void"
+    | "ClearOrder() as Void"
+    | "DeltaOrder(code as Object, qty as Integer) as Integer"
+    | "GetOrder() as Object"
+    | "DoOrder() as Boolean"
+    | "FakeServer(enable as Boolean) as Void"
+    | "GetUserData() as Object"
+    | "GetPartialUserData(properties as String, requestInfo as Obje"
+    | "GetUserRegionData() as Object"
+    | "StoreChannelCredData(data as String) as Object"
+    | "GetChannelCred() as Object"
+    | "GetDeviceAttestation(nonce as String) as String"
+    | "RequestPartnerOrder(orderInfo as roAssociativeArray, product"
+    | "ConfirmPartnerOrder(confirmOrderInfo as roAssociativeArray, " ;
+
+ifCompositor                        ::= "SetDrawTo(destBitmap as Object, rgbaBackground as Integer) a"
+    | "Draw() as Void"
+    | "DrawAll() as Void"
+    | "NewSprite(x as Integer, y as Integer, region as Object, z as"
+    | "NewAnimatedSprite(x as Integer, y as Integer, regionArray as"
+    | "AnimationTick(duration as Integer) as Void"
+    | "ChangeMatchingRegions(oldRegion as Object, newRegion as Obje" ;
+
+ifDateTime                          ::= "Mark() as Void"
+    | "ToLocalTime() as Void"
+    | "GetTimeZoneOffset() as Integer"
+    | "AsSeconds() as Integer"
+    | "AsSecondsLong() as Object"
+    | "FromSeconds(numSeconds as Integer) as Void"
+    | "FromSecondsLong(numSeconds as LongInteger) as Void"
+    | "ToISOString(format as String) as String"
+    | "ToISOString(format as String) as String"
+    | "FromISO8601String(dateString as String) as Void"
+    | "asDateStringLoc(format as String) as String"
+    | "asTimeStringLoc(format as String) as String"
+    | "AsDateString(format as String) as String"
+    | "AsDateStringNoParam() as String"
+    | "AsMillisecondsLong() as Long"
+    | "GetWeekday() as String"
+    | "GetYear() as Integer"
+    | "GetMonth() as Integer"
+    | "GetDayOfMonth() as Integer"
+    | "GetHours() as Integer"
+    | "GetMinutes() as Integer"
+    | "GetSeconds() as Integer"
+    | "GetMilliseconds() as Integer"
+    | "GetLastDayOfMonth() as Integer"
+    | "GetDayOfWeek() as Integer" ;
+
+ifDeviceInfo                        ::= "GetModel() as String"
+    | "GetModelDisplayName() as String"
+    | "GetModelType() as String"
+    | "GetModelDetails() as Object"
+    | "GetFriendlyName() as String"
+    | "GetOSVersion() As Object"
+    | "GetVersion() as String"
+    | "GetDeviceUniqueId() as String"
+    | "GetAdvertisingId() as String"
+    | "GetRIDA() as String"
+    | "IsAdIdTrackingDisabled() as Boolean"
+    | "IsRIDADisabled() as Boolean"
+    | "GetClientTrackingId() as String"
+    | "GetChannelClientId() as String"
+    | "GetUserCountryCode() as String"
+    | "GetRandomUUID() as String"
+    | "GetTimeZone() as String"
+    | "HasFeature(feature as String) as Boolean"
+    | "GetCurrentLocale() as String"
+    | "GetCountryCode() as String"
+    | "GetPreferredCaptionLanguage() as String"
+    | "TimeSinceLastKeypress() as Integer"
+    | "GetDrmInfo() as Object"
+    | "GetDrmInfoEx() as Object"
+    | "GetCaptionsMode() as String"
+    | "SetCaptionsMode(mode as String) as Boolean"
+    | "GetCaptionsOption(option as String) as String"
+    | "GetClockFormat() as String"
+    | "IsClockValid() as Dynamic"
+    | "EnableValidClockEvent(enable as Boolean) as Dynamic"
+    | "EnableAppFocusEvent(enable as Boolean) as Dynamic"
+    | "EnableScreensaverExitedEvent(enable as Boolean) as Dynamic"
+    | "IsHDMIConnected() as Boolean"
+    | "EnableLowGeneralMemoryEvent(enabled as Boolean) as Dynamic"
+    | "GetGeneralMemoryLevel() as String"
+    | "IsStoreDemoMode() as Boolean"
+    | "GetLinkStatus() as Boolean"
+    | "EnableLinkStatusEvent(enable as Boolean) as Boolean"
+    | "GetConnectionType() as String"
+    | "EnableInternetStatusEvent(enable as Boolean) as Boolean"
+    | "GetUptimeMillisecondsAsLong() as Long"
+    | "GetInternetStatus() as Boolean"
+    | "ForceInternetStatusCheck() as Boolean"
+    | "GetExternalIp() as String"
+    | "GetIPAddrs() as Object"
+    | "GetConnectionInfo() as Object"
+    | "GetDisplayType() as String"
+    | "GetDisplayMode() as String"
+    | "GetDisplayAspectRatio() as String"
+    | "GetDisplaySize() as Object"
+    | "GetVideoMode() as String"
+    | "GetDisplayProperties() as Object"
+    | "GetSupportedGraphicsResolutions() as Object"
+    | "CanDecodeVideo(video_format as Object) as Object"
+    | "GetUIResolution() as Object"
+    | "GetGraphicsPlatform() as String"
+    | "GetVideoDecodeInfo() as Object"
+    | "EnableCodecCapChangedEvent(enable As Boolean)"
+    | "GetAudioOutputChannel() as String"
+    | "GetAudioDecodeInfo() as Object"
+    | "CanDecodeAudio(audio_format as Object) as Object"
+    | "IsPassthruCodecActive() as Boolean"
+    | "GetSoundEffectsVolume() as Integer"
+    | "IsAudioGuideEnabled() as Dynamic"
+    | "EnableAudioGuideChangedEvent(enable as Boolean) as Dynamic"
+    | "IsAutoplayEnabled() as Boolean"
+    | "isAutoAdjustRefreshRateEnabled() as Boolean" ;
+
+ifDouble                            ::= "GetDouble() As Double"
+    | "SetDouble(value As Double) As Void" ;
+
+ifDraw2D                            ::= "Clear(rgba as Integer) as Void"
+    | "GetWidth() as Integer"
+    | "GetHeight() as Integer"
+    | "GetByteArray(x as Integer, y as Integer, width as Integer, h"
+    | "GetPng(x as Integer, y as Integer, width as Integer, height "
+    | "GetAlphaEnable() as Boolean"
+    | "SetAlphaEnable(enable as Boolean) as Void"
+    | "DrawRect(x as Integer, y as Integer, width as Integer, heigh"
+    | "DrawPoint(x as Integer, y as Integer, size as Float, rgba as"
+    | "DrawLine(xStart as Integer, yStart as Integer, xEnd as Integ"
+    | "DrawObject(x as Integer, y as Integer, src as Object) as Boo"
+    | "DrawScaledObject(x as Integer, y as Integer, scaleX as Float"
+    | "DrawScaledObject(x as Integer, y as Integer, scaleX as Float"
+    | "DrawRotatedObject(x as Integer, y as Integer, theta as Float"
+    | "DrawTransformedObject(x as Integer, y as Integer, theta as F"
+    | "DrawTransformedObject(x as Integer, y as Integer, theta as F"
+    | "DrawRotatedObject(x as Integer, y as Integer, theta as Float"
+    | "DrawText(text as String, x as Integer, y as Integer, rgba as"
+    | "Finish() as Void" ;
+
+ifDsa                               ::= "SetPrivateKey(keyFileName as String) as Integer"
+    | "SetPrivateKeyFromByteArray(key as Object) as Integer"
+    | "SetPublicKey(keyFileName as String) as Integer"
+    | "SetDigestAlgorithm(algorithm as String) as Boolean"
+    | "SetSignAlgorithm(algorithm as String) as Boolean"
+    | "Sign(message as Object) as Object"
+    | "Verify(message as Object, signature as Object) as Integer" ;
+
+ifEVPCipher                         ::= "Setup(encrypt as Boolean, format as String, key as String, i"
+    | "Reinit() as Integer"
+    | "Process(bytes as Object) as Object"
+    | "Update(bytes as Object) as Object"
+    | "Final() as Object" ;
+
+ifEVPDigest                         ::= "Setup(digestType as String) as Integer"
+    | "Reinit() as Integer"
+    | "Process(bytes as Object) as String"
+    | "Update(bytes as Object) as Void"
+    | "Final() as String" ;
+
+ifEnum                              ::= "Reset() as Void"
+    | "Next() as Dynamic"
+    | "IsNext() as Boolean"
+    | "IsEmpty() as Boolean" ;
+
+ifFileSystem                        ::= "GetVolumeList() as Object"
+    | "GetDirectoryListing(dirPath as String) as Object"
+    | "Find(dirPath as String, regEx as String) as Object"
+    | "FindRecurse(dirPath as String, regEx as String) as Object"
+    | "Match(path as String, pattern as String) as Object"
+    | "Exists(path as String) as Boolean"
+    | "Stat(path as String) as Object"
+    | "GetVolumeInfo(path as String) as Object"
+    | "CreateDirectory(path as String) as Boolean"
+    | "Delete(path as String) as Boolean"
+    | "CopyFile(fromPath as String, toPath as String) as Boolean"
+    | "Rename(fromPath as String, toPath as String) as Boolean" ;
+
+ifFloat                             ::= "GetFloat() As Float"
+    | "SetFloat(value As Float) As Void" ;
+
+ifFont                              ::= "GetOneLineHeight() as Integer"
+    | "GetOneLineWidth(text as String, MaxWidth as Integer) as Inte"
+    | "GetAscent() as Integer"
+    | "GetDescent() as Integer"
+    | "GetMaxAdvance() as Integer" ;
+
+ifFontRegistry                      ::= "Register(path as String) as Boolean"
+    | "GetFamilies() as Object"
+    | "GetFont(family as String, size as Integer, bold as Boolean, "
+    | "GetDefaultFont(size as Integer, bold as Boolean, italic as B"
+    | "GetDefaultFont(size as Integer, bold as Boolean, italic as B"
+    | "GetDefaultFontSize() as Integer"
+    | "Get(family as String, size as Integer, bold as Boolean, ital" ;
+
+ifFunction                          ::= "GetSub() As Function"
+    | "SetSub(value As Function) As Void" ;
+
+ifGetMessagePort                    ::= "GetMessagePort() as Object" ;
+
+ifHMAC                              ::= "Setup(digestType as String, key as Object) as Integer"
+    | "Reinit() as Integer"
+    | "Process(message as Object) as Object"
+    | "Update(partialMesssage as Object) as Void"
+    | "Final() as Object" ;
+
+ifHdmiStatus                        ::= "IsConnected() as Boolean"
+    | "GetHdcpVersion() as String"
+    | "IsHdcpActive(version as String) as Boolean" ;
+
+ifHttpAgent                         ::= "AddHeader(name as String, value as String) as Boolean"
+    | "SetHeaders(nameValueMap as Object) as Boolean"
+    | "InitClientCertificates() as Boolean"
+    | "SetCertificatesFile(path as String) as Boolean"
+    | "SetCertificatesDepth(depth as Integer) as Void"
+    | "EnableCookies() as Void"
+    | "GetCookies(domain as String, path as String) as Object"
+    | "AddCookies(cookies as Object) as Boolean"
+    | "ClearCookies() as Void" ;
+
+ifImageMetadata                     ::= "SetUrl(url as String) as Void"
+    | "GetMetadata() as Object"
+    | "GetThumbnail() as Object"
+    | "GetRawExif() as Object"
+    | "GetRawExifTag(ifd as Integer, tagnum as Integer) as Dynamic" ;
+
+ifInput                             ::= "GetMessagePort() as Object"
+    | "SetMessagePort(port as Object) as Void"
+    | "EnableTransportEvents() as Boolean"
+    | "EventResponse(roAssociativeArray aa) as Boolean" ;
+
+ifInt                               ::= "GetInt() As Integer"
+    | "SetInt(value As Integer) As Void" ;
+
+ifIntOps                            ::= "ToStr() As String" ;
+
+ifList                              ::= "ResetIndex() As Boolean"
+    | "AddTail(tval As Dynamic) As Void"
+    | "AddHead(tval As Dynamic) As Void"
+    | "RemoveIndex() As Dynamic"
+    | "GetIndex() As Dynamic"
+    | "RemoveTail() As Dynamic"
+    | "RemoveHead() As Dynamic"
+    | "GetTail() As Dynamic"
+    | "GetHead() As Dynamic"
+    | "Count() As Integer"
+    | "Clear() As Void" ;
+
+ifListToArray                       ::= "ToArray() As Object" ;
+
+ifLocalization                      ::= "GetPluralString(count as Integer, zeroString as String, oneS"
+    | "GetLocalizedAsset(dirName as String, fileName as String) as " ;
+
+ifLongInt                           ::= "GetLongInt() As LongInteger"
+    | "SetLongInt(value As LongInteger) As Void" ;
+
+ifMessagePort                       ::= "WaitMessage(timeout as Integer) as Dynamic"
+    | "GetMessage() as Dynamic"
+    | "PeekMessage() as Dynamic" ;
+
+ifMicrophone                        ::= "CanRecord() as Boolean"
+    | "SetPrompt(prompt as String) as Void"
+    | "RecordToFile(wavFilePath as String) as Boolean"
+    | "StartRecording() as Boolean"
+    | "StopRecording() as Boolean" ;
+
+ifPath                              ::= "Change(path as String) as Boolean"
+    | "IsValid() as Boolean"
+    | "Split() as Object" ;
+
+ifProgramGuide                      ::= "GetChannels(id as Integer) as Object"
+    | "GetNowNextPrograms(channel as String) as Dynamic"
+    | "GetVersion() as Integer"
+    | "GetPrograms(startTime as roDateTime, channel as String, endT" ;
+
+ifRSA                               ::= "SetPrivateKey(keyFileName as String) as Integer"
+    | "SetPublicKey(keyFileName as String) as Integer"
+    | "SetDigestAlgorithm(digestAlgorithm as String) as Boolean"
+    | "Sign(digest as Object) as Object"
+    | "Verify(digest as Object, signature as Object) as Integer" ;
+
+ifRegex                             ::= "IsMatch(str as String) as Boolean"
+    | "Match(str as String) as Object"
+    | "MatchAll(str as String) as Object"
+    | "Replace(str as String, replacement as String) as String"
+    | "ReplaceAll(str as String, replacement as String) as String"
+    | "Split(str as String) as Object" ;
+
+ifRegion                            ::= "GetBitmap() as Object"
+    | "GetX() as Integer"
+    | "GetY() as Integer"
+    | "GetWidth() as Integer"
+    | "GetHeight() as Integer"
+    | "Offset(x as Dynamic, y as Dynamic, w as Dynamic, h as Dynami"
+    | "Set(srcRegion as Object) as Void"
+    | "Copy() as Object"
+    | "SetWrap(wrap as Boolean) as Void"
+    | "GetWrap() as Boolean"
+    | "SetTime(time as Integer) as Void"
+    | "GetTime() as Integer"
+    | "SetPretranslation(x as Integer, y as Integer) as Void"
+    | "GetPretranslationX() as Integer"
+    | "GetPretranslationY() as Integer"
+    | "SetScaleMode(mode as Integer) as Void"
+    | "GetScaleMode() as Integer"
+    | "SetCollisionType(collisiontype as Integer) as Void"
+    | "GetCollisionType() as Integer"
+    | "SetCollisionRectangle(xOffset as Integer, yOffset as Integer"
+    | "SetCollisionCircle(xOffset as Integer, yOffset as Integer, R" ;
+
+ifRegistry                          ::= "GetSpaceAvailable() as Integer"
+    | "GetSectionList() as Object"
+    | "Delete(section as String) as Boolean"
+    | "Flush() as Boolean" ;
+
+ifRegistrySection                   ::= "Read(key as String) as String"
+    | "ReadMulti(keysArray as Object) as Object"
+    | "Write(key as String, value as String) as Boolean"
+    | "WriteMulti(roAssociativeArray as Object) as Boolean"
+    | "Delete(key as String) as Boolean"
+    | "Exists(key as String) as Boolean"
+    | "Flush() as Boolean"
+    | "GetKeyList() as Object" ;
+
+ifRemoteInfo                        ::= "GetModel(remoteIndex as Integer) as Integer"
+    | "IsAwake(remoteIndex as Integer) as Boolean"
+    | "HasFeature(feature as String, remoteIndex as Integer) as Boo" ;
+
+ifSGNodeBoundingRect                ::= "boundingRect() as Dynamic"
+    | "localBoundingRect() as Dynamic"
+    | "sceneBoundingRect() as Dynamic"
+    | "ancestorBoundingRect(ancestor as roSGNode) as Dynamic"
+    | "localSubBoundingRect(itemnumber as String) as Dynamic"
+    | "subBoundingRect(itemnumber as String) as Dynamic"
+    | "sceneSubBoundingRect(itemnumber as String) as Dynamic"
+    | "ancestorSubBoundingRect(itemnumber as String, ancestor as ro" ;
+
+ifSGNodeChildren                    ::= "appendChild(child as roSGNode) as Boolean"
+    | "createChild(nodeType as String) as Object"
+    | "insertChild(child as roSGNode, index as Integer) as Boolean"
+    | "removeChild(child as roSGNode) as Boolean"
+    | "removeChildIndex(index as Integer) as Boolean"
+    | "replaceChild(newChild as roSGNode, index as Integer) as Bool"
+    | "getChild(index as Integer) as Dynamic"
+    | "getParent() as roSGNode"
+    | "getChildCount() as Integer"
+    | "reparent(newParent as roSGNode, adjustTransform as Boolean) "
+    | "appendChildren(child_nodes as Object) as Boolean"
+    | "insertChildren(child_nodes as Object, index as Integer) as B"
+    | "removeChildren(child_nodes as Object) as Boolean"
+    | "removeChildrenIndex(num_children as Integer, index as Intege"
+    | "update(fields as roAssociativeArray[, addFields as Boolean])"
+    | "replaceChildren(child_nodes as Object, index as Integer) as "
+    | "getChildren(num_children as Integer, index as Integer) as Ob"
+    | "createChildren(num_children as Integer, subtype as String ) "
+    | "getScene() as roSGNode" ;
+
+ifSGNodeDict                        ::= "findNode(name as String) as Object"
+    | "subtype() as String"
+    | "parentSubtype(nodeType as String) as String"
+    | "isSubtype(nodeType as String) as Boolean"
+    | "isSameNode(RoSGNode as Object) as Boolean"
+    | "clone(isDeepCopy as Boolean) as Object"
+    | "callFunc(funcName as String, ...) as Dynamic"
+    | "hasFunc(callableFunc as String) as Boolean" ;
+
+ifSGNodeField                       ::= "hasField(fieldName as String) as Boolean"
+    | "getFieldType(fieldName as String) as String"
+    | "getFieldTypes() as Object"
+    | "getField(fieldName as String) as Object"
+    | "getFields() as Object"
+    | "setField(fieldName as String, value as Object) as Boolean"
+    | "setFields(fields as Object) as Boolean"
+    | "addField(fieldName as String, type as String, alwayNotify as"
+    | "addFields(fields as Object) as Boolean"
+    | "removeField(fieldName as String) as Boolean"
+    | "observeField(fieldName as String, port as Object [, infoFiel"
+    | "observeField(fieldName as String, port as Object [, infoFiel"
+    | "unobserveField(fieldName as String) as Boolean"
+    | "observeFieldScoped(fieldName as String, port as Object[, inf"
+    | "observeFieldScoped(fieldName as String, port as Object[, inf"
+    | "observeFieldScopedEx(fieldName as String, port as Object[, i"
+    | "unobserveFieldScoped(fieldName as String) as Boolean"
+    | "queueFields(queueNode as Boolean) as Boolean"
+    | "moveIntoField(field_name as String, data as Object) as Integ"
+    | "moveFromField(field_name as String) as Object"
+    | "setRef(field_name as String, data as Object)"
+    | "canGetRef(field_name as String) as Boolean"
+    | "getRef(field_name as String) as Object"
+    | "threadinfo() as Object"
+    | "signalBeacon(beacon As String) As Integer" ;
+
+ifSGNodeFocus                       ::= "setFocus(on as Boolean) as Boolean"
+    | "hasFocus() as Boolean"
+    | "isInFocusChain() as Boolean" ;
+
+ifSGNodeHttpAgentAccess             ::= "getHttpAgent() as Object"
+    | "setHttpAgent(HTTP_agent as Object) as Boolean" ;
+
+ifSGScreen                          ::= "SetMessagePort(port as roMessagePort) as Void"
+    | "GetMessagePort() as roMessagePort"
+    | "getGlobalNode() as roSGNode"
+    | "Show() as Boolean"
+    | "Close() as Void"
+    | "CreateScene(sceneType as String) as Object"
+    | "GetScene() as roSGNode" ;
+
+ifScreen                            ::= "SwapBuffers() as Void"
+    | "GetGraphicsFeatures() as Object" ;
+
+ifSetMessagePort                    ::= "SetMessagePort(port as Object ) as Void" ;
+
+ifSocket                            ::= "Send(data as Object, startIndex as Integer, length as Intege"
+    | "SendStr(data as String) as Integer"
+    | "Receive(data as Object, startIndex as Integer, length as Int"
+    | "ReceiveStr(length as Integer) as String"
+    | "Close() as Void"
+    | "SetAddress(sockAddr as Object) as Boolean"
+    | "GetAddress() as Object"
+    | "SetSendToAddress(sockAddr as Object) as Boolean"
+    | "GetSendToAddress() as Object"
+    | "GetReceivedFromAddress() as Object"
+    | "GetCountRcvBuf() as Integer"
+    | "GetCountSendBuf() as Integer"
+    | "Status() as Integer" ;
+
+ifSocketAddress                     ::= "SetAddress(address as String) as Boolean"
+    | "GetAddress() as String"
+    | "SetHostName(hostname as String) as Boolean"
+    | "GetHostName() as String"
+    | "SetPort(port as Integer) as Boolean"
+    | "GetPort() as Integer"
+    | "IsAddressValid() as Boolean" ;
+
+ifSocketAsync                       ::= "IsReadable() as Boolean"
+    | "IsWritable() as Boolean"
+    | "IsException() as Boolean"
+    | "NotifyReadable(enable as Boolean) as Void"
+    | "NotifyWritable(enable as Boolean) as Void"
+    | "NotifyException(enable as Boolean) as Void"
+    | "GetID() as Integer" ;
+
+ifSocketCastOption                  ::= "GetBroadcast() as Boolean"
+    | "SetBroadcast(enable as Boolean) as Boolean"
+    | "JoinGroup(ipAddress as Object) as Boolean"
+    | "DropGroup(ipAddress as Object) as Boolean"
+    | "GetMulticastLoop() as Boolean"
+    | "SetMulticastLoop(enable as Boolean) as Boolean"
+    | "GetMulticastTTL() as Integer"
+    | "SetMulticastTTL(ttl as Integer) as Boolean" ;
+
+ifSocketConnection                  ::= "Listen(backlog as Integer) as Boolean"
+    | "IsListening() as Boolean"
+    | "Connect() as Boolean"
+    | "Accept() as Object"
+    | "IsConnected() as Boolean" ;
+
+ifSocketConnectionOption            ::= "GetKeepAlive() as Boolean"
+    | "SetKeepAlive(enable as Boolean) as Boolean"
+    | "GetLinger() as Integer"
+    | "SetLinger(time as Integer) as Boolean"
+    | "GetMaxSeg() as Integer"
+    | "SetMaxSeg(time as Integer) as Boolean"
+    | "GetNoDelay() as Boolean"
+    | "SetNoDelay(enable as Boolean) as Boolean" ;
+
+ifSocketConnectionStatus            ::= "eConnAborted() as Boolean"
+    | "eConnRefused() as Boolean"
+    | "eConnReset() as Boolean"
+    | "eIsConn() as Boolean"
+    | "eNotConn() as Boolean" ;
+
+ifSocketOption                      ::= "GetTTL() as Integer"
+    | "SetTTL(ttl as Integer) as Boolean"
+    | "GetReuseAddr() as Boolean"
+    | "SetReuseAddr(reuse as Boolean) as Dynamic"
+    | "GetOOBInline() as Boolean"
+    | "SetOOBInline(inline as Boolean) as Boolean"
+    | "GetSendBuf() as Integer"
+    | "SetSendBuf(size as Integer) as Boolean"
+    | "GetRcvBuf() as Integer"
+    | "SetRcvBuf(size as Integer) as Boolean"
+    | "GetSendTimeout() as Integer"
+    | "SetSendTimeout(timeout as Integer) as Boolean"
+    | "GetReceiveTimeout() as Integer"
+    | "SetReceiveTimeout(timeout as Integer) as Boolean" ;
+
+ifSocketStatus                      ::= "eAgain() as Boolean"
+    | "eAlready() as Boolean"
+    | "eBadAddr() as Boolean"
+    | "eDestAddrReq() as Boolean"
+    | "eHostUnreach() as Boolean"
+    | "eInvalid() as Boolean"
+    | "eInProgress() as Boolean"
+    | "eWouldBlock() as Boolean"
+    | "eSuccess() as Boolean"
+    | "eOK() as Boolean" ;
+
+ifSourceIdentity                    ::= "GetSourceIdentity() as Integer" ;
+
+ifSprite                            ::= "MoveTo(x as Integer, y as Integer) as Void"
+    | "MoveOffset(xOffset as Integer, yOffset as Integer) as Void"
+    | "GetX() as Integer"
+    | "GetY() as Integer"
+    | "SetZ(z as Integer) as Void"
+    | "GetZ() as Integer"
+    | "SetDrawableFlag(enable as Boolean) as Void"
+    | "GetDrawableFlag() as Boolean"
+    | "SetMemberFlags(flags as Integer) as Void"
+    | "GetMemberFlags() as Integer"
+    | "SetCollidableFlags(flags as Integer) as Void"
+    | "GetCollidableFlags() as Integer"
+    | "SetRegion(region as Object) as Void"
+    | "GetRegion() as Object"
+    | "OffsetRegion(x as Integer, y as Integer, width as Integer, h"
+    | "SetData(data as Dynamic) as Void"
+    | "GetData() as Dynamic"
+    | "CheckCollision() as Object"
+    | "CheckMultipleCollisions() as Object"
+    | "Remove() as Void" ;
+
+ifString                            ::= "GetString() As String"
+    | "SetString(value As String) As Void"
+    | "IsEmpty() as Boolean" ;
+
+ifStringOps                         ::= "SetString(s as String, len as Integer) as Void"
+    | "AppendString(s as String, len as Integer) as Void"
+    | "Len() as Integer"
+    | "Left(len as Integer) as String"
+    | "Right(len as Integer) as String"
+    | "Mid(start_index as Integer, num_chars as Integer) as String"
+    | "Mid(start_index as Integer, num_chars as Integer) as String"
+    | "Instr(start_index as Integer, substring as String) as Intege"
+    | "Replace(fromStr As String, toStr As String) As String"
+    | "Instr(start_index as Integer, substring as String) as Intege"
+    | "Trim() as String"
+    | "ToInt() as Integer"
+    | "ToFloat() as Float"
+    | "Tokenize(delim as String) as Object"
+    | "Split(separator as String) as Object"
+    | "GetEntityEncode() as String"
+    | "Escape() as String"
+    | "Unescape() as String"
+    | "EncodeUri() as String"
+    | "DecodeUri() as String"
+    | "EncodeUriComponent() as String"
+    | "DecodeUriComponent() as String"
+    | "StartsWith(matchString as String, matchPos as Integer) As Bo"
+    | "StartsWith(matchString as String, matchPos as Integer) As Bo"
+    | "EndsWith(matchString as String, length as Integer) As Boolea"
+    | "EndsWith(matchString as String, length as Integer) As Boolea"
+    | "Format(...) As String" ;
+
+ifSystemLog                         ::= "EnableType(logType as String) as Void" ;
+
+ifTextToSpeech                      ::= "Say(text as String) as Integer"
+    | "Silence(duration as Integer) as Integer"
+    | "Flush() as Void"
+    | "IsEnabled() as Boolean"
+    | "GetAvailableLanguages() as Object"
+    | "SetLanguage(name as String) as Void"
+    | "GetLanguage() as String"
+    | "GetAvailableVoices() as Object"
+    | "SetVoice(name as String) as Void"
+    | "GetVoice() as String"
+    | "GetVolume() as Integer"
+    | "SetVolume(volume as Integer) as Void"
+    | "GetRate() as Integer"
+    | "SetRate(rate as Integer) as Void"
+    | "GetPitch() as Integer"
+    | "SetPitch(pitch as Integer) as Void" ;
+
+ifTextureManager                    ::= "RequestTexture(req as Object) as Void"
+    | "CancelRequest(req as Object) as Void"
+    | "UnloadBitmap(url as String) as Void"
+    | "Cleanup() as Void" ;
+
+ifTextureRequest                    ::= "GetId() as Integer"
+    | "GetState() as Integer"
+    | "SetAsync(async as Boolean) as Void"
+    | "SetSize(width as Integer, height as Integer) as Void"
+    | "SetScaleMode(mode as Integer) as Void" ;
+
+ifTimeSpan                          ::= "Mark() as Void"
+    | "TotalMicroseconds() as Integer"
+    | "TotalMilliseconds() as Integer"
+    | "TotalSeconds() as Integer"
+    | "GetSecondsToISO8601Date(date as String) as Integer" ;
+
+ifToStr                             ::= "ToStr(format As String) As String"
+    | "ToStr(format As String) As String" ;
+
+ifUrlTransfer                       ::= "GetIdentity() as Integer"
+    | "SetUrl(url as String) as Void"
+    | "GetUrl() as String"
+    | "SetRequest(req as String)"
+    | "GetRequest() as String"
+    | "GetToString() as String"
+    | "GetToFile(filename as String) as Integer"
+    | "AsyncGetToString() as Boolean"
+    | "AsyncGetToFile(filename as String) as Boolean"
+    | "Head() as Dynamic"
+    | "AsyncHead() as Boolean"
+    | "PostFromString(request as String) as Integer"
+    | "PostFromFile(filename as String) as Integer"
+    | "AsyncPostFromString(request as String) as Boolean"
+    | "AsyncPostFromFile(filename as String) as Boolean"
+    | "AsyncPostFromFileToFile(fromFile as String, toFile as String"
+    | "AsyncCancel() as Boolean"
+    | "RetainBodyOnError(retain as Boolean) as Boolean"
+    | "SetUserAndPassword(user as String, password as String) as Bo"
+    | "SetMinimumTransferRate(bytes_per_second as Integer, period_i"
+    | "GetFailureReason() as String"
+    | "EnableEncodings(enable as Boolean) as Boolean"
+    | "Escape(text as String) as String"
+    | "Unescape(text as String) as String"
+    | "UrlEncode(url as String) as String"
+    | "EnableResume(enable as Boolean) as Boolean"
+    | "EnablePeerVerification(enable as Boolean) as Boolean"
+    | "EnableHostVerification(enable as Boolean) as Boolean"
+    | "EnableFreshConnection(enable as Boolean) as Boolean"
+    | "SetHttpVersion(version as String) as Void"
+    | "GetUserAgent() as String" ;
+
+ifVideoPlayer                       ::= "SetContentList(contentList as Object) as Void"
+    | "AddContent(contentItem as Object) as Void"
+    | "ClearContent() as Void"
+    | "PreBuffer() as Boolean"
+    | "Play() as Boolean"
+    | "Stop() as Boolean"
+    | "Pause() as Boolean"
+    | "Resume() as Boolean"
+    | "SetLoop(loop as Boolean) as Void"
+    | "SetNext(item as Integer) as Void"
+    | "setEnableAudio(enable as Boolean) as Void"
+    | "Seek(offsetMs as Integer) as Boolean"
+    | "SetPositionNotificationPeriod(period as Integer) as Void"
+    | "SetCGMS(level as Integer) as Void"
+    | "SetDestinationRect(x as Integer, y as Integer, w as Integer,"
+    | "SetDestinationRect(x as Integer, y as Integer, w as Integer,"
+    | "SetMaxVideoDecodeResolution(width as Integer, height as Inte"
+    | "GetPlaybackDuration() as Integer"
+    | "GetAudioTracks() as Object"
+    | "ChangeAudioTrack(trackID as String) as Void"
+    | "SetTimedMetaDataForKeys(keys[] as Dynamic) as Void"
+    | "GetCaptionRenderer() as Object"
+    | "SetMacrovisionLevel(level as Integer) as Void" ;
+
+ifXMLElement                        ::= "Parse(xml as String) as Boolean"
+    | "GetBody() as Object"
+    | "GetAttributes() as Object"
+    | "GetName() as String"
+    | "GetText() as String"
+    | "GetChildElements() as Object"
+    | "GetChildNodes() as Object"
+    | "GetNamedElements(name as String) as Object"
+    | "GetNamedElementsCi(name as String) as Object"
+    | "IsName(name as String) as Boolean"
+    | "HasAttribute(attr as String) as Boolean"
+    | "SetBody(body as Object) as Void"
+    | "AddBodyElement() as Object"
+    | "AddElement(name as String) as Object"
+    | "AddElementWithBody(name as String, body as Object) as Object"
+    | "AddText(text as String) as Void"
+    | "AddAttribute(attr as String, value as String) as Void"
+    | "SetName(name as String) as Void"
+    | "GenXML(gen_header as Boolean) as String"
+    | "GenXMLHdr(hdr as String) as String"
+    | "Clear() as Void" ;
+
+ifXMLList                           ::= "GetNamedElements(name As String) As Object"
+    | "GetNamedElementsCi(name As String) As Object"
+    | "Simplify() As Object"
+    | "GetAttributes() As Object"
+    | "GetText() As String"
+    | "GetChildElements() As Object" ;
+
+(* ─── SceneGraph Node Fields ───────────────────────────────────── *)
+(* Each rule lists the valid field names for that node type *)
+
+Animation_field                     ::= "duration" (* Time *)
+    | "easeFunction" (* string *)
+    | "easeInPercent" (* float *)
+    | "easeOutPercent" (* float *)
+    | "optional" (* boolean *)
+    | "willBeSkipped" (* boolean *) ;
+
+AnimationBase_field                 ::= "control" (* option string *)
+    | "state" (* value string *)
+    | "repeat" (* Boolean *)
+    | "delay" (* time *) ;
+
+ArrayGrid_field                     ::= "content" (* ContentNode *)
+    | "itemSize" (* vector2d *)
+    | "itemSpacing" (* vector2d *)
+    | "numRows" (* integer *)
+    | "numColumns" (* integer *)
+    | "focusRow" (* integer *)
+    | "focusColumn" (* integer *)
+    | "horizFocusAnimationStyle" (* option string *)
+    | "vertFocusAnimationStyle" (* option string *)
+    | "drawFocusFeedbackOnTop" (* Boolean *)
+    | "drawFocusFeedback" (* Boolean *)
+    | "fadeFocusFeedbackWhenAutoScrolling" (* Boolean *)
+    | "itemcurrFocusFeedbackOpacity" (* Float *)
+    | "currFocusFeedbackOpacity" (* float *)
+    | "focusBitmapUri" (* uri *)
+    | "focusFootprintBitmapUri" (* uri *)
+    | "focusBitmapBlendColor" (* color *)
+    | "focusFootprintBlendColor" (* color *)
+    | "skipFocusAnimations" (* Boolean *)
+    | "wrapDividerBitmapUri" (* uri *)
+    | "wrapDividerWidth" (* float *)
+    | "wrapDividerHeight" (* float *)
+    | "fixedLayout" (* Boolean *)
+    | "numRenderPasses" (* integer *)
+    | "rowHeights" (* array of floats *)
+    | "columnWidths" (* array of floats *)
+    | "rowSpacings" (* array of floats *)
+    | "columnSpacings" (* array of floats *)
+    | "sectionDividerBitmapUri" (* uri *)
+    | "sectionDividerFont" (* font *)
+    | "sectionDividerTextColor" (* color *)
+    | "sectionDividerSpacing" (* float *)
+    | "sectionDividerWidth" (* float *)
+    | "sectionDividerHeight" (* float *)
+    | "sectionDividerMinWidth" (* float *)
+    | "sectionDividerLeftOffset" (* float *)
+    | "itemClippingRect" (* rect2d *)
+    | "itemSelected" (* integer *)
+    | "itemFocused" (* integer *)
+    | "itemUnfocused" (* integer *)
+    | "jumpToItem" (* integer *)
+    | "animateToItem" (* integer *)
+    | "currFocusRow" (* float *)
+    | "currFocusColumn" (* float *)
+    | "currFocusSection" (* float *) ;
+
+Audio_field                         ::= "content" (* ContentNode *)
+    | "contentIsPlaylist" (* Boolean *)
+    | "nextContentIndex" (* integer *)
+    | "loop" (* Boolean *)
+    | "bufferingStatus" (* associative array *)
+    | "control" (* option string *)
+    | "notificationInterval" (* time *)
+    | "timedMetaDataSelectionKeys" (* array of strings *)
+    | "seek" (* time *)
+    | "contentIndex" (* integer *)
+    | "timedMetaData" (* associative array *)
+    | "state" (* value string *)
+    | "position" (* time *)
+    | "duration" (* time *)
+    | "errorCode" (* integer *)
+    | "streamingSegment" (* associative array *)
+    | "focusedChild" (* N/A *)
+    | "autoplayAfterSeek" (* boolean *)
+    | "mute" (* boolean *)
+    | "streamInfo" (* associative array *)
+    | "timeToStartStreaming" (* time *)
+    | "errorMsg" (* string *) ;
+
+BusySpinner_field                   ::= "poster" (* Poster node *)
+    | "control" (* option string *)
+    | "clockwise" (* Boolean *)
+    | "spinInterval" (* time *)
+    | "uri" (* uri *) ;
+
+Button_field                        ::= "text" (* string *)
+    | "textColor" (* color *)
+    | "focusedTextColor" (* color *)
+    | "textFont" (* Font *)
+    | "focusedTextFont" (* Font *)
+    | "focusFootprintBitmapUri" (* uri *)
+    | "focusBitmapUri" (* uri *)
+    | "iconUri" (* uri *)
+    | "focusedIconUri" (* uri *)
+    | "minWidth" (* float *)
+    | "maxWidth" (* float *)
+    | "height" (* float *)
+    | "showFocusFootprint" (* boolean *)
+    | "scrollable" (* boolean *)
+    | "buttonSelected" (* Event *) ;
+
+ButtonGroup_field                   ::= "textColor" (* color *)
+    | "focusedTextColor" (* color *)
+    | "textFont" (* Font *)
+    | "focusedTextFont" (* Font *)
+    | "focusBitmapUri" (* uri *)
+    | "focusFootprintBitmapUri" (* uri *)
+    | "iconUri" (* uri *)
+    | "focusedIconUri" (* uri *)
+    | "minWidth" (* float *)
+    | "maxWidth" (* float *)
+    | "buttonHeight" (* float *)
+    | "rightJustify" (* Boolean *)
+    | "buttonSelected" (* integer *)
+    | "buttonFocused" (* integer *)
+    | "focusButton" (* integer *)
+    | "buttons" (* array of strings *) ;
+
+ChannelStore_field                  ::= "orderStatus" (* ContentNode *)
+    | "purchases" (* ContentNode *)
+    | "catalog" (* ContentNode *)
+    | "storeCatalog" (* ContentNode *)
+    | "requestPartnerOrderStatus" (* ContentNode *)
+    | "confirmPartnerOrderStatus" (* ContentNode *)
+    | "requestedUserData" (* string *)
+    | "requestedUserDataInfo" (* ContentNode *)
+    | "userData" (* ContentNode *)
+    | "order" (* ContentNode *)
+    | "deltaOrder" (* associative array *)
+    | "requestPartnerOrder" (* ContentNode *)
+    | "confirmPartnerOrder" (* ContentNode *)
+    | "fakeServer" (* Boolean *)
+    | "command" (* string *)
+    | "context" (* string *)
+    | "forceShowData" (* Boolean *)
+    | "action" (* string *) ;
+
+CheckList_field                     ::= "checkedState" (* array of Boolean *)
+    | "checkOnSelect" (* Boolean *)
+    | "checkedIconUri" (* uri *)
+    | "uncheckedIconUri" (* uri *)
+    | "focusedCheckedIconUri" (* uri *)
+    | "focusedUncheckedIconUri" (* uri *) ;
+
+ColorFieldInterpolator_field        ::= "fieldToInterp" (* string *)
+    | "key" (* array of floats *)
+    | "keyValue" (* array of colors *)
+    | "fraction" (* float *)
+    | "reverse" (* boolean *) ;
+
+ComponentLibrary_field              ::= "loadStatus" (* value string *)
+    | "id" (* string *)
+    | "uri" (* uri *) ;
+
+Dialog_field                        ::= "title" (* string *)
+    | "titleColor" (* color *)
+    | "titleFont" (* Font *)
+    | "message" (* string *)
+    | "messageColor" (* color *)
+    | "messageFont" (* Font *)
+    | "numberedBullets" (* Boolean *)
+    | "bulletText" (* array of strings *)
+    | "bulletTextColor" (* color *)
+    | "bulletTextFont" (* Font *)
+    | "buttons" (* array of strings *)
+    | "buttonGroup" (* ButtonGroup *)
+    | "graphicUri" (* uri *)
+    | "graphicWidth" (* float *)
+    | "graphicHeight" (* float *)
+    | "buttonSelected" (* integer *)
+    | "buttonFocused" (* integer *)
+    | "focusButton" (* integer *)
+    | "optionsDialog" (* Boolean *)
+    | "backgroundUri" (* uri *)
+    | "iconUri" (* uri *)
+    | "dividerUri" (* uri *)
+    | "close" (* Boolean *)
+    | "wasClosed" (* Event *)
+    | "width" (* float *)
+    | "maxHeight" (* float *) ;
+
+DynamicCustomKeyboard_field         ::= "keyGrid" (* DynamicKeyGrid node *) ;
+
+DynamicKeyGrid_field                ::= "keyDefinitionUri" (* uri *)
+    | "mode" (* string *)
+    | "focusVisible" (* boolean *)
+    | "horizWrap" (* boolean *)
+    | "vertWrap" (* boolean *)
+    | "palette" (* RSGPalette node *)
+    | "keyFocused" (* string *)
+    | "keySelected" (* string *)
+    | "jumpToKey" (* array of integers *)
+    | "disableKey" (* string *)
+    | "enableKey" (* string *) ;
+
+DynamicKeyboardBase_field           ::= "text" (* string *)
+    | "hideTextBox" (* boolean *)
+    | "domain" (* string *)
+    | "textEditBox" (* [VoiceTextEditBox node](doc:voice-text-edit-box) *)
+    | "keyGrid" (* [DynamicKeyGrid node](doc:dynamic-key-grid) *) ;
+
+FloatFieldInterpolator_field        ::= "fieldToInterp" (* string *)
+    | "key" (* array of floats *)
+    | "keyValue" (* array of floats *)
+    | "fraction" (* float *)
+    | "reverse" (* boolean *) ;
+
+Font_field                          ::= "uri" (* uri *)
+    | "size" (* integer *)
+    | "fallbackGlyph" (* string *) ;
+
+GridPanel_field                     ::= "grid" (* Node *)
+    | "leftLabel" (* Node *)
+    | "rightLabel" (* Node *)
+    | "showSectionLabels" (* Boolean *)
+    | "createNextPanelIndex" (* integer *)
+    | "nextPanel" (* Node *)
+    | "createNextPanelOnItemFocus" (* Boolean *) ;
+
+Group_field                         ::= "visible" (* Boolean *)
+    | "opacity" (* float *)
+    | "translation" (* vector2d *)
+    | "rotation" (* float *)
+    | "scale" (* vector2d *)
+    | "scaleRotateCenter" (* vector2d *)
+    | "childRenderOrder" (* option as string *)
+    | "inheritParentTransform" (* Boolean *)
+    | "inheritParentOpacity" (* Boolean *)
+    | "clippingRect" (* array of float *)
+    | "renderPass" (* integer *)
+    | "muteAudioGuide" (* Boolean *)
+    | "enableRenderTracking" (* Boolean *)
+    | "renderTracking" (* option as string *) ;
+
+InfoPane_field                      ::= "Field Name" (* Type *)
+    | ":-------------------" (* :--------------- *)
+    | "infoText" (* string *)
+    | "width" (* integer *)
+    | "height" (* integer *)
+    | "textColor" (* color *)
+    | "bulletText" (* array of strings *)
+    | "infoText2" (* string *)
+    | "infoText2Color" (* color *)
+    | "infoText2BottomAlign" (* boolean *) ;
+
+Keyboard_field                      ::= "text" (* string *)
+    | "keyColor" (* color *)
+    | "focusedKeyColor" (* color *)
+    | "keyboardBitmapUri" (* string *)
+    | "focusBitmapUri" (* string *)
+    | "textEditBox" (* TextEditBox node *)
+    | "showTextEditBox" (* boolean *) ;
+
+KeyboardDialog_field                ::= "text" (* string *)
+    | "keyboard" (* Keyboard node *) ;
+
+Label_field                         ::= "font" (* Font *)
+    | "lineSpacing" (* float *)
+    | "truncateOnDelimiter" (* string *)
+    | "leadingEllipsis" (* boolean *)
+    | "wrappedLines" (* Integer *) ;
+
+LabelBase_field                     ::= "text" (* string *)
+    | "color" (* color *)
+    | "horizAlign" (* string *)
+    | "vertAlign" (* string *)
+    | "width" (* float *)
+    | "height" (* float *)
+    | "numLines" (* integer *)
+    | "maxLines" (* integer *)
+    | "wrap" (* boolean *)
+    | "displayPartialLines" (* Boolean *)
+    | "ellipsizeOnBoundary" (* Boolean *)
+    | "wordBreakChars" (* string *)
+    | "ellipsisText" (* string *)
+    | "isTextEllipsized" (* Boolean *)
+    | "monospacedDigitsAvailable since [Roku OS 14.0](doc:release-n" (* Boolean *) ;
+
+LabelList_field                     ::= "content" (* ContentNode *)
+    | "itemSize" (* vector2d *)
+    | "itemSpacing" (* vector2d *)
+    | "numRows" (* integer *)
+    | "textHorizAlign" (* option string *)
+    | "color" (* color *)
+    | "focusedColor" (* color *)
+    | "font" (* font *)
+    | "focusedFont" (* font *)
+    | "drawFocusFeedback" (* Boolean *)
+    | "drawFocusFeedbackOnTop" (* Boolean *)
+    | "vertFocusAnimationStyle" (* string *)
+    | "focusRow" (* integer *)
+    | "focusBitmapBlendColor" (* color *)
+    | "focusFootprintBlendColor" (* color *)
+    | "wrapDividerHeight" (* float *)
+    | "sectionDividerFont" (* font *)
+    | "sectionDividerTextColor" (* color *)
+    | "sectionDividerSpacing" (* float *)
+    | "sectionDividerHeight" (* float *)
+    | "sectionDividerMinWidth" (* float *)
+    | "sectionDividerLeftOffset" (* float *)
+    | "itemSelected" (* integer *)
+    | "itemFocused" (* integer *)
+    | "itemUnfocused" (* integer *)
+    | "jumpToItem" (* integer *)
+    | "animateToItem" (* integer *)
+    | "focusBitmapUri" (* uri *)
+    | "focusFootprintBitmapUri" (* uri *)
+    | "wrapDividerBitmapUri" (* uri *)
+    | "sectionDividerBitmapUri" (* uri *) ;
+
+LayoutGroup_field                   ::= "layoutDirection" (* string *)
+    | "horizAlignment" (* string *)
+    | "vertAlignment" (* string *)
+    | "itemSpacings" (* array of floats *)
+    | "addItemSpacingAfterChild" (* Boolean *) ;
+
+ListPanel_field                     ::= "list" (* Node *)
+    | "leftLabel" (* Node *)
+    | "rightLabel" (* Node *)
+    | "showSectionLabels" (* Boolean *)
+    | "createNextPanelIndex" (* integer *)
+    | "nextPanel" (* Node *)
+    | "createNextPanelOnItemFocus" (* Boolean *) ;
+
+MarkupGrid_field                    ::= "content" (* ContentNode *)
+    | "itemSize" (* vector2d *)
+    | "numColumns" (* integer *)
+    | "numRows" (* integer *)
+    | "rowHeights" (* array of floats *)
+    | "columnWidths" (* array of floats *)
+    | "rowSpacings" (* array of floats *)
+    | "columnSpacings" (* array of floats *)
+    | "fixedLayout" (* Boolean *)
+    | "drawFocusFeedback" (* Boolean *)
+    | "drawFocusFeedbackOnTop" (* Boolean *)
+    | "focusBitmapBlendColor" (* color *)
+    | "focusFootprintBlendColor" (* color *)
+    | "wrapDividerHeight" (* float *)
+    | "sectionDividerFont" (* font *)
+    | "sectionDividerTextColor" (* color *)
+    | "sectionDividerSpacing" (* float *)
+    | "sectionDividerHeight" (* float *)
+    | "sectionDividerMinWidth" (* float *)
+    | "sectionDividerLeftOffset" (* float *)
+    | "itemSelected" (* integer *)
+    | "itemFocused" (* integer *)
+    | "itemUnfocused" (* integer *)
+    | "jumpToItem" (* integer *)
+    | "animateToItem" (* integer *)
+    | "itemComponentName" (* string *)
+    | "imageWellBitmapUri" (* uri *)
+    | "focusBitmapUri" (* uri *)
+    | "focusFootprintBitmapUri" (* uri *)
+    | "wrapDividerBitmapUri" (* uri *)
+    | "sectionDividerBitmapUri" (* uri *) ;
+
+MarkupList_field                    ::= "Field Name" (* Field Type *)
+    | ":-----------" (* :-------------- *)
+    | "width" (* float *)
+    | "height" (* float *)
+    | "index" (* integer *)
+    | "listHasFocus" (* Boolean *)
+    | "itemContent" (* **ContentNode** *)
+    | "focusPercent" (* float *)
+    | "itemHasFocus" (* Boolean *)
+    | "Attribute" (* Type *)
+    | "CONTENTTYPE" (* string *)
+    | "HDGRIDPOSTERURL" (* uri *)
+    | "content" (* ContentNode *)
+    | "itemSize" (* vector2d *)
+    | "itemSpacing" (* vector2d *)
+    | "numRows" (* integer *)
+    | "drawFocusFeedback" (* Boolean *)
+    | "drawFocusFeedbackOnTop" (* Boolean *)
+    | "focusBitmapBlendColor" (* color *)
+    | "focusFootprintBlendColor" (* color *)
+    | "wrapDividerHeight" (* float *)
+    | "sectionDividerFont" (* font *)
+    | "sectionDividerTextColor" (* color *)
+    | "sectionDividerSpacing" (* float *)
+    | "sectionDividerHeight" (* float *)
+    | "sectionDividerMinWidth" (* float *)
+    | "sectionDividerLeftOffset" (* float *)
+    | "itemSelected" (* integer *)
+    | "itemFocused" (* integer *)
+    | "itemUnfocused" (* integer *)
+    | "jumpToItem" (* integer *)
+    | "animateToItem" (* integer *)
+    | "itemClippingRect" (* rect2d *)
+    | "itemComponentName" (* string *)
+    | "focusBitmapUri" (* uri *)
+    | "focusFootprintBitmapUri" (* uri *)
+    | "wrapDividerBitmapUri" (* uri *)
+    | "sectionDividerBitmapUri" (* uri *) ;
+
+MaskGroup_field                     ::= "maskUri" (* URI string *)
+    | "maskSize" (* vector2d *)
+    | "maskOffset" (* vector2d *)
+    | "maskBitmapWidth" (* float *)
+    | "maskBitmapHeight" (* float *) ;
+
+MiniKeyboard_field                  ::= "text" (* string *)
+    | "keyColor" (* color *)
+    | "focusedKeyColor" (* color *)
+    | "keyboardBitmapUri" (* string *)
+    | "focusBitmapUri" (* string *)
+    | "textEditBox" (* TextEditBox node *)
+    | "showTextEditBox" (* boolean *)
+    | "lowerCase" (* boolean *) ;
+
+Node_field                          ::= "id" (* string *)
+    | "focusedChild" (* N/A *)
+    | "focusable" (* Boolean *)
+    | "change" (* associative array *) ;
+
+Overhang_field                      ::= "color" (* color *)
+    | "backgroundUri" (* uri *)
+    | "logoUri" (* uri *)
+    | "logoBaselineOffset" (* float *)
+    | "title" (* string *)
+    | "titleColor" (* color *)
+    | "showClock" (* Boolean *)
+    | "clockColor" (* color *)
+    | "clockText" (* string *)
+    | "showOptions" (* Boolean *)
+    | "optionsColor" (* color *)
+    | "optionsDimColor" (* color *)
+    | "optionsIconColor" (* color *)
+    | "optionsIconDimColor" (* color *)
+    | "optionsAvailable" (* Boolean *)
+    | "optionsText" (* string *)
+    | "optionsMaxWidth" (* float *)
+    | "leftDividerUri" (* uri *)
+    | "leftDividerVertOffset" (* float *)
+    | "rightDividerUri" (* uri *)
+    | "rightDividerVertOffset" (* float *)
+    | "height" (* float *) ;
+
+OverhangPanelSetScene_field         ::= "overhang" (* Overhang *)
+    | "panelSet" (* PanelSet *) ;
+
+Panel_field                         ::= "panelSize" (* string *)
+    | "width" (* float *)
+    | "height" (* float *)
+    | "leftPosition" (* float *)
+    | "overhangTitle" (* string *)
+    | "clockText" (* string *)
+    | "optionsAvailable" (* Boolean *)
+    | "leftOrientation" (* Boolean *)
+    | "leftOnly" (* Boolean *)
+    | "hasNextPanel" (* Boolean *)
+    | "isFullScreen" (* Boolean *)
+    | "goBackCount" (* integer *)
+    | "selectButtonMovesPanelForward" (* Boolean *)
+    | "isOffscreenLeft" (* Boolean *) ;
+
+PanelSet_field                      ::= "width" (* float *)
+    | "height" (* float *)
+    | "slideDuration" (* integer *)
+    | "numPanels" (* integer *)
+    | "isGoingBack" (* Boolean *) ;
+
+ParentalControlPinPad_field         ::= "pin" (* string *)
+    | "pinLength" (* integer *)
+    | "secureMode" (* boolean *)
+    | "keyColor" (* color *)
+    | "focusedKeyColor" (* color *)
+    | "pinDisplayTextColor" (* color *)
+    | "keyboardBitmapUri" (* string *)
+    | "pinDisplayBitmapUri" (* string *)
+    | "focusBitmapUri" (* string *)
+    | "pinSuccess" (* string *)
+    | "showPinDisplay" (* boolean *) ;
+
+PinDialog_field                     ::= "pin" (* string *)
+    | "pinPad" (* PinPad node *)
+    | "privacyHintColor" (* color *)
+    | "pinPadFocused" (* boolean *) ;
+
+PinPad_field                        ::= "pin" (* string *)
+    | "pinLength" (* integer *)
+    | "secureMode" (* boolean *)
+    | "keyColor" (* color *)
+    | "focusedKeyColor" (* color *)
+    | "pinDisplayTextColor" (* color *)
+    | "keyboardBitmapUri" (* string *)
+    | "pinDisplayBitmapUri" (* string *)
+    | "focusBitmapUri" (* string *)
+    | "showPinDisplay" (* boolean *)
+    | "itemFocused" (* integer *)
+    | "focusVisible" (* boolean *) ;
+
+Poster_field                        ::= "width" (* float *)
+    | "height" (* float *)
+    | "loadSync" (* Boolean *)
+    | "loadWidth" (* float *)
+    | "loadHeight" (* float *)
+    | "loadDisplayMode" (* option string *)
+    | "loadStatus" (* value string *)
+    | "bitmapWidth" (* float *)
+    | "bitmapHeight" (* float *)
+    | "bitmapMargins" (* associative array *)
+    | "blendColor" (* color *)
+    | "loadingBitmapOpacity" (* float *)
+    | "failedBitmapOpacity" (* float *)
+    | "uri" (* string *)
+    | "loadingBitmapUri" (* string *)
+    | "failedBitmapUri" (* string *)
+    | "audioGuideText" (* string *) ;
+
+PosterGrid_field                    ::= "content" (* ContentNode *)
+    | "basePosterSize" (* vector2d *)
+    | "useAtlas" (* Boolean *)
+    | "posterDisplayMode" (* option string *)
+    | "itemSpacing" (* vector2d *)
+    | "numColumns" (* integer *)
+    | "numRows" (* integer *)
+    | "rowHeights" (* array of floats *)
+    | "columnWidths" (* array of floats *)
+    | "rowSpacings" (* array of floats *)
+    | "columnSpacings" (* array of floats *)
+    | "fixedLayout" (* Boolean *)
+    | "loadingBitmapOpacity" (* float *)
+    | "failedBitmapOpacity" (* float *)
+    | "caption1Font" (* font *)
+    | "caption1Color" (* color *)
+    | "caption1NumLines" (* integer *)
+    | "caption2Font" (* font *)
+    | "caption2Color" (* color *)
+    | "caption2NumLines" (* integer *)
+    | "captionHorizAlignment" (* string *)
+    | "captionVertAlignment" (* string *)
+    | "captionLineSpacing" (* float *)
+    | "showBackgroundForEmptyCaptions" (* Boolean *)
+    | "enableCaptionScrolling" (* Boolean *)
+    | "drawFocusFeedback" (* Boolean *)
+    | "drawFocusFeedbackOnTop" (* Boolean *)
+    | "focusBitmapBlendColor" (* color *)
+    | "focusFootprintBlendColor" (* color *)
+    | "wrapDividerBitmapUri" (* uri *)
+    | "wrapDividerHeight" (* float *)
+    | "sectionDividerFont" (* font *)
+    | "sectionDividerTextColor" (* color *)
+    | "sectionDividerSpacing" (* float *)
+    | "sectionDividerHeight" (* float *)
+    | "sectionDividerMinWidth" (* float *)
+    | "sectionDividerLeftOffset" (* float *)
+    | "itemSelected" (* integer *)
+    | "itemFocused" (* integer *)
+    | "itemUnfocused" (* integer *)
+    | "jumpToItem" (* integer *)
+    | "animateToItem" (* integer *)
+    | "imageWellBitmapUri" (* uri *)
+    | "loadingBitmapUri" (* uri *)
+    | "failedBitmapUri" (* uri *)
+    | "captionBackgroundBitmapUri" (* uri *)
+    | "focusBitmapUri" (* uri *)
+    | "focusFootprintBitmapUri" (* uri *)
+    | "sectionDividerBitmapUri" (* uri *) ;
+
+ProgressDialog_field                ::= "busySpinner" (* BusySpinner *) ;
+
+RadioButtonList_field               ::= "checkedItem" (* integer *)
+    | "checkOnSelect" (* Boolean *)
+    | "checkedIconUri" (* uri *)
+    | "focusedCheckedIconUri" (* uri *) ;
+
+Rectangle_field                     ::= "width" (* float *)
+    | "height" (* float *)
+    | "color" (* color (string containing hex value e.g. RGBA) *)
+    | "blendingEnabled" (* boolean *) ;
+
+RowList_field                       ::= "itemComponentName" (* string *)
+    | "rowTitleComponentName" (* string *)
+    | "content" (* ContentNode *)
+    | "itemSize" (* vector2d *)
+    | "itemSpacing" (* vector2d *)
+    | "numRows" (* integer *)
+    | "rowHeights" (* array of floats *)
+    | "rowSpacings" (* array of floats *)
+    | "rowItemSize" (* array of vector2d *)
+    | "rowItemSpacing" (* array of vector2d *)
+    | "focusXOffset" (* array of floats *)
+    | "rowLabelOffset" (* array of vector2d *)
+    | "showRowLabel" (* array of Boolean *)
+    | "showRowCounter" (* array of Boolean *)
+    | "indefiniteRowItemCount" (* array of Boolean *)
+    | "variableWidthItems" (* array of Boolean *)
+    | "rowFocusAnimationStyle" (* option string *)
+    | "vertFocusAnimationStyle" (* option string *)
+    | "rowLabelColor" (* color *)
+    | "rowLabelFont" (* font *)
+    | "rowCounterRightOffset" (* float *)
+    | "showRowCounterForShortRows" (* Boolean *)
+    | "fadeFocusFeedbackWhenAutoScrolling" (* Boolean *)
+    | "currFocusFeedbackOpacity" (* float *)
+    | "drawFocusFeedbackOnTop" (* Boolean *)
+    | "drawFocusFeedback" (* Boolean *)
+    | "imageWellBitmapUri" (* uri *)
+    | "focusBitmapUri" (* uri *)
+    | "focusFootprintBitmapUri" (* uri *)
+    | "focusBitmapBlendColor" (* color *)
+    | "focusFootprintBlendColor" (* color *)
+    | "loadingBitmapUri" (* uri *)
+    | "loadingBitmapOpacity" (* float *)
+    | "failedBitmapUri" (* uri *)
+    | "failedBitmapOpacity" (* float *)
+    | "wrapDividerBitmapUri" (* uri *)
+    | "wrapDividerHeight" (* float *)
+    | "rowItemSelected" (* array of integer *)
+    | "rowItemFocused" (* array of integer *)
+    | "currFocusColumn" (* float *)
+    | "itemSelected" (* integer *)
+    | "itemFocused" (* integer *)
+    | "itemUnfocused" (* integer *)
+    | "jumpToItem" (* integer *)
+    | "jumpToRowItem" (* array of integer *)
+    | "animateToItem" (* integer *) ;
+
+Scene_field                         ::= "backgroundURI" (* uri *)
+    | "limitBackgroundToUIResolution" (* boolean *)
+    | "backgroundColor" (* color *)
+    | "backExitsScene" (* Boolean *)
+    | "dialog" (* Node *)
+    | "currentDesignResolution" (* assocarray *)
+    | "palette" (* RSGPalette node *)
+    | "allowBackgroundTask" (* boolean *) ;
+
+ScrollableText_field                ::= "text" (* string *)
+    | "color" (* color *)
+    | "font" (* Font *)
+    | "width" (* float *)
+    | "height" (* float *)
+    | "lineSpacing" (* float *)
+    | "horizAlign" (* string *)
+    | "vertAlign" (* string *)
+    | "scrollbarTrackBitmapUri" (* string *)
+    | "scrollbarThumbBitmapUri" (* string *) ;
+
+ScrollingLabel_field                ::= "text" (* string *)
+    | "color" (* color *)
+    | "font" (* Font *)
+    | "maxWidth" (* float *)
+    | "height" (* float *)
+    | "scrollSpeed" (* float *)
+    | "repeatCount" (* float *)
+    | "horizAlign" (* option string *)
+    | "vertAlign" (* option string *) ;
+
+SimpleLabel_field                   ::= "text" (* string *)
+    | "color" (* color *)
+    | "fontSize" (* integer *)
+    | "horizOrigin" (* string *)
+    | "vertOrigin" (* string *)
+    | "scaleRotateCenter" (* vector2d *)
+    | "visible" (* Boolean *)
+    | "inheritParentOpacity" (* Boolean *)
+    | "rotation" (* float *)
+    | "scale" (* vector2d *)
+    | "renderTracking" (* option as string *)
+    | "inheritParentTransform" (* Boolean *)
+    | "renderPass" (* integer *)
+    | "childRenderOrder" (* option as string *)
+    | "clippingRect" (* array of float *)
+    | "enableRenderTracking" (* Boolean *)
+    | "translation" (* vector2d *)
+    | "opacity" (* float *)
+    | "muteAudioGuide" (* Boolean *) ;
+
+SoundEffect_field                   ::= "uri" (* uri *)
+    | "control" (* option string *)
+    | "state" (* value string *)
+    | "loadStatus" (* value string *)
+    | "volume" (* integer *) ;
+
+StandardDialog_field                ::= "width" (* float *)
+    | "height" (* float *)
+    | "buttonSelected" (* int *)
+    | "buttonFocused" (* int *)
+    | "palette" (* RSGPalette node *)
+    | "close" (* boolean *)
+    | "wasClosed" (* event *) ;
+
+StandardKeyboardDialog_field        ::= "title" (* string *)
+    | "message" (* array of strings *)
+    | "buttons" (* array of strings *)
+    | "textEditBox" (* VoiceTextEditBox node *)
+    | "keyboardDomain" (* string *)
+    | "text" (* string *) ;
+
+StandardMessageDialog_field         ::= "title" (* string *)
+    | "message" (* array of strings *)
+    | "bulletText" (* array of strings *)
+    | "bulletType" (* string *)
+    | "bottomMessage" (* array of strings *)
+    | "buttons" (* array of strings *) ;
+
+StandardPinPadDialog_field          ::= "title" (* string *)
+    | "message" (* array of strings *)
+    | "buttons" (* array of strings *)
+    | "textEditBox" (* VoiceTextEditBox node *)
+    | "pin" (* string *) ;
+
+StdDlgActionCardItem_field          ::= "iconStatus" (* bool *)
+    | "iconType" (* string *) ;
+
+StdDlgBulletTextItem_field          ::= "bulletText" (* array of strings *)
+    | "bulletType" (* string *) ;
+
+StdDlgButton_field                  ::= ":-------" (* :------ *)
+    | "text" (* string *)
+    | "disabled" (* boolean *) ;
+
+StdDlgCustomItem_field              ::= ":--------------" (* :---- *)
+    | "widthField" (* float *)
+    | "fixedWidthField" (* float *) ;
+
+StdDlgDeterminateProgressItem_field ::= "percent" (* Float *)
+    | "text" (* string *) ;
+
+StdDlgItemBase_field                ::= ":---------" (* :------ *)
+    | "scrollable" (* boolean *) ;
+
+StdDlgItemGroup_field               ::= "selectedIndex" (* integer *) ;
+
+StdDlgKeyboardItem_field            ::= "keyLayout" (* string *)
+    | "text" (* string *)
+    | "textEditBox" (* VoiceTextEditBox node *) ;
+
+StdDlgMultiStyleTextItem_field      ::= "text" (* string *)
+    | "drawingStyles" (* associative array of associative arrays *)
+    | "audioGuideText" (* string *) ;
+
+StdDlgProgressItem_field            ::= ":----" (* :----- *)
+    | "text" (* string *) ;
+
+StdDlgSideCardArea_field            ::= "extendToDialogEdge" (* boolean *)
+    | "horizAlign" (* string *)
+    | "showDivider" (* boolean *)
+    | "width" (* float *) ;
+
+StdDlgTextItem_field                ::= "text" (* string *)
+    | "namedTextStyle" (* string *)
+    | "audioGuideText" (* string *) ;
+
+TargetGroup_field                   ::= "itemComponentName" (* string *)
+    | "content" (* ContentNode *)
+    | "targetSet" (* TargetSet *)
+    | "defaultTargetSetFocusIndex" (* int *)
+    | "wrap" (* Boolean *)
+    | "duration" (* Time *)
+    | "showTargetRects" (* Boolean *)
+    | "currFocusItemIndex" (* float *)
+    | "currTargetSet" (* TargetSet *)
+    | "itemSelected" (* integer *)
+    | "itemFocused" (* integer *)
+    | "itemUnfocused" (* integer *)
+    | "jumpToItem" (* integer *)
+    | "animateToItem" (* integer *)
+    | "animateToTargetSet" (* TargetSet *)
+    | "easeFunction" (* string *)
+    | "advancing" (* boolean *)
+    | "reversing" (* boolean *) ;
+
+TargetList_field                    ::= "focusedTargetSet" (* array of TargetSet nodes *)
+    | "unfocusedTargetSet" (* TargetSet *)
+    | "advanceKey" (* string *)
+    | "reverseKey" (* string *) ;
+
+TargetSet_field                     ::= "targetRects" (* array of rectangles *)
+    | "focusIndex" (* integer *)
+    | "color" (* Color *) ;
+
+Task_field                          ::= "functionName" (* string *)
+    | "control" (* option string *)
+    | "state" (* value string *) ;
+
+TextEditBox_field                   ::= "text" (* string *)
+    | "hintText" (* string *)
+    | "maxTextLength" (* integer *)
+    | "cursorPosition" (* integer *)
+    | "clearOnDownKey" (* boolean *)
+    | "active" (* boolean *)
+    | "secureMode" (* boolean *)
+    | "textColor" (* color *)
+    | "hintTextColor" (* color *)
+    | "width" (* float *)
+    | "backgroundUri" (* string *)
+    | "leadingEllipsis" (* Boolean *) ;
+
+TimeGrid_field                      ::= "Attribute" (* Type *)
+    | "TITLE" (* string *)
+    | "PLAYDURATION" (* roDateTime *)
+    | "showPastTimeScreen" (* boolean *)
+    | "pastTimeScreenBlendColor" (* color *)
+    | "pastTimeScreenBitmapUri" (* uri *)
+    | "nowNextMode" (* boolean *)
+    | "nowBackgroundBitmapUri" (* Poster.uri *)
+    | "nextBackgroundBitmapUri" (* Poster.url *)
+    | "nowNextHideAmPm" (* boolean *)
+    | "programNowNextTimeColor" (* color *)
+    | "programNowNextTimeFocusedColor" (* color *)
+    | "programNowNextHorizMargin" (* float *)
+    | "programNowNextTimeTitleGap" (* float *)
+    | "maxDays" (* int *)
+    | "animateToChannel" (* int *)
+    | "jumpToChannel" (* int *)
+    | "jumpToTime" (* string *)
+    | "channelSelected" (* int *)
+    | "channelFocused" (* int *)
+    | "channelUnfocused" (* int *)
+    | "channelInfoSelected" (* int *)
+    | "channelInfoFocused" (* int *)
+    | "channelInfoUnfocused" (* int *)
+    | "channelInfoFocusable" (* boolean *)
+    | "channelInfoWidth" (* float *)
+    | "infoGridGap" (* float *)
+    | "programTitleFocusedColor" (* color *)
+    | "programTitleColor" (* color *)
+    | "programTitleFont" (* roFont *)
+    | "programSelected" (* int *)
+    | "programFocused" (* int *)
+    | "programUnfocused" (* int *)
+    | "jumpToProgram" (* int *)
+    | "programHorizMargin" (* float *)
+    | "fillProgramGaps" (* boolean *)
+    | "loadingDataText" (* string *)
+    | "channelNoDataText" (* string *)
+    | "timeBarHeight" (* float *)
+    | "timeLabelColor" (* color *)
+    | "timeLabelFont" (* font *)
+    | "timeLabelOffset" (* float *)
+    | "nowBarWidth" (* float *)
+    | "nowBarHeight" (* float *)
+    | "nowBarBlendColor" (* color *)
+    | "nowBarOffset" (* int *)
+    | "contentStartTime" (* roDateTime *)
+    | "duration" (* double *)
+    | "autoDismissTime" (* roDateTime *)
+    | "ignoreTrickPlayKeys" (* boolean *)
+    | "overlayBitmapUri" (* uri *)
+    | "overlayHeight" (* float *)
+    | "focusBitmapUri" (* uri *)
+    | "leftEdgeTargetTime" (* roDateTime *)
+    | "channelInfoComponentName" (* roSGNode *)
+    | "jumpToChannelInfo" (* int *)
+    | "channelInfoColumnLabel" (* string *)
+    | "channelInfoTextColor" (* color *)
+    | "channelInfoFont" (* roFont *)
+    | "channelInfoBackgroundBitmapUri" (* uri *)
+    | "programBackgroundBitmapUri" (* Uri *)
+    | "automaticLoadingDataFeedback" (* boolean *)
+    | "showLoadingDataFeedback" (* boolean *)
+    | "timeBarBitmapUri" (* uri *)
+    | "nowBarBitmapUri" (* uri *)
+    | "minimumNowBarOffset" (* roDateTime *) ;
+
+Timer_field                         ::= "control" (* string *)
+    | "repeat" (* Boolean *)
+    | "duration" (* time *)
+    | "fire" (* Event *) ;
+
+Vector2DFieldInterpolator_field     ::= "fieldToInterp" (* string *)
+    | "key" (* array of floats *)
+    | "keyValue" (* array of vector2ds *)
+    | "fraction" (* float *)
+    | "reverse" (* boolean *) ;
+
+Video_field                         ::= "content" (* ContentNode *)
+    | "total\_dur" (* float *)
+    | "manifest\_dur" (* float *)
+    | "drm\_load\_dur" (* float *)
+    | "drm\_lic\_acq\_dur" (* float *)
+    | "prebuf\_dur" (* float *)
+    | "manifest\_start" (* Float *)
+    | "drm\_load\_start" (* Float *)
+    | "drm\_lic\_acq\_start" (* Float *)
+    | "prebuf\_start" (* Float *)
+    | "contentIsPlaylist" (* Boolean *)
+    | "contentIndex" (* integer *)
+    | "nextContentIndex" (* integer *)
+    | "control" (* option string *)
+    | "state" (* value string *)
+    | "errorCode" (* integer *)
+    | "decoderStats" (* roAssociativeArray *)
+    | "enableDecoderStats" (* boolean *)
+    | "playbackActionButtons" (* roArray of roAssociativeArrays *)
+    | "text" (* string *)
+    | "icon" (* uri *)
+    | "focusIcon" (* uri *)
+    | "buttonIsDisabled" (* Boolean *)
+    | "playbackActionButtonSelected" (* integer *)
+    | "playbackActionButtonFocused" (* integer *)
+    | "playbackActionButtonFocusedTextFont" (* Font *)
+    | "playbackActionButtonUnfocusedTextFont" (* Font *)
+    | "playbackActionButtonFocusedTextColor" (* Color *)
+    | "playbackActionButtonUnfocusedTextColor" (* Color *)
+    | "playbackActionButtonFocusIndicatorBlendColor" (* Color *)
+    | "duration" (* time *)
+    | "loop" (* Boolean *)
+    | "position" (* time *)
+    | "positionInfo" (* roAssociativeArray *)
+    | "audio" (* double *)
+    | "clip\_id" (* integer *)
+    | "epoch" (* integer *)
+    | "video" (* double *)
+    | "clipId" (* integer *)
+    | "notificationInterval" (* time *)
+    | "seek" (* time *)
+    | "seekMode" (* string *)
+    | "autoplayAfterSeek" (* boolean *)
+    | "timedMetaData" (* associative array *)
+    | "timedMetaData2" (* associative array *)
+    | "timedMetaDataSelectionKeys" (* array of strings *)
+    | "streamInfo" (* associative array *)
+    | "completedStreamInfo" (* associative array *)
+    | "timeToStartStreaming" (* time *)
+    | "bufferingStatus" (* associative array *)
+    | "pauseBufferStart" (* time *)
+    | "pauseBufferEnd" (* time *)
+    | "pauseBufferPosition" (* time *)
+    | "pauseBufferOverflow" (* Boolean *)
+    | "pauseBufferEpochOffset" (* double *)
+    | "streamingSegment" (* associative array *)
+    | "downloadedSegment" (* associative array *)
+    | "enableLiveAvailabilityWindow" (* Boolean *)
+    | "enableThumbnailTilesDuringLive" (* Boolean *)
+    | "thumbnailTiles" (* roAssociativeArray *)
+    | "htiles" (* integer *)
+    | "vtiles" (* integer *)
+    | "width" (* integer *)
+    | "height" (* integer *)
+    | "bandwidth" (* integer *)
+    | "final\_time" (* float *)
+    | "trickPlayBackgroundOverlay" (* uri *)
+    | "enableUI" (* Boolean *)
+    | "enableTrickPlay" (* Boolean *)
+    | "bifDisplay" (* BifDisplay node *)
+    | "frameBgBlendColor" (* color *)
+    | "frameBgImageUri" (* uri *)
+    | "trickPlayBar" (* TrickPlayBar node *)
+    | "currentTimeMarkerBlendColor" (* color *)
+    | "textColor" (* color *)
+    | "thumbBlendColor" (* color *)
+    | "bufferingBar" (* ProgressBar node *)
+    | "percentage" (* integer *)
+    | "bufferingTextColor" (* color *)
+    | "retrievingBar" (* ProgressBar node *)
+    | "retrievingTextColor" (* color *)
+    | "pivotNode" (* renderable node *)
+    | "globalCaptionMode" (* option string *)
+    | "suppressCaptions" (* boolean *)
+    | "availableSubtitleTracks" (* array of associative arrays *)
+    | "captionStyle" (* associative array *)
+    | "mute" (* Boolean *)
+    | "availableAudioTracks" (* array of associative arrays *)
+    | "supplementaryAudioVolume" (* int *)
+    | "ServiceLocation" (* Optional *)
+    | "MaxVideoDecodeResolution" (* vector2d (width, height) *)
+    | "cgms" (* integer *)
+    | "enableScreenSaverWhilePlaying" (* Boolean *)
+    | "disableScreenSaver" (* Boolean *)
+    | "contentBlocked" (* Boolean *)
+    | "asyncStopSemanticsAvailable since [Roku OS 12.5](doc:release" (* boolean *)
+    | "errorMsg" (* string *)
+    | "subtitleSelectionPreferences(Available since [Roku OS 12.5](" (* oAssociativeArray *)
+    | "audioSelectionPreferences(Available since [Roku OS 12.5](doc" (* roAssociativeArray *)
+    | "initial\_time" (* float *)
+    | "tiles" (* roArray *)
+    | "getNearestFrame" (* time *)
+    | "nearestFrame" (* string *)
+    | "filledBarBlendColor" (* color *)
+    | "liveFilledBarBlendColor" (* Color *)
+    | "filledBarImageUri" (* uri *)
+    | "trackBlendColor" (* color *)
+    | "trackImageUri" (* uri *)
+    | "emptyBarBlendColor" (* color *)
+    | "emptyBarImageUri" (* uri *)
+    | "subtitleTrack" (* string *)
+    | "currentSubtitleTrack" (* string *)
+    | "audioTrack" (* string *)
+    | "currentAudioTrack" (* String *)
+    | "seamlessAudioTrackSelectionAvailable since [Roku OS 13.0](do" (* Boolean *)
+    | "URLFilter" (* Required *)
+    | "ContentFilter" (* Optional *)
+    | "Priority" (* Required *)
+    | "Weight" (* Required *) ;
+
+VoiceTextEditBox_field              ::= "voiceEnabled" (* boolean *)
+    | "voiceToolTipWidth" (* float *)
+    | "voiceEntryType" (* string *)
+    | "isDictating" (* boolean *)
+    | "voiceInputRegexFilter" (* string *) ;
