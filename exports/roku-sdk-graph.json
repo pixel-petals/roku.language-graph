@@ -8,1113 +8,1113 @@
     {
       "id": "ro:roAppInfo",
       "label": "roAppInfo",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roappinfo.md"
     },
     {
       "id": "ro:roAppManager",
       "label": "roAppManager",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roappmanager.md"
     },
     {
       "id": "ro:roAppMemoryMonitor",
       "label": "roAppMemoryMonitor",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roappmemorymonitor.md"
     },
     {
       "id": "ro:roArray",
       "label": "roArray",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roarray.md"
     },
     {
       "id": "ro:roAssociativeArray",
       "label": "roAssociativeArray",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roassociativearray.md"
     },
     {
       "id": "ro:roAudioGuide",
       "label": "roAudioGuide",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roaudioguide.md"
     },
     {
       "id": "ro:roAudioMetadata",
       "label": "roAudioMetadata",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roaudiometadata.md"
     },
     {
       "id": "ro:roAudioPlayer",
       "label": "roAudioPlayer",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roaudioplayer.md"
     },
     {
       "id": "ro:roAudioResource",
       "label": "roAudioResource",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roaudioresource.md"
     },
     {
       "id": "ro:roBitmap",
       "label": "roBitmap",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/robitmap.md"
     },
     {
       "id": "ro:roBoolean",
       "label": "roBoolean",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roboolean.md"
     },
     {
       "id": "ro:roByteArray",
       "label": "roByteArray",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/robytearray.md"
     },
     {
       "id": "ro:roCECStatus",
       "label": "roCECStatus",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rocecstatus.md"
     },
     {
       "id": "ro:roChannelStore",
       "label": "roChannelStore",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rochannelstore.md"
     },
     {
       "id": "ro:roCompositor",
       "label": "roCompositor",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rocompositor.md"
     },
     {
       "id": "ro:roDataGramSocket",
       "label": "roDataGramSocket",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rodatagramsocket.md"
     },
     {
       "id": "ro:roDateTime",
       "label": "roDateTime",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rodatetime.md"
     },
     {
       "id": "ro:roDeviceCrypto",
       "label": "roDeviceCrypto",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rodevicecrypto.md"
     },
     {
       "id": "ro:roDeviceInfo",
       "label": "roDeviceInfo",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rodeviceinfo.md"
     },
     {
       "id": "ro:roDouble",
       "label": "roDouble",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rodouble.md"
     },
     {
       "id": "ro:roDsa",
       "label": "roDsa",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rodsa.md"
     },
     {
       "id": "ro:roEVPCipher",
       "label": "roEVPCipher",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roevpcipher.md"
     },
     {
       "id": "ro:roEVPDigest",
       "label": "roEVPDigest",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roevpdigest.md"
     },
     {
       "id": "ro:roFileSystem",
       "label": "roFileSystem",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rofilesystem.md"
     },
     {
       "id": "ro:roFloat",
       "label": "roFloat",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rofloat.md"
     },
     {
       "id": "ro:roFont",
       "label": "roFont",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rofont.md"
     },
     {
       "id": "ro:roFontRegistry",
       "label": "roFontRegistry",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rofontregistry.md"
     },
     {
       "id": "ro:roFunction",
       "label": "roFunction",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rofunction.md"
     },
     {
       "id": "ro:roHdmiStatus",
       "label": "roHdmiStatus",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rohdmistatus.md"
     },
     {
       "id": "ro:roHMAC",
       "label": "roHMAC",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rohmac.md"
     },
     {
       "id": "ro:roHttpAgent",
       "label": "roHttpAgent",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rohttpagent.md"
     },
     {
       "id": "ro:roImageMetadata",
       "label": "roImageMetadata",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roimagemetadata.md"
     },
     {
       "id": "ro:roInput",
       "label": "roInput",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roinput.md"
     },
     {
       "id": "ro:roInt",
       "label": "roInt",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roint.md"
     },
     {
       "id": "ro:roInvalid",
       "label": "roInvalid",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roinvalid.md"
     },
     {
       "id": "ro:roList",
       "label": "roList",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rolist.md"
     },
     {
       "id": "ro:roLocalization",
       "label": "roLocalization",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rolocalization.md"
     },
     {
       "id": "ro:roLongInteger",
       "label": "roLongInteger",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rolonginteger.md"
     },
     {
       "id": "ro:roMessagePort",
       "label": "roMessagePort",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/romessageport.md"
     },
     {
       "id": "ro:roMicrophone",
       "label": "roMicrophone",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/romicrophone.md"
     },
     {
       "id": "ro:roPath",
       "label": "roPath",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/ropath.md"
     },
     {
       "id": "ro:roProgramGuide",
       "label": "roProgramGuide",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roprogramguide.md"
     },
     {
       "id": "ro:roRegex",
       "label": "roRegex",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roregex.md"
     },
     {
       "id": "ro:roRegion",
       "label": "roRegion",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roregion.md"
     },
     {
       "id": "ro:roRegistry",
       "label": "roRegistry",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roregistry.md"
     },
     {
       "id": "ro:roRegistrySection",
       "label": "roRegistrySection",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roregistrysection.md"
     },
     {
       "id": "ro:roRemoteInfo",
       "label": "roRemoteInfo",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roremoteinfo.md"
     },
     {
       "id": "ro:roRenderThreadQueue",
       "label": "roRenderThreadQueue",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rorenderthreadqueue.md"
     },
     {
       "id": "ro:roRSA",
       "label": "roRSA",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rorsa.md"
     },
     {
       "id": "ro:roScreen",
       "label": "roScreen",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roscreen.md"
     },
     {
       "id": "ro:roSGNode",
       "label": "roSGNode",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rosgnode.md"
     },
     {
       "id": "ro:roSGScreen",
       "label": "roSGScreen",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rosgscreen.md"
     },
     {
       "id": "ro:roSocketAddress",
       "label": "roSocketAddress",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rosocketaddress.md"
     },
     {
       "id": "ro:roSprite",
       "label": "roSprite",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rosprite.md"
     },
     {
       "id": "ro:roStreamSocket",
       "label": "roStreamSocket",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rostreamsocket.md"
     },
     {
       "id": "ro:roString",
       "label": "roString",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rostring.md"
     },
     {
       "id": "ro:roSystemLog",
       "label": "roSystemLog",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rosystemlog.md"
     },
     {
       "id": "ro:roTextToSpeech",
       "label": "roTextToSpeech",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rotexttospeech.md"
     },
     {
       "id": "ro:roTextureManager",
       "label": "roTextureManager",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rotexturemanager.md"
     },
     {
       "id": "ro:roTextureRequest",
       "label": "roTextureRequest",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rotexturerequest.md"
     },
     {
       "id": "ro:roTimespan",
       "label": "roTimespan",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rotimespan.md"
     },
     {
       "id": "ro:roUrlTransfer",
       "label": "roUrlTransfer",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rourltransfer.md"
     },
     {
       "id": "ro:roUtils",
       "label": "roUtils",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/routils.md"
     },
     {
       "id": "ro:roVideoPlayer",
       "label": "roVideoPlayer",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/rovideoplayer.md"
     },
     {
       "id": "ro:roXMLElement",
       "label": "roXMLElement",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roxmlelement.md"
     },
     {
       "id": "ro:roXMLList",
       "label": "roXMLList",
-      "type": "ro_component",
+      "type": "Node",
       "deprecated": false,
       "docFile": "brightscript/components/roxmllist.md"
     },
     {
       "id": "if:ifAppInfo",
       "label": "ifAppInfo",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifappinfo.md"
     },
     {
       "id": "if:ifAppManager",
       "label": "ifAppManager",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifappmanager.md"
     },
     {
       "id": "if:ifAppMemoryMonitor",
       "label": "ifAppMemoryMonitor",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifappmemorymonitor.md"
     },
     {
       "id": "if:ifArray",
       "label": "ifArray",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifarray.md"
     },
     {
       "id": "if:ifArrayGet",
       "label": "ifArrayGet",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifarrayget.md"
     },
     {
       "id": "if:ifArrayJoin",
       "label": "ifArrayJoin",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifarrayjoin.md"
     },
     {
       "id": "if:ifArraySet",
       "label": "ifArraySet",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifarrayset.md"
     },
     {
       "id": "if:ifArraySizeInfo",
       "label": "ifArraySizeInfo",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifarraysizeinfo.md"
     },
     {
       "id": "if:ifArraySlice",
       "label": "ifArraySlice",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifarrayslice.md"
     },
     {
       "id": "if:ifArraySort",
       "label": "ifArraySort",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifarraysort.md"
     },
     {
       "id": "if:ifAssociativeArray",
       "label": "ifAssociativeArray",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifassociativearray.md"
     },
     {
       "id": "if:ifAudioGuide",
       "label": "ifAudioGuide",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifaudioguide.md"
     },
     {
       "id": "if:ifAudioMetadata",
       "label": "ifAudioMetadata",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifaudiometadata.md"
     },
     {
       "id": "if:ifAudioPlayer",
       "label": "ifAudioPlayer",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifaudioplayer.md"
     },
     {
       "id": "if:ifAudioResource",
       "label": "ifAudioResource",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifaudioresource.md"
     },
     {
       "id": "if:ifBoolean",
       "label": "ifBoolean",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifboolean.md"
     },
     {
       "id": "if:ifByteArray",
       "label": "ifByteArray",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifbytearray.md"
     },
     {
       "id": "if:ifCECStatus",
       "label": "ifCECStatus",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifcecstatus.md"
     },
     {
       "id": "if:ifChannelStore",
       "label": "ifChannelStore",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifchannelstore.md"
     },
     {
       "id": "if:ifCompositor",
       "label": "ifCompositor",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifcompositor.md"
     },
     {
       "id": "if:ifDateTime",
       "label": "ifDateTime",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifdatetime.md"
     },
     {
       "id": "if:ifDeviceCrypto",
       "label": "ifDeviceCrypto",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifdevicecrypto.md"
     },
     {
       "id": "if:ifDeviceInfo",
       "label": "ifDeviceInfo",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifdeviceinfo.md"
     },
     {
       "id": "if:ifDouble",
       "label": "ifDouble",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifdouble.md"
     },
     {
       "id": "if:ifDraw2D",
       "label": "ifDraw2D",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifdraw2d.md"
     },
     {
       "id": "if:ifDsa",
       "label": "ifDsa",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifdsa.md"
     },
     {
       "id": "if:ifEnum",
       "label": "ifEnum",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifenum.md"
     },
     {
       "id": "if:ifEVPCipher",
       "label": "ifEVPCipher",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifevpcipher.md"
     },
     {
       "id": "if:ifEVPDigest",
       "label": "ifEVPDigest",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifevpdigest.md"
     },
     {
       "id": "if:ifFileSystem",
       "label": "ifFileSystem",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/iffilesystem.md"
     },
     {
       "id": "if:ifFloat",
       "label": "ifFloat",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/iffloat.md"
     },
     {
       "id": "if:ifFont",
       "label": "ifFont",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/iffont.md"
     },
     {
       "id": "if:ifFontRegistry",
       "label": "ifFontRegistry",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/iffontregistry.md"
     },
     {
       "id": "if:ifFunction",
       "label": "ifFunction",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/iffunction.md"
     },
     {
       "id": "if:ifGetMessagePort",
       "label": "ifGetMessagePort",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifgetmessageport.md"
     },
     {
       "id": "if:ifHdmiStatus",
       "label": "ifHdmiStatus",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifhdmistatus.md"
     },
     {
       "id": "if:ifHMAC",
       "label": "ifHMAC",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifhmac.md"
     },
     {
       "id": "if:ifHttpAgent",
       "label": "ifHttpAgent",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifhttpagent.md"
     },
     {
       "id": "if:ifImageMetadata",
       "label": "ifImageMetadata",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifimagemetadata.md"
     },
     {
       "id": "if:ifInput",
       "label": "ifInput",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifinput.md"
     },
     {
       "id": "if:ifInt",
       "label": "ifInt",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifint.md"
     },
     {
       "id": "if:ifIntOps",
       "label": "ifIntOps",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifintops.md"
     },
     {
       "id": "if:ifList",
       "label": "ifList",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/iflist.md"
     },
     {
       "id": "if:ifListToArray",
       "label": "ifListToArray",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/iflisttoarray.md"
     },
     {
       "id": "if:ifLocalization",
       "label": "ifLocalization",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/iflocalization.md"
     },
     {
       "id": "if:ifLongInt",
       "label": "ifLongInt",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/iflongint.md"
     },
     {
       "id": "if:ifMessagePort",
       "label": "ifMessagePort",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifmessageport.md"
     },
     {
       "id": "if:ifMicrophone",
       "label": "ifMicrophone",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifmicrophone.md"
     },
     {
       "id": "if:ifPath",
       "label": "ifPath",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifpath.md"
     },
     {
       "id": "if:ifProgramGuide",
       "label": "ifProgramGuide",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifprogramguide.md"
     },
     {
       "id": "if:ifRegex",
       "label": "ifRegex",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifregex.md"
     },
     {
       "id": "if:ifRegion",
       "label": "ifRegion",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifregion.md"
     },
     {
       "id": "if:ifRegistry",
       "label": "ifRegistry",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifregistry.md"
     },
     {
       "id": "if:ifRegistrySection",
       "label": "ifRegistrySection",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifregistrysection.md"
     },
     {
       "id": "if:ifRemoteInfo",
       "label": "ifRemoteInfo",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifremoteinfo.md"
     },
     {
       "id": "if:Ifrenderthreadqueue",
       "label": "Ifrenderthreadqueue",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifrenderthreadqueue.md"
     },
     {
       "id": "if:ifRSA",
       "label": "ifRSA",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifrsa.md"
     },
     {
       "id": "if:ifScreen",
       "label": "ifScreen",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifscreen.md"
     },
     {
       "id": "if:ifSetMessagePort",
       "label": "ifSetMessagePort",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifsetmessageport.md"
     },
     {
       "id": "if:ifSGNodeBoundingRect",
       "label": "ifSGNodeBoundingRect",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifsgnodeboundingrect.md"
     },
     {
       "id": "if:ifSGNodeChildren",
       "label": "ifSGNodeChildren",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifsgnodechildren.md"
     },
     {
       "id": "if:ifSGNodeDict",
       "label": "ifSGNodeDict",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifsgnodedict.md"
     },
     {
       "id": "if:ifSGNodeField",
       "label": "ifSGNodeField",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifsgnodefield.md"
     },
     {
       "id": "if:ifSGNodeFocus",
       "label": "ifSGNodeFocus",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifsgnodefocus.md"
     },
     {
       "id": "if:ifSGNodeHttpAgentAccess",
       "label": "ifSGNodeHttpAgentAccess",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifsgnodehttpagentaccess.md"
     },
     {
       "id": "if:ifSGScreen",
       "label": "ifSGScreen",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifsgscreen.md"
     },
     {
       "id": "if:ifSocket",
       "label": "ifSocket",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifsocket.md"
     },
     {
       "id": "if:ifSocketAddress",
       "label": "ifSocketAddress",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifsocketaddress.md"
     },
     {
       "id": "if:ifSocketAsync",
       "label": "ifSocketAsync",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifsocketasync.md"
     },
     {
       "id": "if:ifSocketCastOption",
       "label": "ifSocketCastOption",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifsocketcastoption.md"
     },
     {
       "id": "if:ifSocketConnection",
       "label": "ifSocketConnection",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifsocketconnection.md"
     },
     {
       "id": "if:ifSocketConnectionOption",
       "label": "ifSocketConnectionOption",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifsocketconnectionoption.md"
     },
     {
       "id": "if:ifSocketConnectionStatus",
       "label": "ifSocketConnectionStatus",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifsocketconnectionstatus.md"
     },
     {
       "id": "if:ifSocketOption",
       "label": "ifSocketOption",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifsocketoption.md"
     },
     {
       "id": "if:ifSocketStatus",
       "label": "ifSocketStatus",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifsocketstatus.md"
     },
     {
       "id": "if:ifSourceIdentity",
       "label": "ifSourceIdentity",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifsourceidentity.md"
     },
     {
       "id": "if:ifSprite",
       "label": "ifSprite",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifsprite.md"
     },
     {
       "id": "if:ifString",
       "label": "ifString",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifstring.md"
     },
     {
       "id": "if:ifStringOps",
       "label": "ifStringOps",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifstringops.md"
     },
     {
       "id": "if:ifSystemLog",
       "label": "ifSystemLog",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifsystemlog.md"
     },
     {
       "id": "if:ifTextToSpeech",
       "label": "ifTextToSpeech",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/iftexttospeech.md"
     },
     {
       "id": "if:ifTextureManager",
       "label": "ifTextureManager",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/iftexturemanager.md"
     },
     {
       "id": "if:ifTextureRequest",
       "label": "ifTextureRequest",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/iftexturerequest.md"
     },
     {
       "id": "if:ifTimeSpan",
       "label": "ifTimeSpan",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/iftimespan.md"
     },
     {
       "id": "if:ifToStr",
       "label": "ifToStr",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/iftostr.md"
     },
     {
       "id": "if:ifUrlTransfer",
       "label": "ifUrlTransfer",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifurltransfer.md"
     },
     {
       "id": "if:IfUtils",
       "label": "IfUtils",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifutils.md"
     },
     {
       "id": "if:ifVideoPlayer",
       "label": "ifVideoPlayer",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifvideoplayer.md"
     },
     {
       "id": "if:ifXMLElement",
       "label": "ifXMLElement",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifxmlelement.md"
     },
     {
       "id": "if:ifXMLList",
       "label": "ifXMLList",
-      "type": "if_interface",
+      "type": "interface",
       "deprecated": false,
       "docFile": "brightscript/interfaces/ifxmllist.md"
     },
     {
       "id": "sg:Node",
       "label": "Node",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "base",
       "docFile": "scenegraph/node.md"
     },
     {
       "id": "sg:Scene",
       "label": "Scene",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "scene",
       "docFile": "scenegraph/scene.md"
     },
     {
       "id": "sg:AnimationBase",
       "label": "AnimationBase",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "abstract-nodes",
       "deprecated": false,
       "docFile": "scenegraph/abstract-nodes/animationbase.md"
@@ -1122,7 +1122,7 @@
     {
       "id": "sg:ArrayGrid",
       "label": "ArrayGrid",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "abstract-nodes",
       "deprecated": false,
       "docFile": "scenegraph/abstract-nodes/arraygrid.md"
@@ -1130,7 +1130,7 @@
     {
       "id": "sg:DynamicKeyboardBase",
       "label": "DynamicKeyboardBase",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "abstract-nodes",
       "deprecated": false,
       "docFile": "scenegraph/abstract-nodes/dynamic-keyboard-base.md"
@@ -1138,7 +1138,7 @@
     {
       "id": "sg:LabelBase",
       "label": "LabelBase",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "abstract-nodes",
       "deprecated": false,
       "docFile": "scenegraph/abstract-nodes/label-base.md"
@@ -1146,7 +1146,7 @@
     {
       "id": "sg:Animation",
       "label": "Animation",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "animation-nodes",
       "deprecated": false,
       "docFile": "scenegraph/animation-nodes/animation.md"
@@ -1154,7 +1154,7 @@
     {
       "id": "sg:ColorFieldInterpolator",
       "label": "ColorFieldInterpolator",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "animation-nodes",
       "deprecated": false,
       "docFile": "scenegraph/animation-nodes/colorfieldinterpolator.md"
@@ -1162,7 +1162,7 @@
     {
       "id": "sg:FloatFieldInterpolator",
       "label": "FloatFieldInterpolator",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "animation-nodes",
       "deprecated": false,
       "docFile": "scenegraph/animation-nodes/floatfieldinterpolator.md"
@@ -1170,7 +1170,7 @@
     {
       "id": "sg:ParallelAnimation",
       "label": "ParallelAnimation",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "animation-nodes",
       "deprecated": false,
       "docFile": "scenegraph/animation-nodes/parallelanimation.md"
@@ -1178,7 +1178,7 @@
     {
       "id": "sg:SequentialAnimation",
       "label": "SequentialAnimation",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "animation-nodes",
       "deprecated": false,
       "docFile": "scenegraph/animation-nodes/sequentialanimation.md"
@@ -1186,7 +1186,7 @@
     {
       "id": "sg:Vector2DFieldInterpolator",
       "label": "Vector2DFieldInterpolator",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "animation-nodes",
       "deprecated": false,
       "docFile": "scenegraph/animation-nodes/vector2dfieldinterpolator.md"
@@ -1194,7 +1194,7 @@
     {
       "id": "sg:ChannelStore",
       "label": "ChannelStore",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "control-nodes",
       "deprecated": false,
       "docFile": "scenegraph/control-nodes/channelstore.md"
@@ -1202,7 +1202,7 @@
     {
       "id": "sg:ComponentLibrary",
       "label": "ComponentLibrary",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "control-nodes",
       "deprecated": false,
       "docFile": "scenegraph/control-nodes/componentlibrary.md"
@@ -1210,7 +1210,7 @@
     {
       "id": "sg:ContentNode",
       "label": "ContentNode",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "control-nodes",
       "deprecated": false,
       "docFile": "scenegraph/control-nodes/contentnode.md"
@@ -1218,7 +1218,7 @@
     {
       "id": "sg:MaskGroup",
       "label": "MaskGroup",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "control-nodes",
       "deprecated": false,
       "docFile": "scenegraph/control-nodes/maskgroup.md"
@@ -1226,7 +1226,7 @@
     {
       "id": "sg:Task",
       "label": "Task",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "control-nodes",
       "deprecated": false,
       "docFile": "scenegraph/control-nodes/task.md"
@@ -1234,7 +1234,7 @@
     {
       "id": "sg:Timer",
       "label": "Timer",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "control-nodes",
       "deprecated": false,
       "docFile": "scenegraph/control-nodes/timer.md"
@@ -1242,7 +1242,7 @@
     {
       "id": "sg:Dialog",
       "label": "Dialog",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "dialog-nodes",
       "deprecated": false,
       "docFile": "scenegraph/dialog-nodes/dialog.md"
@@ -1250,7 +1250,7 @@
     {
       "id": "sg:KeyboardDialog",
       "label": "KeyboardDialog",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "dialog-nodes",
       "deprecated": false,
       "docFile": "scenegraph/dialog-nodes/keyboarddialog.md"
@@ -1258,7 +1258,7 @@
     {
       "id": "sg:PinDialog",
       "label": "PinDialog",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "dialog-nodes",
       "deprecated": false,
       "docFile": "scenegraph/dialog-nodes/pindialog.md"
@@ -1266,7 +1266,7 @@
     {
       "id": "sg:ProgressDialog",
       "label": "ProgressDialog",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "dialog-nodes",
       "deprecated": false,
       "docFile": "scenegraph/dialog-nodes/progressdialog.md"
@@ -1274,7 +1274,7 @@
     {
       "id": "sg:DynamicCustomKeyboard",
       "label": "DynamicCustomKeyboard",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "dynamic-voice-keyboard-nodes",
       "deprecated": false,
       "docFile": "scenegraph/dynamic-voice-keyboard-nodes/dynamic-custom-keyboard.md"
@@ -1282,7 +1282,7 @@
     {
       "id": "sg:DynamicKeyGrid",
       "label": "DynamicKeyGrid",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "dynamic-voice-keyboard-nodes",
       "deprecated": false,
       "docFile": "scenegraph/dynamic-voice-keyboard-nodes/dynamic-key-grid.md"
@@ -1290,7 +1290,7 @@
     {
       "id": "sg:DynamicKeyboard",
       "label": "DynamicKeyboard",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "dynamic-voice-keyboard-nodes",
       "deprecated": false,
       "docFile": "scenegraph/dynamic-voice-keyboard-nodes/dynamic-keyboard.md"
@@ -1298,7 +1298,7 @@
     {
       "id": "sg:DynamicMiniKeyboard",
       "label": "DynamicMiniKeyboard",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "dynamic-voice-keyboard-nodes",
       "deprecated": false,
       "docFile": "scenegraph/dynamic-voice-keyboard-nodes/dynamic-mini-keyboard.md"
@@ -1306,7 +1306,7 @@
     {
       "id": "sg:DynamicPinPad",
       "label": "DynamicPinPad",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "dynamic-voice-keyboard-nodes",
       "deprecated": false,
       "docFile": "scenegraph/dynamic-voice-keyboard-nodes/dynamic-pinpad.md"
@@ -1314,7 +1314,7 @@
     {
       "id": "sg:Key Definition File",
       "label": "Key Definition File",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "dynamic-voice-keyboard-nodes",
       "deprecated": false,
       "docFile": "scenegraph/dynamic-voice-keyboard-nodes/key-definition-file.md"
@@ -1322,7 +1322,7 @@
     {
       "id": "sg:VoiceTextEditBox",
       "label": "VoiceTextEditBox",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "dynamic-voice-keyboard-nodes",
       "deprecated": false,
       "docFile": "scenegraph/dynamic-voice-keyboard-nodes/voice-text-edit-box.md"
@@ -1330,7 +1330,7 @@
     {
       "id": "sg:InfoPane",
       "label": "InfoPane",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "label-nodes",
       "deprecated": false,
       "docFile": "scenegraph/label-nodes/info-pane.md"
@@ -1338,7 +1338,7 @@
     {
       "id": "sg:Label",
       "label": "Label",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "label-nodes",
       "deprecated": false,
       "docFile": "scenegraph/label-nodes/label.md"
@@ -1346,7 +1346,7 @@
     {
       "id": "sg:MonospaceLabel",
       "label": "MonospaceLabel",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "label-nodes",
       "deprecated": false,
       "docFile": "scenegraph/label-nodes/monospace-label.md"
@@ -1354,7 +1354,7 @@
     {
       "id": "sg:MultiStyleLabel",
       "label": "MultiStyleLabel",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "label-nodes",
       "deprecated": false,
       "docFile": "scenegraph/label-nodes/multi-style-label.md"
@@ -1362,7 +1362,7 @@
     {
       "id": "sg:ButtonGroup",
       "label": "ButtonGroup",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "layout-group-nodes",
       "deprecated": false,
       "docFile": "scenegraph/layout-group-nodes/buttongroup.md"
@@ -1370,7 +1370,7 @@
     {
       "id": "sg:Group",
       "label": "Group",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "layout-group-nodes",
       "deprecated": false,
       "docFile": "scenegraph/layout-group-nodes/group.md"
@@ -1378,7 +1378,7 @@
     {
       "id": "sg:LayoutGroup",
       "label": "LayoutGroup",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "layout-group-nodes",
       "deprecated": false,
       "docFile": "scenegraph/layout-group-nodes/layoutgroup.md"
@@ -1386,7 +1386,7 @@
     {
       "id": "sg:TargetGroup",
       "label": "TargetGroup",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "layout-group-nodes",
       "deprecated": false,
       "docFile": "scenegraph/layout-group-nodes/targetgroup.md"
@@ -1394,7 +1394,7 @@
     {
       "id": "sg:CheckList",
       "label": "CheckList",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "list-and-grid-nodes",
       "deprecated": false,
       "docFile": "scenegraph/list-and-grid-nodes/checklist.md"
@@ -1402,7 +1402,7 @@
     {
       "id": "sg:LabelList",
       "label": "LabelList",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "list-and-grid-nodes",
       "deprecated": false,
       "docFile": "scenegraph/list-and-grid-nodes/labellist.md"
@@ -1410,7 +1410,7 @@
     {
       "id": "sg:MarkupGrid",
       "label": "MarkupGrid",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "list-and-grid-nodes",
       "deprecated": false,
       "docFile": "scenegraph/list-and-grid-nodes/markupgrid.md"
@@ -1418,7 +1418,7 @@
     {
       "id": "sg:MarkupList",
       "label": "MarkupList",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "list-and-grid-nodes",
       "deprecated": false,
       "docFile": "scenegraph/list-and-grid-nodes/markuplist.md"
@@ -1426,7 +1426,7 @@
     {
       "id": "sg:PosterGrid",
       "label": "PosterGrid",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "list-and-grid-nodes",
       "deprecated": false,
       "docFile": "scenegraph/list-and-grid-nodes/postergrid.md"
@@ -1434,7 +1434,7 @@
     {
       "id": "sg:RadioButtonList",
       "label": "RadioButtonList",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "list-and-grid-nodes",
       "deprecated": false,
       "docFile": "scenegraph/list-and-grid-nodes/radiobuttonlist.md"
@@ -1442,7 +1442,7 @@
     {
       "id": "sg:RowList",
       "label": "RowList",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "list-and-grid-nodes",
       "deprecated": false,
       "docFile": "scenegraph/list-and-grid-nodes/rowlist.md"
@@ -1450,7 +1450,7 @@
     {
       "id": "sg:TargetList",
       "label": "TargetList",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "list-and-grid-nodes",
       "deprecated": false,
       "docFile": "scenegraph/list-and-grid-nodes/targetlist.md"
@@ -1458,7 +1458,7 @@
     {
       "id": "sg:TargetSet",
       "label": "TargetSet",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "list-and-grid-nodes",
       "deprecated": false,
       "docFile": "scenegraph/list-and-grid-nodes/targetset.md"
@@ -1466,7 +1466,7 @@
     {
       "id": "sg:TimeGrid",
       "label": "TimeGrid",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "list-and-grid-nodes",
       "deprecated": false,
       "docFile": "scenegraph/list-and-grid-nodes/timegrid.md"
@@ -1474,7 +1474,7 @@
     {
       "id": "sg:ZoomRowList",
       "label": "ZoomRowList",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "list-and-grid-nodes",
       "deprecated": false,
       "docFile": "scenegraph/list-and-grid-nodes/zoomrowlist.md"
@@ -1482,7 +1482,7 @@
     {
       "id": "sg:Audio",
       "label": "Audio",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "media-playback-nodes",
       "deprecated": false,
       "docFile": "scenegraph/media-playback-nodes/audio.md"
@@ -1490,7 +1490,7 @@
     {
       "id": "sg:SoundEffect",
       "label": "SoundEffect",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "media-playback-nodes",
       "deprecated": false,
       "docFile": "scenegraph/media-playback-nodes/soundeffect.md"
@@ -1498,7 +1498,7 @@
     {
       "id": "sg:Video",
       "label": "Video",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "media-playback-nodes",
       "deprecated": false,
       "docFile": "scenegraph/media-playback-nodes/video.md"
@@ -1506,7 +1506,7 @@
     {
       "id": "sg:Poster",
       "label": "Poster",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "renderable-nodes",
       "deprecated": false,
       "docFile": "scenegraph/renderable-nodes/poster.md"
@@ -1514,7 +1514,7 @@
     {
       "id": "sg:Rectangle",
       "label": "Rectangle",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "renderable-nodes",
       "deprecated": false,
       "docFile": "scenegraph/renderable-nodes/rectangle.md"
@@ -1522,7 +1522,7 @@
     {
       "id": "sg:SimpleLabel",
       "label": "SimpleLabel",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "renderable-nodes",
       "deprecated": false,
       "docFile": "scenegraph/renderable-nodes/simplelabel.md"
@@ -1530,7 +1530,7 @@
     {
       "id": "sg:GridPanel",
       "label": "GridPanel",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "sliding-panels-nodes",
       "deprecated": false,
       "docFile": "scenegraph/sliding-panels-nodes/gridpanel.md"
@@ -1538,7 +1538,7 @@
     {
       "id": "sg:ListPanel",
       "label": "ListPanel",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "sliding-panels-nodes",
       "deprecated": false,
       "docFile": "scenegraph/sliding-panels-nodes/listpanel.md"
@@ -1546,7 +1546,7 @@
     {
       "id": "sg:Overhang",
       "label": "Overhang",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "sliding-panels-nodes",
       "deprecated": false,
       "docFile": "scenegraph/sliding-panels-nodes/overhang.md"
@@ -1554,7 +1554,7 @@
     {
       "id": "sg:OverhangPanelSetScene",
       "label": "OverhangPanelSetScene",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "sliding-panels-nodes",
       "deprecated": false,
       "docFile": "scenegraph/sliding-panels-nodes/overhangpanelsetscene.md"
@@ -1562,7 +1562,7 @@
     {
       "id": "sg:Panel",
       "label": "Panel",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "sliding-panels-nodes",
       "deprecated": false,
       "docFile": "scenegraph/sliding-panels-nodes/panel.md"
@@ -1570,7 +1570,7 @@
     {
       "id": "sg:PanelSet",
       "label": "PanelSet",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "sliding-panels-nodes",
       "deprecated": false,
       "docFile": "scenegraph/sliding-panels-nodes/panelset.md"
@@ -1578,7 +1578,7 @@
     {
       "id": "sg:StandardDialog",
       "label": "StandardDialog",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "standard-dialog-framework-nodes",
       "deprecated": false,
       "docFile": "scenegraph/standard-dialog-framework-nodes/standard-dialog.md"
@@ -1586,7 +1586,7 @@
     {
       "id": "sg:StandardKeyboardDialog",
       "label": "StandardKeyboardDialog",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "standard-dialog-framework-nodes",
       "deprecated": false,
       "docFile": "scenegraph/standard-dialog-framework-nodes/standard-keyboard-dialog.md"
@@ -1594,7 +1594,7 @@
     {
       "id": "sg:StandardMessageDialog",
       "label": "StandardMessageDialog",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "standard-dialog-framework-nodes",
       "deprecated": false,
       "docFile": "scenegraph/standard-dialog-framework-nodes/standard-message-dialog.md"
@@ -1602,7 +1602,7 @@
     {
       "id": "sg:StandardPinPadDialog",
       "label": "StandardPinPadDialog",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "standard-dialog-framework-nodes",
       "deprecated": false,
       "docFile": "scenegraph/standard-dialog-framework-nodes/standard-pinpad-dialog.md"
@@ -1610,7 +1610,7 @@
     {
       "id": "sg:StandardProgressDialog",
       "label": "StandardProgressDialog",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "standard-dialog-framework-nodes",
       "deprecated": false,
       "docFile": "scenegraph/standard-dialog-framework-nodes/standard-progress-dialog.md"
@@ -1618,7 +1618,7 @@
     {
       "id": "sg:StdDlgActionCardItem",
       "label": "StdDlgActionCardItem",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "standard-dialog-framework-nodes",
       "deprecated": false,
       "docFile": "scenegraph/standard-dialog-framework-nodes/std-dlg-action-card-item.md"
@@ -1626,7 +1626,7 @@
     {
       "id": "sg:StdDlgAreaBase",
       "label": "StdDlgAreaBase",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "standard-dialog-framework-nodes",
       "deprecated": false,
       "docFile": "scenegraph/standard-dialog-framework-nodes/std-dlg-area-base.md"
@@ -1634,7 +1634,7 @@
     {
       "id": "sg:StdDlgBulletTextItem",
       "label": "StdDlgBulletTextItem",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "standard-dialog-framework-nodes",
       "deprecated": false,
       "docFile": "scenegraph/standard-dialog-framework-nodes/std-dlg-bullet-text-item.md"
@@ -1642,7 +1642,7 @@
     {
       "id": "sg:StdDlgButtonArea",
       "label": "StdDlgButtonArea",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "standard-dialog-framework-nodes",
       "deprecated": false,
       "docFile": "scenegraph/standard-dialog-framework-nodes/std-dlg-button-area.md"
@@ -1650,7 +1650,7 @@
     {
       "id": "sg:StdDlgButton",
       "label": "StdDlgButton",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "standard-dialog-framework-nodes",
       "deprecated": false,
       "docFile": "scenegraph/standard-dialog-framework-nodes/std-dlg-button.md"
@@ -1658,7 +1658,7 @@
     {
       "id": "sg:StdDlgContentArea",
       "label": "StdDlgContentArea",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "standard-dialog-framework-nodes",
       "deprecated": false,
       "docFile": "scenegraph/standard-dialog-framework-nodes/std-dlg-content-area.md"
@@ -1666,7 +1666,7 @@
     {
       "id": "sg:StdDlgCustomItem",
       "label": "StdDlgCustomItem",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "standard-dialog-framework-nodes",
       "deprecated": false,
       "docFile": "scenegraph/standard-dialog-framework-nodes/std-dlg-custom-item.md"
@@ -1674,7 +1674,7 @@
     {
       "id": "sg:StdDlgDeterminateProgressItem",
       "label": "StdDlgDeterminateProgressItem",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "standard-dialog-framework-nodes",
       "deprecated": false,
       "docFile": "scenegraph/standard-dialog-framework-nodes/std-dlg-determinate-progress-item.md"
@@ -1682,7 +1682,7 @@
     {
       "id": "sg:StdDlgGraphicItem",
       "label": "StdDlgGraphicItem",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "standard-dialog-framework-nodes",
       "deprecated": false,
       "docFile": "scenegraph/standard-dialog-framework-nodes/std-dlg-graphic-item.md"
@@ -1690,7 +1690,7 @@
     {
       "id": "sg:StdDlgItemBase",
       "label": "StdDlgItemBase",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "standard-dialog-framework-nodes",
       "deprecated": false,
       "docFile": "scenegraph/standard-dialog-framework-nodes/std-dlg-item-base.md"
@@ -1698,7 +1698,7 @@
     {
       "id": "sg:StdDlgItemGroup",
       "label": "StdDlgItemGroup",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "standard-dialog-framework-nodes",
       "deprecated": false,
       "docFile": "scenegraph/standard-dialog-framework-nodes/std-dlg-item-group.md"
@@ -1706,7 +1706,7 @@
     {
       "id": "sg:StdDlgKeyboardItem",
       "label": "StdDlgKeyboardItem",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "standard-dialog-framework-nodes",
       "deprecated": false,
       "docFile": "scenegraph/standard-dialog-framework-nodes/std-dlg-keyboard-item.md"
@@ -1714,7 +1714,7 @@
     {
       "id": "sg:StdDlgMultiStyleTextItem",
       "label": "StdDlgMultiStyleTextItem",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "standard-dialog-framework-nodes",
       "deprecated": false,
       "docFile": "scenegraph/standard-dialog-framework-nodes/std-dlg-multi-style-text-item.md"
@@ -1722,7 +1722,7 @@
     {
       "id": "sg:StdDlgProgressItem",
       "label": "StdDlgProgressItem",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "standard-dialog-framework-nodes",
       "deprecated": false,
       "docFile": "scenegraph/standard-dialog-framework-nodes/std-dlg-progress-item.md"
@@ -1730,7 +1730,7 @@
     {
       "id": "sg:StdDlgSideCardArea",
       "label": "StdDlgSideCardArea",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "standard-dialog-framework-nodes",
       "deprecated": false,
       "docFile": "scenegraph/standard-dialog-framework-nodes/std-dlg-side-card-area.md"
@@ -1738,7 +1738,7 @@
     {
       "id": "sg:StdDlgTextItem",
       "label": "StdDlgTextItem",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "standard-dialog-framework-nodes",
       "deprecated": false,
       "docFile": "scenegraph/standard-dialog-framework-nodes/std-dlg-text-item.md"
@@ -1746,7 +1746,7 @@
     {
       "id": "sg:StdDlgTitleArea",
       "label": "StdDlgTitleArea",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "standard-dialog-framework-nodes",
       "deprecated": false,
       "docFile": "scenegraph/standard-dialog-framework-nodes/std-dlg-title-area.md"
@@ -1754,7 +1754,7 @@
     {
       "id": "sg:Font",
       "label": "Font",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "typographic-nodes",
       "deprecated": false,
       "docFile": "scenegraph/typographic-nodes/font.md"
@@ -1762,7 +1762,7 @@
     {
       "id": "sg:ScrollableText",
       "label": "ScrollableText",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "typographic-nodes",
       "deprecated": false,
       "docFile": "scenegraph/typographic-nodes/scrollabletext.md"
@@ -1770,7 +1770,7 @@
     {
       "id": "sg:ScrollingLabel",
       "label": "ScrollingLabel",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "typographic-nodes",
       "deprecated": false,
       "docFile": "scenegraph/typographic-nodes/scrollinglabel.md"
@@ -1778,7 +1778,7 @@
     {
       "id": "sg:BusySpinner",
       "label": "BusySpinner",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "widget-nodes",
       "deprecated": false,
       "docFile": "scenegraph/widget-nodes/busyspinner.md"
@@ -1786,7 +1786,7 @@
     {
       "id": "sg:Button",
       "label": "Button",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "widget-nodes",
       "deprecated": false,
       "docFile": "scenegraph/widget-nodes/button.md"
@@ -1794,7 +1794,7 @@
     {
       "id": "sg:Keyboard",
       "label": "Keyboard",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "widget-nodes",
       "deprecated": false,
       "docFile": "scenegraph/widget-nodes/keyboard.md"
@@ -1802,7 +1802,7 @@
     {
       "id": "sg:MiniKeyboard",
       "label": "MiniKeyboard",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "widget-nodes",
       "deprecated": false,
       "docFile": "scenegraph/widget-nodes/minikeyboard.md"
@@ -1810,7 +1810,7 @@
     {
       "id": "sg:ParentalControlPinPad",
       "label": "ParentalControlPinPad",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "widget-nodes",
       "deprecated": false,
       "docFile": "scenegraph/widget-nodes/parentalcontrolpinpad.md"
@@ -1818,7 +1818,7 @@
     {
       "id": "sg:PinPad",
       "label": "PinPad",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "widget-nodes",
       "deprecated": false,
       "docFile": "scenegraph/widget-nodes/pinpad.md"
@@ -1826,7 +1826,7 @@
     {
       "id": "sg:TextEditBox",
       "label": "TextEditBox",
-      "type": "scenegraph_node",
+      "type": "roSGNode",
       "category": "widget-nodes",
       "deprecated": false,
       "docFile": "scenegraph/widget-nodes/texteditbox.md"

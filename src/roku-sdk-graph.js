@@ -86,7 +86,7 @@ function buildRokuSdkGraph(sdkDocsPath) {
     nodes[id] = {
       id,
       label: title,
-      type: 'ro_component',
+      type: 'Node',
       deprecated: extractFrontmatterDeprecated(content),
       docFile: `brightscript/components/${file}`,
     };
@@ -103,7 +103,7 @@ function buildRokuSdkGraph(sdkDocsPath) {
     nodes[id] = {
       id,
       label: title,
-      type: 'if_interface',
+      type: 'interface',
       deprecated: extractFrontmatterDeprecated(content),
       docFile: `brightscript/interfaces/${file}`,
     };
@@ -117,7 +117,7 @@ function buildRokuSdkGraph(sdkDocsPath) {
     const content = fs.readFileSync(nodeMd, 'utf-8');
     const title = extractFrontmatterTitle(content) || 'Node';
     const id = `sg:${title}`;
-    nodes[id] = { id, label: title, type: 'scenegraph_node', category: 'base', docFile: 'scenegraph/node.md' };
+    nodes[id] = { id, label: title, type: 'roSGNode', category: 'base', docFile: 'scenegraph/node.md' };
   }
 
   // Top-level scene.md
@@ -127,7 +127,7 @@ function buildRokuSdkGraph(sdkDocsPath) {
     const title = extractFrontmatterTitle(content) || 'Scene';
     const id = `sg:${title}`;
     const parent = extractExtends(content);
-    nodes[id] = { id, label: title, type: 'scenegraph_node', category: 'scene', docFile: 'scenegraph/scene.md' };
+    nodes[id] = { id, label: title, type: 'roSGNode', category: 'scene', docFile: 'scenegraph/scene.md' };
     if (parent) links.push({ source: id, target: `sg:${parent}`, relation: 'extends' });
   }
 
@@ -141,7 +141,7 @@ function buildRokuSdkGraph(sdkDocsPath) {
       nodes[id] = {
         id,
         label: title,
-        type: 'scenegraph_node',
+        type: 'roSGNode',
         category: dir,
         deprecated: extractFrontmatterDeprecated(content),
         docFile: `scenegraph/${dir}/${file}`,
