@@ -2,3 +2,4 @@ node_modules/
 tree-sitter-brightscript/node_modules/
 tree-sitter-brightscript/build/
 *.node
+exports/.graphify-state/

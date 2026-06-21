@@ -11,7 +11,8 @@
     "demo": "node src/cli.js examples/demo.brs --format summary",
     "demo:dot": "node src/cli.js examples/demo.brs --format dot",
     "demo:json": "node src/cli.js examples/demo.brs --format json",
-    "test": "node src/cli.js examples/demo.brs --format json && node -e \"require('./src/graphify-integration')\" && echo 'All checks passed'"
+    "test": "node src/cli.js examples/demo.brs --format json && node -e \"require('./src/graphify-integration')\" && echo 'All checks passed'",
+    "generate-sdk-exports": "node src/generate-exports.mjs"
   },
   "dependencies": {
     "@sentropic/graphify": "^0.15.0",
