@@ -1,0 +1,11 @@
+{
+  "skills": {
+    "brs-ref": {
+      "label": "BrightScript Reference",
+      "description": "Look up a BrightScript component, interface, or SceneGraph node from the Roku SDK graph",
+      "command": ".claude/skills/brs-ref/brs-ref.sh",
+      "takes_args": true,
+      "args_help": "component name (e.g., roArray, ifArray, Video)"
+    }
+  }
+}
