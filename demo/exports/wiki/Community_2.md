@@ -4,7 +4,7 @@
 
 ## Key Concepts
 
-- **DetailsScreen** (13 connections)
+- **DetailsScreen** (14 connections)
 - **ContentList2SimpleNode** (4 connections)
 - **OnContentChange** (4 connections)
 - **onItemSelected** (4 connections)
@@ -23,7 +23,7 @@
 
 ## Audit Trail
 
-- EXTRACTED: 39 (100%)
+- EXTRACTED: 40 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

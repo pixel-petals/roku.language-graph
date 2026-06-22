@@ -1,10 +1,10 @@
 # Community 4
 
-> 9 nodes
+> 10 nodes
 
 ## Key Concepts
 
-- **Description** (9 connections)
+- **Description** (10 connections)
 - **OnContentChanged** (4 connections)
 - **Init** (3 connections)
 - **Content (node)** (2 connections)
@@ -13,6 +13,7 @@
 - **StarRating (node)** (1 connections)
 - **Title (node)** (1 connections)
 - **UserStarRating (node)** (1 connections)
+- **LayoutGroup** (1 connections)
 
 ## Relationships
 
@@ -20,7 +21,7 @@
 
 ## Audit Trail
 
-- EXTRACTED: 21 (100%)
+- EXTRACTED: 23 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

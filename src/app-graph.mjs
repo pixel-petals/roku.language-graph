@@ -8,13 +8,16 @@
  *   component  — SceneGraph component defined in an XML file
  *   function   — BrightScript function or sub
  *   field      — Interface field exposed by a component
- *   sdk_type   — Roku SDK object referenced via CreateObject()
+ *   sdk_ref    — Reference stub pointing to a node in the SDK graph.
+ *                Carries a `sdkId` attribute (e.g. "sg:Scene", "ro:roSGScreen",
+ *                "if:ifSGNodeFocus") but does NOT copy any SDK definitions.
  *
  * Edge types:
- *   extends    — component → parent (SceneGraph hierarchy)
+ *   extends    — component → sdk_ref (SceneGraph parent) or app component
  *   defines    — component → function (component owns this handler)
- *   calls      — function → function (call graph)
- *   uses_sdk   — function → sdk_type (via CreateObject)
+ *   calls      — function → function (call graph, app-defined only)
+ *   uses_sdk   — function → sdk_ref (via CreateObject)
+ *   uses_api   — function → sdk_ref (SDK interface method call)
  *   has_field  — component → field (interface field)
  *   contains   — component → component (XML child component)
  */
@@ -22,6 +25,7 @@
 import fs from 'fs';
 import path from 'path';
 import { createRequire } from 'module';
+import { resolveSDKNode, resolveSDKMethod, sdkGraphAvailable } from './sdk-refs.mjs';
 
 const require = createRequire(import.meta.url);
 const Graph = require('graphology').default || require('graphology');
@@ -130,6 +134,22 @@ function addEdge(G, from, to, attrs) {
 }
 
 /**
+ * Add a lightweight SDK reference stub — just enough to name the target
+ * node in the SDK graph. No methods, fields, or definitions are copied.
+ * Returns the stub node ID.
+ */
+function addSdkRef(G, sdkEntry) {
+  const stubId = `ref:${sdkEntry.sdkId}`;
+  addNode(G, stubId, {
+    type:    'sdk_ref',
+    label:   sdkEntry.label,
+    sdkId:   sdkEntry.sdkId,
+    sdkType: sdkEntry.sdkType,
+  });
+  return stubId;
+}
+
+/**
  * Build a graph from a Roku app directory.
  * @param {string} appDir - absolute path to the Roku app root
  * @returns {Graph}
@@ -164,9 +184,17 @@ export function buildAppGraph(appDir) {
     const compId = `comp:${comp.name}`;
     addNode(G, compId, { type: 'component', label: comp.name });
 
-    // extends — only add edge if parent is also app-defined
-    if (comp.extends && appComponents.has(comp.extends)) {
-      addEdge(G, compId, `comp:${comp.extends}`, { relation: 'extends' });
+    // extends — app-defined parent gets a direct edge; SDK parent gets a ref stub
+    if (comp.extends) {
+      if (appComponents.has(comp.extends)) {
+        addEdge(G, compId, `comp:${comp.extends}`, { relation: 'extends' });
+      } else {
+        const sdkEntry = resolveSDKNode(comp.extends);
+        if (sdkEntry) {
+          const stubId = addSdkRef(G, sdkEntry);
+          addEdge(G, compId, stubId, { relation: 'extends' });
+        }
+      }
     }
 
     // interface fields
@@ -259,17 +287,32 @@ export function buildAppGraph(appDir) {
       }
     }
 
-    // CreateObject SDK references
+    // CreateObject → SDK ref stubs
     for (const sdkType of extractCreateObject(source)) {
-      const sdkId = `sdk:${sdkType}`;
-      addNode(G, sdkId, { type: 'sdk_type', label: sdkType });
+      const sdkEntry = resolveSDKNode(sdkType);
+      const stubId = sdkEntry
+        ? addSdkRef(G, sdkEntry)
+        : (() => { const id = `ref:unknown:${sdkType}`; addNode(G, id, { type: 'sdk_ref', label: sdkType, sdkId: null }); return id; })();
 
       const idx = source.toLowerCase().indexOf(`createobject("${sdkType.toLowerCase()}"`);
       if (idx === -1) continue;
       const srcLine = source.slice(0, idx).split('\n').length;
       const precedingFn = funcs.filter(f => f.startLine <= srcLine).at(-1);
       if (precedingFn) {
-        addEdge(G, `fn:${relPath}:${precedingFn.text}`, sdkId, { relation: 'uses_sdk' });
+        addEdge(G, `fn:${relPath}:${precedingFn.text}`, stubId, { relation: 'uses_sdk' });
+      }
+    }
+
+    // SDK API method calls → interface ref stubs
+    // Only wire calls whose names resolve unambiguously to a single interface
+    for (const call of calls) {
+      const ifaces = resolveSDKMethod(call.text);
+      if (ifaces.length !== 1) continue; // skip ambiguous or unknown
+
+      const stubId = addSdkRef(G, ifaces[0]);
+      const precedingFn = funcs.filter(f => f.startLine <= call.startLine).at(-1);
+      if (precedingFn) {
+        addEdge(G, `fn:${relPath}:${precedingFn.text}`, stubId, { relation: 'uses_api' });
       }
     }
   }

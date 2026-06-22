@@ -1,13 +1,15 @@
 # Community 9
 
-> 4 nodes
+> 6 nodes
 
 ## Key Concepts
 
-- **customItem** (3 connections)
-- **height (float)** (1 connections)
-- **itemContent (node)** (1 connections)
-- **width (float)** (1 connections)
+- **HeroScene** (8 connections)
+- **content (node)** (1 connections)
+- **itemFocused (intarray)** (1 connections)
+- **numBadRequests (integer)** (1 connections)
+- **rowItemSelected (intarray)** (1 connections)
+- **Scene** (1 connections)
 
 ## Relationships
 
@@ -15,7 +17,7 @@
 
 ## Audit Trail
 
-- EXTRACTED: 6 (100%)
+- EXTRACTED: 13 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

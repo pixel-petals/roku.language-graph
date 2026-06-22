@@ -1,10 +1,10 @@
 # Community 0
 
-> 18 nodes
+> 19 nodes
 
 ## Key Concepts
 
-- **UriHandler** (12 connections)
+- **UriHandler** (13 connections)
 - **showHeroScreen** (3 connections)
 - **addRequest** (2 connections)
 - **go** (2 connections)
@@ -22,6 +22,7 @@
 - **Main** (1 connections)
 - **roSGScreen** (1 connections)
 - **roUrlTransfer** (1 connections)
+- **Task** (1 connections)
 
 ## Relationships
 
@@ -29,7 +30,7 @@
 
 ## Audit Trail
 
-- EXTRACTED: 36 (100%)
+- EXTRACTED: 38 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

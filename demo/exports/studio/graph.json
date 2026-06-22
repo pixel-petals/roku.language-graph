@@ -4,12 +4,21 @@
   "graph": {
     "community_labels": {}
   },
-  "topology_signature": "n=120;e=185;comp:Description,comp:DetailsScreen,comp:FadingBackground,comp:HeroScene,comp:HeroScreen,comp:LoadingIndicator,comp:Parser,comp:UriHandler,comp:customItem,field:Description:Content,field:Description:Description,field:Description:ReleaseDate,field:Description:StarRating,field:Description:Title,field:Description:UserStarRating,field:DetailsScreen:content,field:DetailsScreen:itemSelected,field:DetailsScreen:videoPlayerVisible,field:FadingBackground:ShadeOpacity,field:FadingBackground:uri,field:HeroScene:content,field:HeroScene:itemFocused,field:HeroScene:numBadRequests,field:HeroScene:rowItemSelected,field:HeroScreen:content,field:HeroScreen:focusedContent,field:HeroScreen:itemFocused,field:HeroScreen:numBadRequests,field:HeroScreen:rowItemSelected,field:LoadingIndicator:backgroundColor,field:LoadingIndicator:backgroundOpacity,field:LoadingIndicator:backgroundUri,field:LoadingIndicator:centered,field:LoadingIndicator:clockwise,field:LoadingIndicator:control,field:LoadingIndicator:fadeInterval,field:LoadingIndicator:font,field:LoadingIndicator:height,field:LoadingIndicator:imageHeight,field:LoadingIndicator:imageUri,field:LoadingIndicator:imageWidth,field:LoadingIndicator:spacing,field:LoadingIndicator:spinInterval,field:LoadingIndicator:state,field:LoadingIndicator:text,field:LoadingIndicator:textColor,field:LoadingIndicator:textPadding,field:LoadingIndicator:width,field:Parser:response,field:UriHandler:ContentCache,field:UriHandler:content,field:UriHandler:contentSet,field:UriHandler:numBadRequests,field:UriHandler:numRows,field:UriHandler:numRowsReceived,field:UriHandler:request,field:customItem:height,field:customItem:itemContent,field:customItem:width,fn:components/Animations/FadingBackground.brs:Init,fn:components/Animations/FadingBackground.brs:OnBackgroundLoaded,fn:components/Animations/FadingBackground.brs:OnBackgroundUriChange,fn:components/Animations/FadingBackground.brs:OnSizeChange,fn:components/Content/Parser.brs:createGrid,fn:components/Content/Parser.brs:createRow,fn:components/Content/Parser.brs:init,fn:components/Content/Parser.brs:parseResponse,fn:components/Content/SGHelperFunctions.brs:AddAndSetFields,fn:components/Content/SGHelperFunctions.brs:select,fn:components/Content/UriHandler.brs:addRequest,fn:components/Content/UriHandler.brs:go,fn:components/Content/UriHandler.brs:init,fn:components/Content/UriHandler.brs:processResponse,fn:components/Content/UriHandler.brs:updateContent,fn:components/DetailsScreen/Description/Description.brs:Init,fn:components/DetailsScreen/Description/Description.brs:OnContentChanged,fn:components/DetailsScreen/DetailsScreen.brs:ContentList2SimpleNode,fn:components/DetailsScreen/DetailsScreen.brs:Init,fn:components/DetailsScreen/DetailsScreen.brs:OnContentChange,fn:components/DetailsScreen/DetailsScreen.brs:OnFocusedChildChange,fn:components/DetailsScreen/DetailsScreen.brs:OnVideoPlayerStateChange,fn:components/DetailsScreen/DetailsScreen.brs:onItemSelected,fn:components/DetailsScreen/DetailsScreen.brs:onVideoVisibleChange,fn:components/DetailsScreen/DetailsScreen.brs:onVisibleChange,fn:components/HeroScreen/HeroScreen.brs:Init,fn:components/HeroScreen/HeroScreen.brs:OnItemFocused,fn:components/HeroScreen/HeroScreen.brs:makeRequest,fn:components/HeroScreen/HeroScreen.brs:onContentChanged,fn:components/HeroScreen/HeroScreen.brs:onFocusedChildChange,fn:components/HeroScreen/HeroScreen.brs:onVisibleChange,fn:components/LoadingIndicator/LoadingIndicator.brs:changeRotationDirection,fn:components/LoadingIndicator/LoadingIndicator.brs:getComponentHeight,fn:components/LoadingIndicator/LoadingIndicator.brs:getComponentWidth,fn:components/LoadingIndicator/LoadingIndicator.brs:getParentHeight,fn:components/LoadingIndicator/LoadingIndicator.brs:getParentWidth,fn:components/LoadingIndicator/LoadingIndicator.brs:init,fn:components/LoadingIndicator/LoadingIndicator.brs:max,fn:components/LoadingIndicator/LoadingIndicator.brs:omImageLoadStatusChange,fn:components/LoadingIndicator/LoadingIndicator.brs:onBackgroundImageChange,fn:components/LoadingIndicator/LoadingIndicator.brs:onBackgroundOpacityChange,fn:components/LoadingIndicator/LoadingIndicator.brs:onControlChange,fn:components/LoadingIndicator/LoadingIndicator.brs:onFadeAnimationStateChange,fn:components/LoadingIndicator/LoadingIndicator.brs:onImageHeightChange,fn:components/LoadingIndicator/LoadingIndicator.brs:onImageWidthChange,fn:components/LoadingIndicator/LoadingIndicator.brs:onTextChange,fn:components/LoadingIndicator/LoadingIndicator.brs:onTextPaddingChange,fn:components/LoadingIndicator/LoadingIndicator.brs:startAnimation,fn:components/LoadingIndicator/LoadingIndicator.brs:stopAnimation,fn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout,fn:components/heroScene.brs:OnChangeContent,fn:components/heroScene.brs:OnRowItemSelected,fn:components/heroScene.brs:init,fn:components/heroScene.brs:onKeyEvent,fn:source/main.brs:Main,fn:source/main.brs:showHeroScreen,sdk:roDeviceInfo,sdk:roMessagePort,sdk:roSGScreen,sdk:roUrlTransfer,sdk:roXMLElement|comp:Description\tcomp:DetailsScreen\tcontains;comp:Description\tfield:Description:Content\thas_field;comp:Description\tfield:Description:Description\thas_field;comp:Description\tfield:Description:ReleaseDate\thas_field;comp:Description\tfield:Description:StarRating\thas_field;comp:Description\tfield:Description:Title\thas_field;comp:Description\tfield:Description:UserStarRating\thas_field;comp:Description\tfn:components/DetailsScreen/Description/Description.brs:Init\tdefines;comp:Description\tfn:components/DetailsScreen/Description/Description.brs:OnContentChanged\tdefines;comp:DetailsScreen\tcomp:HeroScene\tcontains;comp:DetailsScreen\tfield:DetailsScreen:content\thas_field;comp:DetailsScreen\tfield:DetailsScreen:itemSelected\thas_field;comp:DetailsScreen\tfield:DetailsScreen:videoPlayerVisible\thas_field;comp:DetailsScreen\tfn:components/DetailsScreen/DetailsScreen.brs:ContentList2SimpleNode\tdefines;comp:DetailsScreen\tfn:components/DetailsScreen/DetailsScreen.brs:Init\tdefines;comp:DetailsScreen\tfn:components/DetailsScreen/DetailsScreen.brs:OnContentChange\tdefines;comp:DetailsScreen\tfn:components/DetailsScreen/DetailsScreen.brs:OnFocusedChildChange\tdefines;comp:DetailsScreen\tfn:components/DetailsScreen/DetailsScreen.brs:OnVideoPlayerStateChange\tdefines;comp:DetailsScreen\tfn:components/DetailsScreen/DetailsScreen.brs:onItemSelected\tdefines;comp:DetailsScreen\tfn:components/DetailsScreen/DetailsScreen.brs:onVideoVisibleChange\tdefines;comp:DetailsScreen\tfn:components/DetailsScreen/DetailsScreen.brs:onVisibleChange\tdefines;comp:FadingBackground\tcomp:HeroScreen\tcontains;comp:FadingBackground\tfield:FadingBackground:ShadeOpacity\thas_field;comp:FadingBackground\tfield:FadingBackground:uri\thas_field;comp:FadingBackground\tfn:components/Animations/FadingBackground.brs:Init\tdefines;comp:FadingBackground\tfn:components/Animations/FadingBackground.brs:OnBackgroundLoaded\tdefines;comp:FadingBackground\tfn:components/Animations/FadingBackground.brs:OnBackgroundUriChange\tdefines;comp:FadingBackground\tfn:components/Animations/FadingBackground.brs:OnSizeChange\tdefines;comp:HeroScene\tcomp:HeroScreen\tcontains;comp:HeroScene\tcomp:LoadingIndicator\tcontains;comp:HeroScene\tfield:HeroScene:content\thas_field;comp:HeroScene\tfield:HeroScene:itemFocused\thas_field;comp:HeroScene\tfield:HeroScene:numBadRequests\thas_field;comp:HeroScene\tfield:HeroScene:rowItemSelected\thas_field;comp:HeroScreen\tfield:HeroScreen:content\thas_field;comp:HeroScreen\tfield:HeroScreen:focusedContent\thas_field;comp:HeroScreen\tfield:HeroScreen:itemFocused\thas_field;comp:HeroScreen\tfield:HeroScreen:numBadRequests\thas_field;comp:HeroScreen\tfield:HeroScreen:rowItemSelected\thas_field;comp:HeroScreen\tfn:components/HeroScreen/HeroScreen.brs:Init\tdefines;comp:HeroScreen\tfn:components/HeroScreen/HeroScreen.brs:OnItemFocused\tdefines;comp:HeroScreen\tfn:components/HeroScreen/HeroScreen.brs:makeRequest\tdefines;comp:HeroScreen\tfn:components/HeroScreen/HeroScreen.brs:onContentChanged\tdefines;comp:HeroScreen\tfn:components/HeroScreen/HeroScreen.brs:onFocusedChildChange\tdefines;comp:HeroScreen\tfn:components/HeroScreen/HeroScreen.brs:onVisibleChange\tdefines;comp:LoadingIndicator\tfield:LoadingIndicator:backgroundColor\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:backgroundOpacity\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:backgroundUri\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:centered\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:clockwise\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:control\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:fadeInterval\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:font\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:height\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:imageHeight\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:imageUri\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:imageWidth\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:spacing\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:spinInterval\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:state\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:text\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:textColor\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:textPadding\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:width\thas_field;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:changeRotationDirection\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:getComponentHeight\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:getComponentWidth\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:getParentHeight\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:getParentWidth\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:init\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:max\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:omImageLoadStatusChange\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:onBackgroundImageChange\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:onBackgroundOpacityChange\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:onControlChange\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:onFadeAnimationStateChange\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:onImageHeightChange\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:onImageWidthChange\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:onTextChange\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:onTextPaddingChange\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:startAnimation\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:stopAnimation\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\tdefines;comp:Parser\tfield:Parser:response\thas_field;comp:Parser\tfn:components/Content/Parser.brs:createGrid\tdefines;comp:Parser\tfn:components/Content/Parser.brs:createRow\tdefines;comp:Parser\tfn:components/Content/Parser.brs:init\tdefines;comp:Parser\tfn:components/Content/Parser.brs:parseResponse\tdefines;comp:Parser\tfn:components/Content/SGHelperFunctions.brs:AddAndSetFields\tdefines;comp:Parser\tfn:components/Content/SGHelperFunctions.brs:select\tdefines;comp:UriHandler\tfield:UriHandler:ContentCache\thas_field;comp:UriHandler\tfield:UriHandler:content\thas_field;comp:UriHandler\tfield:UriHandler:contentSet\thas_field;comp:UriHandler\tfield:UriHandler:numBadRequests\thas_field;comp:UriHandler\tfield:UriHandler:numRows\thas_field;comp:UriHandler\tfield:UriHandler:numRowsReceived\thas_field;comp:UriHandler\tfield:UriHandler:request\thas_field;comp:UriHandler\tfn:components/Content/UriHandler.brs:addRequest\tdefines;comp:UriHandler\tfn:components/Content/UriHandler.brs:go\tdefines;comp:UriHandler\tfn:components/Content/UriHandler.brs:init\tdefines;comp:UriHandler\tfn:components/Content/UriHandler.brs:processResponse\tdefines;comp:UriHandler\tfn:components/Content/UriHandler.brs:updateContent\tdefines;comp:customItem\tfield:customItem:height\thas_field;comp:customItem\tfield:customItem:itemContent\thas_field;comp:customItem\tfield:customItem:width\thas_field;field:Description:Content\tfn:components/DetailsScreen/Description/Description.brs:OnContentChanged\ton_change;field:DetailsScreen:content\tfn:components/DetailsScreen/DetailsScreen.brs:OnContentChange\ton_change;field:DetailsScreen:itemSelected\tfn:components/DetailsScreen/DetailsScreen.brs:onItemSelected\ton_change;field:DetailsScreen:videoPlayerVisible\tfn:components/DetailsScreen/DetailsScreen.brs:onVideoVisibleChange\ton_change;field:FadingBackground:uri\tfn:components/Animations/FadingBackground.brs:OnBackgroundUriChange\ton_change;field:HeroScreen:itemFocused\tfn:components/HeroScreen/HeroScreen.brs:OnItemFocused\ton_change;field:LoadingIndicator:backgroundOpacity\tfn:components/LoadingIndicator/LoadingIndicator.brs:onBackgroundOpacityChange\ton_change;field:LoadingIndicator:backgroundUri\tfn:components/LoadingIndicator/LoadingIndicator.brs:onBackgroundImageChange\ton_change;field:LoadingIndicator:centered\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\ton_change;field:LoadingIndicator:clockwise\tfn:components/LoadingIndicator/LoadingIndicator.brs:changeRotationDirection\ton_change;field:LoadingIndicator:control\tfn:components/LoadingIndicator/LoadingIndicator.brs:onControlChange\ton_change;field:LoadingIndicator:height\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\ton_change;field:LoadingIndicator:imageHeight\tfn:components/LoadingIndicator/LoadingIndicator.brs:onImageHeightChange\ton_change;field:LoadingIndicator:imageWidth\tfn:components/LoadingIndicator/LoadingIndicator.brs:onImageWidthChange\ton_change;field:LoadingIndicator:text\tfn:components/LoadingIndicator/LoadingIndicator.brs:onTextChange\ton_change;field:LoadingIndicator:textPadding\tfn:components/LoadingIndicator/LoadingIndicator.brs:onTextPaddingChange\ton_change;field:LoadingIndicator:width\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\ton_change;field:Parser:response\tfn:components/Content/Parser.brs:parseResponse\ton_change;fn:components/Animations/FadingBackground.brs:Init\tfn:components/Animations/FadingBackground.brs:Init\tcalls;fn:components/Animations/FadingBackground.brs:OnBackgroundLoaded\tfn:components/Animations/FadingBackground.brs:OnBackgroundLoaded\tcalls;fn:components/Animations/FadingBackground.brs:OnBackgroundUriChange\tfn:components/Animations/FadingBackground.brs:OnBackgroundUriChange\tcalls;fn:components/Animations/FadingBackground.brs:OnSizeChange\tfn:components/Animations/FadingBackground.brs:OnSizeChange\tcalls;fn:components/Content/Parser.brs:createGrid\tfn:components/Content/Parser.brs:createGrid\tcalls;fn:components/Content/Parser.brs:createGrid\tfn:components/Content/Parser.brs:parseResponse\tcalls;fn:components/Content/Parser.brs:createRow\tfn:components/Content/Parser.brs:createRow\tcalls;fn:components/Content/Parser.brs:createRow\tfn:components/Content/Parser.brs:parseResponse\tcalls;fn:components/Content/Parser.brs:parseResponse\tsdk:roXMLElement\tuses_sdk;fn:components/Content/UriHandler.brs:addRequest\tsdk:roUrlTransfer\tuses_sdk;fn:components/Content/UriHandler.brs:go\tfn:components/Content/UriHandler.brs:processResponse\tcalls;fn:components/Content/UriHandler.brs:init\tsdk:roMessagePort\tuses_sdk;fn:components/DetailsScreen/Description/Description.brs:Init\tfn:components/DetailsScreen/Description/Description.brs:Init\tcalls;fn:components/DetailsScreen/Description/Description.brs:OnContentChanged\tfn:components/DetailsScreen/Description/Description.brs:OnContentChanged\tcalls;fn:components/DetailsScreen/DetailsScreen.brs:ContentList2SimpleNode\tfn:components/DetailsScreen/DetailsScreen.brs:ContentList2SimpleNode\tcalls;fn:components/DetailsScreen/DetailsScreen.brs:ContentList2SimpleNode\tfn:components/DetailsScreen/DetailsScreen.brs:Init\tcalls;fn:components/DetailsScreen/DetailsScreen.brs:OnContentChange\tfn:components/DetailsScreen/DetailsScreen.brs:OnContentChange\tcalls;fn:components/DetailsScreen/DetailsScreen.brs:OnFocusedChildChange\tfn:components/DetailsScreen/DetailsScreen.brs:OnFocusedChildChange\tcalls;fn:components/DetailsScreen/DetailsScreen.brs:OnVideoPlayerStateChange\tfn:components/DetailsScreen/DetailsScreen.brs:OnVideoPlayerStateChange\tcalls;fn:components/DetailsScreen/DetailsScreen.brs:onItemSelected\tfn:components/DetailsScreen/DetailsScreen.brs:onItemSelected\tcalls;fn:components/DetailsScreen/DetailsScreen.brs:onVideoVisibleChange\tfn:components/DetailsScreen/DetailsScreen.brs:onVideoVisibleChange\tcalls;fn:components/DetailsScreen/DetailsScreen.brs:onVisibleChange\tfn:components/DetailsScreen/DetailsScreen.brs:onVisibleChange\tcalls;fn:components/HeroScreen/HeroScreen.brs:Init\tfn:components/HeroScreen/HeroScreen.brs:makeRequest\tcalls;fn:components/HeroScreen/HeroScreen.brs:OnItemFocused\tfn:components/HeroScreen/HeroScreen.brs:OnItemFocused\tcalls;fn:components/HeroScreen/HeroScreen.brs:makeRequest\tfn:components/HeroScreen/HeroScreen.brs:makeRequest\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:changeRotationDirection\tfn:components/LoadingIndicator/LoadingIndicator.brs:changeRotationDirection\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:getComponentHeight\tfn:components/LoadingIndicator/LoadingIndicator.brs:getComponentHeight\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:getComponentHeight\tfn:components/LoadingIndicator/LoadingIndicator.brs:getParentHeight\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:getComponentHeight\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:getComponentWidth\tfn:components/LoadingIndicator/LoadingIndicator.brs:getComponentWidth\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:getComponentWidth\tfn:components/LoadingIndicator/LoadingIndicator.brs:getParentWidth\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:getComponentWidth\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:getParentHeight\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:getParentWidth\tfn:components/LoadingIndicator/LoadingIndicator.brs:getParentWidth\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:getParentWidth\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:init\tfn:components/LoadingIndicator/LoadingIndicator.brs:omImageLoadStatusChange\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:init\tfn:components/LoadingIndicator/LoadingIndicator.brs:startAnimation\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:max\tfn:components/LoadingIndicator/LoadingIndicator.brs:max\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:max\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:omImageLoadStatusChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:omImageLoadStatusChange\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:omImageLoadStatusChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onBackgroundImageChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:onBackgroundImageChange\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onBackgroundOpacityChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:onBackgroundOpacityChange\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onControlChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:onControlChange\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onControlChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:startAnimation\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onControlChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:stopAnimation\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onFadeAnimationStateChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:onFadeAnimationStateChange\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onFadeAnimationStateChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:stopAnimation\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onImageHeightChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:onImageHeightChange\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onImageHeightChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onImageWidthChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:onImageWidthChange\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onImageWidthChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onTextChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:onTextChange\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onTextPaddingChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:onTextPaddingChange\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onTextPaddingChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:startAnimation\tsdk:roDeviceInfo\tuses_sdk;fn:components/LoadingIndicator/LoadingIndicator.brs:stopAnimation\tfn:components/LoadingIndicator/LoadingIndicator.brs:stopAnimation\tcalls;fn:components/heroScene.brs:OnRowItemSelected\tfn:components/heroScene.brs:OnRowItemSelected\tcalls;fn:components/heroScene.brs:onKeyEvent\tfn:components/heroScene.brs:onKeyEvent\tcalls;fn:source/main.brs:Main\tfn:source/main.brs:showHeroScreen\tcalls;fn:source/main.brs:showHeroScreen\tsdk:roMessagePort\tuses_sdk;fn:source/main.brs:showHeroScreen\tsdk:roSGScreen\tuses_sdk",
+  "topology_signature": "n=127;e=195;comp:Description,comp:DetailsScreen,comp:FadingBackground,comp:HeroScene,comp:HeroScreen,comp:LoadingIndicator,comp:Parser,comp:UriHandler,comp:customItem,field:Description:Content,field:Description:Description,field:Description:ReleaseDate,field:Description:StarRating,field:Description:Title,field:Description:UserStarRating,field:DetailsScreen:content,field:DetailsScreen:itemSelected,field:DetailsScreen:videoPlayerVisible,field:FadingBackground:ShadeOpacity,field:FadingBackground:uri,field:HeroScene:content,field:HeroScene:itemFocused,field:HeroScene:numBadRequests,field:HeroScene:rowItemSelected,field:HeroScreen:content,field:HeroScreen:focusedContent,field:HeroScreen:itemFocused,field:HeroScreen:numBadRequests,field:HeroScreen:rowItemSelected,field:LoadingIndicator:backgroundColor,field:LoadingIndicator:backgroundOpacity,field:LoadingIndicator:backgroundUri,field:LoadingIndicator:centered,field:LoadingIndicator:clockwise,field:LoadingIndicator:control,field:LoadingIndicator:fadeInterval,field:LoadingIndicator:font,field:LoadingIndicator:height,field:LoadingIndicator:imageHeight,field:LoadingIndicator:imageUri,field:LoadingIndicator:imageWidth,field:LoadingIndicator:spacing,field:LoadingIndicator:spinInterval,field:LoadingIndicator:state,field:LoadingIndicator:text,field:LoadingIndicator:textColor,field:LoadingIndicator:textPadding,field:LoadingIndicator:width,field:Parser:response,field:UriHandler:ContentCache,field:UriHandler:content,field:UriHandler:contentSet,field:UriHandler:numBadRequests,field:UriHandler:numRows,field:UriHandler:numRowsReceived,field:UriHandler:request,field:customItem:height,field:customItem:itemContent,field:customItem:width,fn:components/Animations/FadingBackground.brs:Init,fn:components/Animations/FadingBackground.brs:OnBackgroundLoaded,fn:components/Animations/FadingBackground.brs:OnBackgroundUriChange,fn:components/Animations/FadingBackground.brs:OnSizeChange,fn:components/Content/Parser.brs:createGrid,fn:components/Content/Parser.brs:createRow,fn:components/Content/Parser.brs:init,fn:components/Content/Parser.brs:parseResponse,fn:components/Content/SGHelperFunctions.brs:AddAndSetFields,fn:components/Content/SGHelperFunctions.brs:select,fn:components/Content/UriHandler.brs:addRequest,fn:components/Content/UriHandler.brs:go,fn:components/Content/UriHandler.brs:init,fn:components/Content/UriHandler.brs:processResponse,fn:components/Content/UriHandler.brs:updateContent,fn:components/DetailsScreen/Description/Description.brs:Init,fn:components/DetailsScreen/Description/Description.brs:OnContentChanged,fn:components/DetailsScreen/DetailsScreen.brs:ContentList2SimpleNode,fn:components/DetailsScreen/DetailsScreen.brs:Init,fn:components/DetailsScreen/DetailsScreen.brs:OnContentChange,fn:components/DetailsScreen/DetailsScreen.brs:OnFocusedChildChange,fn:components/DetailsScreen/DetailsScreen.brs:OnVideoPlayerStateChange,fn:components/DetailsScreen/DetailsScreen.brs:onItemSelected,fn:components/DetailsScreen/DetailsScreen.brs:onVideoVisibleChange,fn:components/DetailsScreen/DetailsScreen.brs:onVisibleChange,fn:components/HeroScreen/HeroScreen.brs:Init,fn:components/HeroScreen/HeroScreen.brs:OnItemFocused,fn:components/HeroScreen/HeroScreen.brs:makeRequest,fn:components/HeroScreen/HeroScreen.brs:onContentChanged,fn:components/HeroScreen/HeroScreen.brs:onFocusedChildChange,fn:components/HeroScreen/HeroScreen.brs:onVisibleChange,fn:components/LoadingIndicator/LoadingIndicator.brs:changeRotationDirection,fn:components/LoadingIndicator/LoadingIndicator.brs:getComponentHeight,fn:components/LoadingIndicator/LoadingIndicator.brs:getComponentWidth,fn:components/LoadingIndicator/LoadingIndicator.brs:getParentHeight,fn:components/LoadingIndicator/LoadingIndicator.brs:getParentWidth,fn:components/LoadingIndicator/LoadingIndicator.brs:init,fn:components/LoadingIndicator/LoadingIndicator.brs:max,fn:components/LoadingIndicator/LoadingIndicator.brs:omImageLoadStatusChange,fn:components/LoadingIndicator/LoadingIndicator.brs:onBackgroundImageChange,fn:components/LoadingIndicator/LoadingIndicator.brs:onBackgroundOpacityChange,fn:components/LoadingIndicator/LoadingIndicator.brs:onControlChange,fn:components/LoadingIndicator/LoadingIndicator.brs:onFadeAnimationStateChange,fn:components/LoadingIndicator/LoadingIndicator.brs:onImageHeightChange,fn:components/LoadingIndicator/LoadingIndicator.brs:onImageWidthChange,fn:components/LoadingIndicator/LoadingIndicator.brs:onTextChange,fn:components/LoadingIndicator/LoadingIndicator.brs:onTextPaddingChange,fn:components/LoadingIndicator/LoadingIndicator.brs:startAnimation,fn:components/LoadingIndicator/LoadingIndicator.brs:stopAnimation,fn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout,fn:components/heroScene.brs:OnChangeContent,fn:components/heroScene.brs:OnRowItemSelected,fn:components/heroScene.brs:init,fn:components/heroScene.brs:onKeyEvent,fn:source/main.brs:Main,fn:source/main.brs:showHeroScreen,ref:if:ifStringOps,ref:ro:roDeviceInfo,ref:ro:roMessagePort,ref:ro:roSGScreen,ref:ro:roUrlTransfer,ref:ro:roXMLElement,ref:sg:ContentNode,ref:sg:Group,ref:sg:LayoutGroup,ref:sg:Rectangle,ref:sg:Scene,ref:sg:Task|comp:Description\tcomp:DetailsScreen\tcontains;comp:Description\tfield:Description:Content\thas_field;comp:Description\tfield:Description:Description\thas_field;comp:Description\tfield:Description:ReleaseDate\thas_field;comp:Description\tfield:Description:StarRating\thas_field;comp:Description\tfield:Description:Title\thas_field;comp:Description\tfield:Description:UserStarRating\thas_field;comp:Description\tfn:components/DetailsScreen/Description/Description.brs:Init\tdefines;comp:Description\tfn:components/DetailsScreen/Description/Description.brs:OnContentChanged\tdefines;comp:Description\tref:sg:LayoutGroup\textends;comp:DetailsScreen\tcomp:HeroScene\tcontains;comp:DetailsScreen\tfield:DetailsScreen:content\thas_field;comp:DetailsScreen\tfield:DetailsScreen:itemSelected\thas_field;comp:DetailsScreen\tfield:DetailsScreen:videoPlayerVisible\thas_field;comp:DetailsScreen\tfn:components/DetailsScreen/DetailsScreen.brs:ContentList2SimpleNode\tdefines;comp:DetailsScreen\tfn:components/DetailsScreen/DetailsScreen.brs:Init\tdefines;comp:DetailsScreen\tfn:components/DetailsScreen/DetailsScreen.brs:OnContentChange\tdefines;comp:DetailsScreen\tfn:components/DetailsScreen/DetailsScreen.brs:OnFocusedChildChange\tdefines;comp:DetailsScreen\tfn:components/DetailsScreen/DetailsScreen.brs:OnVideoPlayerStateChange\tdefines;comp:DetailsScreen\tfn:components/DetailsScreen/DetailsScreen.brs:onItemSelected\tdefines;comp:DetailsScreen\tfn:components/DetailsScreen/DetailsScreen.brs:onVideoVisibleChange\tdefines;comp:DetailsScreen\tfn:components/DetailsScreen/DetailsScreen.brs:onVisibleChange\tdefines;comp:DetailsScreen\tref:sg:Group\textends;comp:FadingBackground\tcomp:HeroScreen\tcontains;comp:FadingBackground\tfield:FadingBackground:ShadeOpacity\thas_field;comp:FadingBackground\tfield:FadingBackground:uri\thas_field;comp:FadingBackground\tfn:components/Animations/FadingBackground.brs:Init\tdefines;comp:FadingBackground\tfn:components/Animations/FadingBackground.brs:OnBackgroundLoaded\tdefines;comp:FadingBackground\tfn:components/Animations/FadingBackground.brs:OnBackgroundUriChange\tdefines;comp:FadingBackground\tfn:components/Animations/FadingBackground.brs:OnSizeChange\tdefines;comp:FadingBackground\tref:sg:Rectangle\textends;comp:HeroScene\tcomp:HeroScreen\tcontains;comp:HeroScene\tcomp:LoadingIndicator\tcontains;comp:HeroScene\tfield:HeroScene:content\thas_field;comp:HeroScene\tfield:HeroScene:itemFocused\thas_field;comp:HeroScene\tfield:HeroScene:numBadRequests\thas_field;comp:HeroScene\tfield:HeroScene:rowItemSelected\thas_field;comp:HeroScene\tref:sg:Scene\textends;comp:HeroScreen\tfield:HeroScreen:content\thas_field;comp:HeroScreen\tfield:HeroScreen:focusedContent\thas_field;comp:HeroScreen\tfield:HeroScreen:itemFocused\thas_field;comp:HeroScreen\tfield:HeroScreen:numBadRequests\thas_field;comp:HeroScreen\tfield:HeroScreen:rowItemSelected\thas_field;comp:HeroScreen\tfn:components/HeroScreen/HeroScreen.brs:Init\tdefines;comp:HeroScreen\tfn:components/HeroScreen/HeroScreen.brs:OnItemFocused\tdefines;comp:HeroScreen\tfn:components/HeroScreen/HeroScreen.brs:makeRequest\tdefines;comp:HeroScreen\tfn:components/HeroScreen/HeroScreen.brs:onContentChanged\tdefines;comp:HeroScreen\tfn:components/HeroScreen/HeroScreen.brs:onFocusedChildChange\tdefines;comp:HeroScreen\tfn:components/HeroScreen/HeroScreen.brs:onVisibleChange\tdefines;comp:HeroScreen\tref:sg:Group\textends;comp:LoadingIndicator\tfield:LoadingIndicator:backgroundColor\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:backgroundOpacity\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:backgroundUri\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:centered\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:clockwise\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:control\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:fadeInterval\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:font\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:height\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:imageHeight\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:imageUri\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:imageWidth\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:spacing\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:spinInterval\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:state\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:text\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:textColor\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:textPadding\thas_field;comp:LoadingIndicator\tfield:LoadingIndicator:width\thas_field;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:changeRotationDirection\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:getComponentHeight\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:getComponentWidth\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:getParentHeight\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:getParentWidth\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:init\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:max\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:omImageLoadStatusChange\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:onBackgroundImageChange\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:onBackgroundOpacityChange\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:onControlChange\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:onFadeAnimationStateChange\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:onImageHeightChange\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:onImageWidthChange\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:onTextChange\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:onTextPaddingChange\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:startAnimation\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:stopAnimation\tdefines;comp:LoadingIndicator\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\tdefines;comp:LoadingIndicator\tref:sg:Group\textends;comp:Parser\tfield:Parser:response\thas_field;comp:Parser\tfn:components/Content/Parser.brs:createGrid\tdefines;comp:Parser\tfn:components/Content/Parser.brs:createRow\tdefines;comp:Parser\tfn:components/Content/Parser.brs:init\tdefines;comp:Parser\tfn:components/Content/Parser.brs:parseResponse\tdefines;comp:Parser\tfn:components/Content/SGHelperFunctions.brs:AddAndSetFields\tdefines;comp:Parser\tfn:components/Content/SGHelperFunctions.brs:select\tdefines;comp:Parser\tref:sg:ContentNode\textends;comp:UriHandler\tfield:UriHandler:ContentCache\thas_field;comp:UriHandler\tfield:UriHandler:content\thas_field;comp:UriHandler\tfield:UriHandler:contentSet\thas_field;comp:UriHandler\tfield:UriHandler:numBadRequests\thas_field;comp:UriHandler\tfield:UriHandler:numRows\thas_field;comp:UriHandler\tfield:UriHandler:numRowsReceived\thas_field;comp:UriHandler\tfield:UriHandler:request\thas_field;comp:UriHandler\tfn:components/Content/UriHandler.brs:addRequest\tdefines;comp:UriHandler\tfn:components/Content/UriHandler.brs:go\tdefines;comp:UriHandler\tfn:components/Content/UriHandler.brs:init\tdefines;comp:UriHandler\tfn:components/Content/UriHandler.brs:processResponse\tdefines;comp:UriHandler\tfn:components/Content/UriHandler.brs:updateContent\tdefines;comp:UriHandler\tref:sg:Task\textends;comp:customItem\tfield:customItem:height\thas_field;comp:customItem\tfield:customItem:itemContent\thas_field;comp:customItem\tfield:customItem:width\thas_field;comp:customItem\tref:sg:Group\textends;field:Description:Content\tfn:components/DetailsScreen/Description/Description.brs:OnContentChanged\ton_change;field:DetailsScreen:content\tfn:components/DetailsScreen/DetailsScreen.brs:OnContentChange\ton_change;field:DetailsScreen:itemSelected\tfn:components/DetailsScreen/DetailsScreen.brs:onItemSelected\ton_change;field:DetailsScreen:videoPlayerVisible\tfn:components/DetailsScreen/DetailsScreen.brs:onVideoVisibleChange\ton_change;field:FadingBackground:uri\tfn:components/Animations/FadingBackground.brs:OnBackgroundUriChange\ton_change;field:HeroScreen:itemFocused\tfn:components/HeroScreen/HeroScreen.brs:OnItemFocused\ton_change;field:LoadingIndicator:backgroundOpacity\tfn:components/LoadingIndicator/LoadingIndicator.brs:onBackgroundOpacityChange\ton_change;field:LoadingIndicator:backgroundUri\tfn:components/LoadingIndicator/LoadingIndicator.brs:onBackgroundImageChange\ton_change;field:LoadingIndicator:centered\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\ton_change;field:LoadingIndicator:clockwise\tfn:components/LoadingIndicator/LoadingIndicator.brs:changeRotationDirection\ton_change;field:LoadingIndicator:control\tfn:components/LoadingIndicator/LoadingIndicator.brs:onControlChange\ton_change;field:LoadingIndicator:height\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\ton_change;field:LoadingIndicator:imageHeight\tfn:components/LoadingIndicator/LoadingIndicator.brs:onImageHeightChange\ton_change;field:LoadingIndicator:imageWidth\tfn:components/LoadingIndicator/LoadingIndicator.brs:onImageWidthChange\ton_change;field:LoadingIndicator:text\tfn:components/LoadingIndicator/LoadingIndicator.brs:onTextChange\ton_change;field:LoadingIndicator:textPadding\tfn:components/LoadingIndicator/LoadingIndicator.brs:onTextPaddingChange\ton_change;field:LoadingIndicator:width\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\ton_change;field:Parser:response\tfn:components/Content/Parser.brs:parseResponse\ton_change;fn:components/Animations/FadingBackground.brs:Init\tfn:components/Animations/FadingBackground.brs:Init\tcalls;fn:components/Animations/FadingBackground.brs:OnBackgroundLoaded\tfn:components/Animations/FadingBackground.brs:OnBackgroundLoaded\tcalls;fn:components/Animations/FadingBackground.brs:OnBackgroundUriChange\tfn:components/Animations/FadingBackground.brs:OnBackgroundUriChange\tcalls;fn:components/Animations/FadingBackground.brs:OnSizeChange\tfn:components/Animations/FadingBackground.brs:OnSizeChange\tcalls;fn:components/Content/Parser.brs:createGrid\tfn:components/Content/Parser.brs:createGrid\tcalls;fn:components/Content/Parser.brs:createGrid\tfn:components/Content/Parser.brs:parseResponse\tcalls;fn:components/Content/Parser.brs:createRow\tfn:components/Content/Parser.brs:createRow\tcalls;fn:components/Content/Parser.brs:createRow\tfn:components/Content/Parser.brs:parseResponse\tcalls;fn:components/Content/Parser.brs:parseResponse\tref:ro:roXMLElement\tuses_sdk;fn:components/Content/UriHandler.brs:addRequest\tref:ro:roUrlTransfer\tuses_sdk;fn:components/Content/UriHandler.brs:go\tfn:components/Content/UriHandler.brs:processResponse\tcalls;fn:components/Content/UriHandler.brs:init\tref:ro:roMessagePort\tuses_sdk;fn:components/DetailsScreen/Description/Description.brs:Init\tfn:components/DetailsScreen/Description/Description.brs:Init\tcalls;fn:components/DetailsScreen/Description/Description.brs:OnContentChanged\tfn:components/DetailsScreen/Description/Description.brs:OnContentChanged\tcalls;fn:components/DetailsScreen/DetailsScreen.brs:ContentList2SimpleNode\tfn:components/DetailsScreen/DetailsScreen.brs:ContentList2SimpleNode\tcalls;fn:components/DetailsScreen/DetailsScreen.brs:ContentList2SimpleNode\tfn:components/DetailsScreen/DetailsScreen.brs:Init\tcalls;fn:components/DetailsScreen/DetailsScreen.brs:OnContentChange\tfn:components/DetailsScreen/DetailsScreen.brs:OnContentChange\tcalls;fn:components/DetailsScreen/DetailsScreen.brs:OnFocusedChildChange\tfn:components/DetailsScreen/DetailsScreen.brs:OnFocusedChildChange\tcalls;fn:components/DetailsScreen/DetailsScreen.brs:OnVideoPlayerStateChange\tfn:components/DetailsScreen/DetailsScreen.brs:OnVideoPlayerStateChange\tcalls;fn:components/DetailsScreen/DetailsScreen.brs:onItemSelected\tfn:components/DetailsScreen/DetailsScreen.brs:onItemSelected\tcalls;fn:components/DetailsScreen/DetailsScreen.brs:onVideoVisibleChange\tfn:components/DetailsScreen/DetailsScreen.brs:onVideoVisibleChange\tcalls;fn:components/DetailsScreen/DetailsScreen.brs:onVisibleChange\tfn:components/DetailsScreen/DetailsScreen.brs:onVisibleChange\tcalls;fn:components/HeroScreen/HeroScreen.brs:Init\tfn:components/HeroScreen/HeroScreen.brs:makeRequest\tcalls;fn:components/HeroScreen/HeroScreen.brs:OnItemFocused\tfn:components/HeroScreen/HeroScreen.brs:OnItemFocused\tcalls;fn:components/HeroScreen/HeroScreen.brs:makeRequest\tfn:components/HeroScreen/HeroScreen.brs:makeRequest\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:changeRotationDirection\tfn:components/LoadingIndicator/LoadingIndicator.brs:changeRotationDirection\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:getComponentHeight\tfn:components/LoadingIndicator/LoadingIndicator.brs:getComponentHeight\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:getComponentHeight\tfn:components/LoadingIndicator/LoadingIndicator.brs:getParentHeight\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:getComponentHeight\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:getComponentWidth\tfn:components/LoadingIndicator/LoadingIndicator.brs:getComponentWidth\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:getComponentWidth\tfn:components/LoadingIndicator/LoadingIndicator.brs:getParentWidth\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:getComponentWidth\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:getParentHeight\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:getParentWidth\tfn:components/LoadingIndicator/LoadingIndicator.brs:getParentWidth\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:getParentWidth\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:init\tfn:components/LoadingIndicator/LoadingIndicator.brs:omImageLoadStatusChange\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:init\tfn:components/LoadingIndicator/LoadingIndicator.brs:startAnimation\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:max\tfn:components/LoadingIndicator/LoadingIndicator.brs:max\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:max\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:omImageLoadStatusChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:omImageLoadStatusChange\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:omImageLoadStatusChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onBackgroundImageChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:onBackgroundImageChange\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onBackgroundOpacityChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:onBackgroundOpacityChange\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onControlChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:onControlChange\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onControlChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:startAnimation\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onControlChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:stopAnimation\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onFadeAnimationStateChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:onFadeAnimationStateChange\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onFadeAnimationStateChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:stopAnimation\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onImageHeightChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:onImageHeightChange\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onImageHeightChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onImageWidthChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:onImageWidthChange\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onImageWidthChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onTextChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:onTextChange\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onTextPaddingChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:onTextPaddingChange\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:onTextPaddingChange\tfn:components/LoadingIndicator/LoadingIndicator.brs:updateLayout\tcalls;fn:components/LoadingIndicator/LoadingIndicator.brs:startAnimation\tref:if:ifStringOps\tuses_api;fn:components/LoadingIndicator/LoadingIndicator.brs:startAnimation\tref:ro:roDeviceInfo\tuses_sdk;fn:components/LoadingIndicator/LoadingIndicator.brs:stopAnimation\tfn:components/LoadingIndicator/LoadingIndicator.brs:stopAnimation\tcalls;fn:components/heroScene.brs:OnRowItemSelected\tfn:components/heroScene.brs:OnRowItemSelected\tcalls;fn:components/heroScene.brs:onKeyEvent\tfn:components/heroScene.brs:onKeyEvent\tcalls;fn:source/main.brs:Main\tfn:source/main.brs:showHeroScreen\tcalls;fn:source/main.brs:showHeroScreen\tref:ro:roMessagePort\tuses_sdk;fn:source/main.brs:showHeroScreen\tref:ro:roSGScreen\tuses_sdk",
   "nodes": [
     {
       "id": "comp:FadingBackground",
       "type": "component",
       "label": "FadingBackground",
+      "community": 7,
+      "community_name": "Community 7"
+    },
+    {
+      "id": "ref:sg:Rectangle",
+      "type": "sdk_ref",
+      "label": "Rectangle",
+      "sdkId": "sg:Rectangle",
+      "sdkType": "roSGNode",
       "community": 7,
       "community_name": "Community 7"
     },
@@ -35,6 +44,15 @@
       "community_name": "Community 5"
     },
     {
+      "id": "ref:sg:ContentNode",
+      "type": "sdk_ref",
+      "label": "ContentNode",
+      "sdkId": "sg:ContentNode",
+      "sdkType": "roSGNode",
+      "community": 5,
+      "community_name": "Community 5"
+    },
+    {
       "id": "field:Parser:response",
       "type": "field",
       "label": "response (assocarray)",
@@ -45,6 +63,15 @@
       "id": "comp:UriHandler",
       "type": "component",
       "label": "UriHandler",
+      "community": 0,
+      "community_name": "Community 0"
+    },
+    {
+      "id": "ref:sg:Task",
+      "type": "sdk_ref",
+      "label": "Task",
+      "sdkId": "sg:Task",
+      "sdkType": "roSGNode",
       "community": 0,
       "community_name": "Community 0"
     },
@@ -105,6 +132,15 @@
       "community_name": "Community 4"
     },
     {
+      "id": "ref:sg:LayoutGroup",
+      "type": "sdk_ref",
+      "label": "LayoutGroup",
+      "sdkId": "sg:LayoutGroup",
+      "sdkType": "roSGNode",
+      "community": 4,
+      "community_name": "Community 4"
+    },
+    {
       "id": "field:Description:Title",
       "type": "field",
       "label": "Title (node)",
@@ -152,6 +188,15 @@
       "label": "DetailsScreen",
       "community": 2,
       "community_name": "Community 2"
+    },
+    {
+      "id": "ref:sg:Group",
+      "type": "sdk_ref",
+      "label": "Group",
+      "sdkId": "sg:Group",
+      "sdkType": "roSGNode",
+      "community": 1,
+      "community_name": "Community 1"
     },
     {
       "id": "field:DetailsScreen:itemSelected",
@@ -220,29 +265,29 @@
       "id": "comp:customItem",
       "type": "component",
       "label": "customItem",
-      "community": 9,
-      "community_name": "Community 9"
+      "community": 1,
+      "community_name": "Community 1"
     },
     {
       "id": "field:customItem:width",
       "type": "field",
       "label": "width (float)",
-      "community": 9,
-      "community_name": "Community 9"
+      "community": 1,
+      "community_name": "Community 1"
     },
     {
       "id": "field:customItem:height",
       "type": "field",
       "label": "height (float)",
-      "community": 9,
-      "community_name": "Community 9"
+      "community": 1,
+      "community_name": "Community 1"
     },
     {
       "id": "field:customItem:itemContent",
       "type": "field",
       "label": "itemContent (node)",
-      "community": 9,
-      "community_name": "Community 9"
+      "community": 1,
+      "community_name": "Community 1"
     },
     {
       "id": "comp:LoadingIndicator",
@@ -388,36 +433,45 @@
       "id": "comp:HeroScene",
       "type": "component",
       "label": "HeroScene",
-      "community": 1,
-      "community_name": "Community 1"
+      "community": 9,
+      "community_name": "Community 9"
+    },
+    {
+      "id": "ref:sg:Scene",
+      "type": "sdk_ref",
+      "label": "Scene",
+      "sdkId": "sg:Scene",
+      "sdkType": "roSGNode",
+      "community": 9,
+      "community_name": "Community 9"
     },
     {
       "id": "field:HeroScene:content",
       "type": "field",
       "label": "content (node)",
-      "community": 1,
-      "community_name": "Community 1"
+      "community": 9,
+      "community_name": "Community 9"
     },
     {
       "id": "field:HeroScene:numBadRequests",
       "type": "field",
       "label": "numBadRequests (integer)",
-      "community": 1,
-      "community_name": "Community 1"
+      "community": 9,
+      "community_name": "Community 9"
     },
     {
       "id": "field:HeroScene:rowItemSelected",
       "type": "field",
       "label": "rowItemSelected (intarray)",
-      "community": 1,
-      "community_name": "Community 1"
+      "community": 9,
+      "community_name": "Community 9"
     },
     {
       "id": "field:HeroScene:itemFocused",
       "type": "field",
       "label": "itemFocused (intarray)",
-      "community": 1,
-      "community_name": "Community 1"
+      "community": 9,
+      "community_name": "Community 9"
     },
     {
       "id": "fn:components/Animations/FadingBackground.brs:Init",
@@ -484,9 +538,11 @@
       "community_name": "Community 5"
     },
     {
-      "id": "sdk:roXMLElement",
-      "type": "sdk_type",
+      "id": "ref:ro:roXMLElement",
+      "type": "sdk_ref",
       "label": "roXMLElement",
+      "sdkId": "ro:roXMLElement",
+      "sdkType": "Node",
       "community": 5,
       "community_name": "Community 5"
     },
@@ -547,16 +603,20 @@
       "community_name": "Community 0"
     },
     {
-      "id": "sdk:roMessagePort",
-      "type": "sdk_type",
+      "id": "ref:ro:roMessagePort",
+      "type": "sdk_ref",
       "label": "roMessagePort",
+      "sdkId": "ro:roMessagePort",
+      "sdkType": "Node",
       "community": 0,
       "community_name": "Community 0"
     },
     {
-      "id": "sdk:roUrlTransfer",
-      "type": "sdk_type",
+      "id": "ref:ro:roUrlTransfer",
+      "type": "sdk_ref",
       "label": "roUrlTransfer",
+      "sdkId": "ro:roUrlTransfer",
+      "sdkType": "Node",
       "community": 0,
       "community_name": "Community 0"
     },
@@ -841,9 +901,20 @@
       "community_name": "Community 8"
     },
     {
-      "id": "sdk:roDeviceInfo",
-      "type": "sdk_type",
+      "id": "ref:ro:roDeviceInfo",
+      "type": "sdk_ref",
       "label": "roDeviceInfo",
+      "sdkId": "ro:roDeviceInfo",
+      "sdkType": "Node",
+      "community": 6,
+      "community_name": "Community 6"
+    },
+    {
+      "id": "ref:if:ifStringOps",
+      "type": "sdk_ref",
+      "label": "ifStringOps",
+      "sdkId": "if:ifStringOps",
+      "sdkType": "interface",
       "community": 6,
       "community_name": "Community 6"
     },
@@ -896,14 +967,22 @@
       "community_name": "Community 0"
     },
     {
-      "id": "sdk:roSGScreen",
-      "type": "sdk_type",
+      "id": "ref:ro:roSGScreen",
+      "type": "sdk_ref",
       "label": "roSGScreen",
+      "sdkId": "ro:roSGScreen",
+      "sdkType": "Node",
       "community": 0,
       "community_name": "Community 0"
     }
   ],
   "links": [
+    {
+      "source": "comp:FadingBackground",
+      "target": "ref:sg:Rectangle",
+      "relation": "extends",
+      "confidence_score": 1
+    },
     {
       "source": "comp:FadingBackground",
       "target": "field:FadingBackground:uri",
@@ -918,8 +997,20 @@
     },
     {
       "source": "comp:Parser",
+      "target": "ref:sg:ContentNode",
+      "relation": "extends",
+      "confidence_score": 1
+    },
+    {
+      "source": "comp:Parser",
       "target": "field:Parser:response",
       "relation": "has_field",
+      "confidence_score": 1
+    },
+    {
+      "source": "comp:UriHandler",
+      "target": "ref:sg:Task",
+      "relation": "extends",
       "confidence_score": 1
     },
     {
@@ -966,6 +1057,12 @@
     },
     {
       "source": "comp:Description",
+      "target": "ref:sg:LayoutGroup",
+      "relation": "extends",
+      "confidence_score": 1
+    },
+    {
+      "source": "comp:Description",
       "target": "field:Description:Title",
       "relation": "has_field",
       "confidence_score": 1
@@ -1002,6 +1099,12 @@
     },
     {
       "source": "comp:DetailsScreen",
+      "target": "ref:sg:Group",
+      "relation": "extends",
+      "confidence_score": 1
+    },
+    {
+      "source": "comp:DetailsScreen",
       "target": "field:DetailsScreen:itemSelected",
       "relation": "has_field",
       "confidence_score": 1
@@ -1022,6 +1125,12 @@
       "source": "comp:DetailsScreen",
       "target": "comp:Description",
       "relation": "contains",
+      "confidence_score": 1
+    },
+    {
+      "source": "comp:HeroScreen",
+      "target": "ref:sg:Group",
+      "relation": "extends",
       "confidence_score": 1
     },
     {
@@ -1062,6 +1171,12 @@
     },
     {
       "source": "comp:customItem",
+      "target": "ref:sg:Group",
+      "relation": "extends",
+      "confidence_score": 1
+    },
+    {
+      "source": "comp:customItem",
       "target": "field:customItem:width",
       "relation": "has_field",
       "confidence_score": 1
@@ -1076,6 +1191,12 @@
       "source": "comp:customItem",
       "target": "field:customItem:itemContent",
       "relation": "has_field",
+      "confidence_score": 1
+    },
+    {
+      "source": "comp:LoadingIndicator",
+      "target": "ref:sg:Group",
+      "relation": "extends",
       "confidence_score": 1
     },
     {
@@ -1190,6 +1311,12 @@
       "source": "comp:LoadingIndicator",
       "target": "field:LoadingIndicator:fadeInterval",
       "relation": "has_field",
+      "confidence_score": 1
+    },
+    {
+      "source": "comp:HeroScene",
+      "target": "ref:sg:Scene",
+      "relation": "extends",
       "confidence_score": 1
     },
     {
@@ -1344,7 +1471,7 @@
     },
     {
       "source": "fn:components/Content/Parser.brs:parseResponse",
-      "target": "sdk:roXMLElement",
+      "target": "ref:ro:roXMLElement",
       "relation": "uses_sdk",
       "confidence_score": 1
     },
@@ -1398,13 +1525,13 @@
     },
     {
       "source": "fn:components/Content/UriHandler.brs:init",
-      "target": "sdk:roMessagePort",
+      "target": "ref:ro:roMessagePort",
       "relation": "uses_sdk",
       "confidence_score": 1
     },
     {
       "source": "fn:components/Content/UriHandler.brs:addRequest",
-      "target": "sdk:roUrlTransfer",
+      "target": "ref:ro:roUrlTransfer",
       "relation": "uses_sdk",
       "confidence_score": 1
     },
@@ -1980,8 +2107,14 @@
     },
     {
       "source": "fn:components/LoadingIndicator/LoadingIndicator.brs:startAnimation",
-      "target": "sdk:roDeviceInfo",
+      "target": "ref:ro:roDeviceInfo",
       "relation": "uses_sdk",
+      "confidence_score": 1
+    },
+    {
+      "source": "fn:components/LoadingIndicator/LoadingIndicator.brs:startAnimation",
+      "target": "ref:if:ifStringOps",
+      "relation": "uses_api",
       "confidence_score": 1
     },
     {
@@ -2004,13 +2137,13 @@
     },
     {
       "source": "fn:source/main.brs:showHeroScreen",
-      "target": "sdk:roSGScreen",
+      "target": "ref:ro:roSGScreen",
       "relation": "uses_sdk",
       "confidence_score": 1
     },
     {
       "source": "fn:source/main.brs:showHeroScreen",
-      "target": "sdk:roMessagePort",
+      "target": "ref:ro:roMessagePort",
       "relation": "uses_sdk",
       "confidence_score": 1
     }

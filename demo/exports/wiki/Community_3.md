@@ -4,7 +4,7 @@
 
 ## Key Concepts
 
-- **LoadingIndicator** (39 connections)
+- **LoadingIndicator** (40 connections)
 - **onTextChange** (4 connections)
 - **text (string)** (2 connections)
 - **backgroundColor (color)** (1 connections)
@@ -22,7 +22,7 @@
 
 ## Audit Trail
 
-- EXTRACTED: 52 (100%)
+- EXTRACTED: 53 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 
