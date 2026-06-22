@@ -5,3 +5,26 @@ function_node_types = ["function_statement", "sub_statement"]
 import_node_types = ["library_statement"]
 call_node_types = ["function_call", "call_expression"]
 comment = "BrightScript (Roku) via ajdelcimmuto/tree-sitter-brightscript in tree_sitter_language_pack"
+
+# BrighterScript is a typed superset of BrightScript (.bs files).
+# tree_sitter_language_pack has no dedicated brighterscript grammar and no
+# standalone tree-sitter-brighterscript repository exists, so we fall back
+# to the brightscript grammar.
+#
+# What works:  all BrightScript-compatible syntax is parsed correctly;
+#              function/sub bodies inside classes and namespaces are
+#              extracted via tree-sitter error-recovery (the grammar emits
+#              error nodes around unknown keywords like `class`/`namespace`
+#              but still descends into valid child nodes).
+#
+# What is missing:  class and namespace containers do not produce Class
+#                   nodes because the grammar has no matching rule.
+#                   Upgrade this entry once a brighterscript grammar is
+#                   bundled in tree_sitter_language_pack.
+[languages.brighterscript]
+extensions = [".bs"]
+grammar = "brightscript"
+function_node_types = ["function_statement", "sub_statement"]
+import_node_types = ["library_statement"]
+call_node_types = ["function_call", "call_expression"]
+comment = "BrighterScript (.bs) — best-effort via brightscript grammar; class/namespace containers not extracted as Class nodes"
