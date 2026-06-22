@@ -6,7 +6,6 @@
       "command": ".claude/skills/brs-ref/brs-ref.sh",
       "takes_args": true,
       "args_help": "component name (e.g., roArray, ifArray, Video)"
-    }
     },
     "analyze-app": {
       "label": "Analyze Roku App",
@@ -17,3 +16,4 @@
     }
   }
 }
+
