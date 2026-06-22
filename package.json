@@ -13,7 +13,8 @@
     "demo:json": "node src/cli.js examples/demo.brs --format json",
     "test": "node src/cli.js examples/demo.brs --format json && node -e \"require('./src/graphify-integration')\" && echo 'All checks passed'",
     "generate-sdk-exports": "node src/generate-exports.mjs",
-    "generate-ebnf": "node src/ebnf/generate.mjs"
+    "generate-ebnf": "node src/ebnf/generate.mjs",
+    "analyze-app": "node src/analyze-app.mjs"
   },
   "dependencies": {
     "@sentropic/graphify": "^0.15.0",

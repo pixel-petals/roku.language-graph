@@ -6,6 +6,14 @@
       "command": ".claude/skills/brs-ref/brs-ref.sh",
       "takes_args": true,
       "args_help": "component name (e.g., roArray, ifArray, Video)"
+    },
+    "analyze-app": {
+      "label": "Analyze Roku App",
+      "description": "Parse a Roku channel's BrightScript + SceneGraph code and generate a Graphify wiki and interactive HTML studio",
+      "command": ".claude/skills/analyze-app/analyze-app.sh",
+      "takes_args": true,
+      "args_help": "<app-dir> [output-dir]"
     }
   }
 }
+
