@@ -1,23 +1,19 @@
 # Community 3
 
-> 14 nodes
+> 10 nodes
 
 ## Key Concepts
 
-- **updateContent** (7 connections)
+- **init** (6 connections)
 - **createObject** (5 connections)
-- **Init** (5 connections)
-- **showHeroScreen** (5 connections)
-- **type** (3 connections)
-- **wait** (2 connections)
+- **Parser** (3 connections)
 - **init** (2 connections)
-- **roMessagePort** (2 connections)
-- **OnItemFocused** (1 connections)
-- **makeRequest** (1 connections)
-- **processResponse** (1 connections)
-- **Main** (1 connections)
-- **roSGScreen** (1 connections)
-- **roUrlTransfer** (1 connections)
+- **response (assocarray)** (1 connections)
+- **AddAndSetFields** (1 connections)
+- **createGrid** (1 connections)
+- **createRow** (1 connections)
+- **select** (1 connections)
+- **roXMLElement** (1 connections)
 
 ## Relationships
 
@@ -25,7 +21,7 @@
 
 ## Audit Trail
 
-- EXTRACTED: 37 (100%)
+- EXTRACTED: 22 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

@@ -1,24 +1,21 @@
 # Community 2
 
-> 15 nodes
+> 12 nodes
 
 ## Key Concepts
 
-- **HeroScene** (11 connections)
-- **DetailsScreen** (9 connections)
-- **Overhang** (2 connections)
-- **Dialog** (1 connections)
-- **LabelList** (1 connections)
-- **ParallelAnimation** (1 connections)
-- **Scene** (1 connections)
-- **Video** (1 connections)
+- **HeroScreen** (8 connections)
+- **Init** (5 connections)
+- **FadingBackground** (3 connections)
+- **ShadeOpacity (float)** (1 connections)
+- **uri (string)** (1 connections)
 - **content (node)** (1 connections)
-- **itemSelected (integer)** (1 connections)
-- **videoPlayerVisible (bool)** (1 connections)
-- **content (node)** (1 connections)
+- **focusedContent (node)** (1 connections)
 - **itemFocused (intarray)** (1 connections)
 - **numBadRequests (integer)** (1 connections)
 - **rowItemSelected (intarray)** (1 connections)
+- **OnItemFocused** (1 connections)
+- **makeRequest** (1 connections)
 
 ## Relationships
 
@@ -26,7 +23,7 @@
 
 ## Audit Trail
 
-- EXTRACTED: 34 (100%)
+- EXTRACTED: 25 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

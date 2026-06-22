@@ -125,23 +125,31 @@ export function buildAppGraph(appDir) {
   // Map: script rel-path → component name (for linking .brs → component)
   const scriptToComponent = new Map();
 
-  // ── 1. Scan XML files ─────────────────────────────────────────────────────
+  // ── 1. First pass: collect app-defined component names ────────────────────
+  // Anything not in this set is an SDK built-in and should be excluded.
 
   const xmlFiles = findFiles(appDir, '.xml');
+  const parsedXmls = [];
+
   for (const xmlPath of xmlFiles) {
     const xmlText = fs.readFileSync(xmlPath, 'utf8');
     const comp = parseXml(xmlText, xmlPath);
     if (!comp || !comp.name) continue;
+    parsedXmls.push(comp);
+    components.set(comp.name, comp);
+  }
 
+  const appComponents = new Set(components.keys());
+
+  // ── 2. Second pass: build graph (app nodes only) ──────────────────────────
+
+  for (const comp of parsedXmls) {
     const compId = `comp:${comp.name}`;
     addNode(G, compId, { type: 'component', label: comp.name });
-    components.set(comp.name, comp);
 
-    // extends edge
-    if (comp.extends) {
-      const parentId = `comp:${comp.extends}`;
-      addNode(G, parentId, { type: 'component', label: comp.extends });
-      addEdge(G, compId, parentId, { relation: 'extends' });
+    // extends — only add edge if parent is also app-defined
+    if (comp.extends && appComponents.has(comp.extends)) {
+      addEdge(G, compId, `comp:${comp.extends}`, { relation: 'extends' });
     }
 
     // interface fields
@@ -152,10 +160,10 @@ export function buildAppGraph(appDir) {
       addEdge(G, compId, fieldId, { relation: 'has_field' });
     }
 
-    // child components
+    // child components — only app-defined ones
     for (const child of comp.children) {
+      if (!appComponents.has(child)) continue;
       const childId = `comp:${child}`;
-      addNode(G, childId, { type: 'component', label: child });
       addEdge(G, compId, childId, { relation: 'contains' });
     }
 

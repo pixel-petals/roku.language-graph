@@ -4,7 +4,7 @@
 
 ## Key Concepts
 
-- **LoadingIndicator** (23 connections)
+- **LoadingIndicator** (22 connections)
 - **backgroundColor (color)** (1 connections)
 - **backgroundOpacity (float)** (1 connections)
 - **backgroundUri (string)** (1 connections)
@@ -31,7 +31,7 @@
 
 ## Audit Trail
 
-- EXTRACTED: 42 (100%)
+- EXTRACTED: 41 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

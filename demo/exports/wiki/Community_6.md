@@ -1,11 +1,10 @@
 # Community 6
 
-> 9 nodes
+> 8 nodes
 
 ## Key Concepts
 
-- **UriHandler** (10 connections)
-- **Task** (1 connections)
+- **UriHandler** (9 connections)
 - **ContentCache (node)** (1 connections)
 - **content (node)** (1 connections)
 - **contentSet (boolean)** (1 connections)
@@ -20,7 +19,7 @@
 
 ## Audit Trail
 
-- EXTRACTED: 18 (100%)
+- EXTRACTED: 16 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

@@ -77,7 +77,7 @@ console.log('');
 
 console.log('Writing graph.json...');
 const graphJsonPath = path.join(stateDir, 'graph.json');
-toJson(G, communities, graphJsonPath);
+toJson(G, communities, graphJsonPath, { force: true });
 console.log(`  → ${graphJsonPath}`);
 
 console.log('Generating wiki pages...');

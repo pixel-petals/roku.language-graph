@@ -1,11 +1,10 @@
 # Community 8
 
-> 5 nodes
+> 4 nodes
 
 ## Key Concepts
 
-- **Group** (4 connections)
-- **customItem** (4 connections)
+- **customItem** (3 connections)
 - **height (float)** (1 connections)
 - **itemContent (node)** (1 connections)
 - **width (float)** (1 connections)
@@ -16,7 +15,7 @@
 
 ## Audit Trail
 
-- EXTRACTED: 11 (100%)
+- EXTRACTED: 6 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

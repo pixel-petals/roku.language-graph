@@ -1,11 +1,10 @@
 # Community 7
 
-> 8 nodes
+> 7 nodes
 
 ## Key Concepts
 
-- **Description** (8 connections)
-- **LayoutGroup** (1 connections)
+- **Description** (7 connections)
 - **Content (node)** (1 connections)
 - **Description (node)** (1 connections)
 - **ReleaseDate (node)** (1 connections)
@@ -19,7 +18,7 @@
 
 ## Audit Trail
 
-- EXTRACTED: 15 (100%)
+- EXTRACTED: 13 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 

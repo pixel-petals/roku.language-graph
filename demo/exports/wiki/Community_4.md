@@ -1,17 +1,15 @@
 # Community 4
 
-> 11 nodes
+> 9 nodes
 
 ## Key Concepts
 
-- **HeroScreen** (10 connections)
-- **FadingBackground** (4 connections)
-- **Rectangle** (1 connections)
-- **RowList** (1 connections)
-- **ShadeOpacity (float)** (1 connections)
-- **uri (string)** (1 connections)
+- **HeroScene** (7 connections)
+- **DetailsScreen** (5 connections)
 - **content (node)** (1 connections)
-- **focusedContent (node)** (1 connections)
+- **itemSelected (integer)** (1 connections)
+- **videoPlayerVisible (bool)** (1 connections)
+- **content (node)** (1 connections)
 - **itemFocused (intarray)** (1 connections)
 - **numBadRequests (integer)** (1 connections)
 - **rowItemSelected (intarray)** (1 connections)
@@ -22,7 +20,7 @@
 
 ## Audit Trail
 
-- EXTRACTED: 23 (100%)
+- EXTRACTED: 19 (100%)
 - INFERRED: 0 (0%)
 - AMBIGUOUS: 0 (0%)
 
