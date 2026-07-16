@@ -122,13 +122,15 @@ class GraphWriter {
         const upsertNode = this.db.prepare(`
       INSERT OR REPLACE INTO nodes
         (kind, name, qualified_name, file_path, line_start, line_end,
-         language, parent_name, params, extra, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         language, parent_name, params, return_type, modifiers, is_test,
+         file_hash, extra, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
         const insertEdge = this.db.prepare(`
       INSERT INTO edges
-        (kind, source_qualified, target_qualified, file_path, line, extra, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+        (kind, source_qualified, target_qualified, file_path, line, extra,
+         confidence, confidence_tier, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
         const commit = this.db.transaction(() => {
             // Clear stale edges for every file we're about to rewrite
@@ -136,10 +138,10 @@ class GraphWriter {
                 deleteEdgesByFile.run(fp);
             }
             for (const n of this.pendingNodes) {
-                upsertNode.run(n.kind, n.name, n.qualifiedName, n.filePath, n.lineStart, n.lineEnd, n.language, n.parentName, n.params, JSON.stringify(n.extra), now);
+                upsertNode.run(n.kind, n.name, n.qualifiedName, n.filePath, n.lineStart, n.lineEnd, n.language, n.parentName, n.params, n.returnType, n.modifiers, n.isTest ? 1 : 0, n.fileHash, JSON.stringify(n.extra), now);
             }
             for (const e of this.pendingEdges) {
-                insertEdge.run(e.kind, e.sourceQualified, e.targetQualified, e.filePath, e.line, JSON.stringify(e.extra), now);
+                insertEdge.run(e.kind, e.sourceQualified, e.targetQualified, e.filePath, e.line, JSON.stringify(e.extra), e.confidence, e.confidenceTier, now);
             }
         });
         commit();

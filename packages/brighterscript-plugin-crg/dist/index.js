@@ -59,6 +59,7 @@ function relativizePaths(data, rootDir) {
             ...n,
             file_path: stripRoot(n.file_path, prefix),
             qualified_name: rel(n.qualified_name),
+            parent_name: n.parent_name ? rel(n.parent_name) : n.parent_name,
         })),
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         edges: data.edges.map(e => ({
@@ -87,11 +88,16 @@ _bscOptions) {
             const writer = new writer_1.GraphWriter(dbPath);
             try {
                 for (const file of Object.values(event.program.files)) {
-                    if (!(0, brighterscript_1.isBrsFile)(file))
-                        continue;
-                    const { nodes, edges } = (0, extractor_1.extractFile)(file);
-                    writer.upsertNodes(nodes);
-                    writer.upsertEdges(edges);
+                    if ((0, brighterscript_1.isBrsFile)(file)) {
+                        const { nodes, edges } = (0, extractor_1.extractBrsFile)(file, event.program);
+                        writer.upsertNodes(nodes);
+                        writer.upsertEdges(edges);
+                    }
+                    else if ((0, brighterscript_1.isXmlFile)(file)) {
+                        const { nodes, edges } = (0, extractor_1.extractXmlFile)(file, event.program);
+                        writer.upsertNodes(nodes);
+                        writer.upsertEdges(edges);
+                    }
                 }
             }
             finally {
