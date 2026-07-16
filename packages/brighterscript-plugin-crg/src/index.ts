@@ -1,8 +1,8 @@
 import type { AfterValidateProgramEvent, Plugin, PluginFactoryOptions } from 'brighterscript';
-import { isBrsFile } from 'brighterscript';
+import { isBrsFile, isXmlFile } from 'brighterscript';
 import * as fs from 'fs';
 import * as path from 'path';
-import { extractFile } from './extractor';
+import { extractBrsFile, extractXmlFile } from './extractor';
 import { GraphWriter } from './writer';
 
 export interface PluginOptions {
@@ -37,6 +37,7 @@ function relativizePaths(
       ...n,
       file_path: stripRoot(n.file_path as string, prefix),
       qualified_name: rel(n.qualified_name as string),
+      parent_name: n.parent_name ? rel(n.parent_name as string) : n.parent_name,
     })),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     edges: (data.edges as any[]).map(e => ({
@@ -74,10 +75,15 @@ export default function crgPlugin(
       const writer = new GraphWriter(dbPath);
       try {
         for (const file of Object.values(event.program.files)) {
-          if (!isBrsFile(file)) continue;
-          const { nodes, edges } = extractFile(file);
-          writer.upsertNodes(nodes);
-          writer.upsertEdges(edges);
+          if (isBrsFile(file)) {
+            const { nodes, edges } = extractBrsFile(file, event.program);
+            writer.upsertNodes(nodes);
+            writer.upsertEdges(edges);
+          } else if (isXmlFile(file)) {
+            const { nodes, edges } = extractXmlFile(file, event.program);
+            writer.upsertNodes(nodes);
+            writer.upsertEdges(edges);
+          }
         }
       } finally {
         writer.flush();

@@ -97,14 +97,16 @@ export class GraphWriter {
     const upsertNode = this.db.prepare(`
       INSERT OR REPLACE INTO nodes
         (kind, name, qualified_name, file_path, line_start, line_end,
-         language, parent_name, params, extra, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         language, parent_name, params, return_type, modifiers, is_test,
+         file_hash, extra, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
     const insertEdge = this.db.prepare(`
       INSERT INTO edges
-        (kind, source_qualified, target_qualified, file_path, line, extra, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+        (kind, source_qualified, target_qualified, file_path, line, extra,
+         confidence, confidence_tier, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
     const commit = this.db.transaction(() => {
@@ -124,6 +126,10 @@ export class GraphWriter {
           n.language,
           n.parentName,
           n.params,
+          n.returnType,
+          n.modifiers,
+          n.isTest ? 1 : 0,
+          n.fileHash,
           JSON.stringify(n.extra),
           now,
         );
@@ -137,6 +143,8 @@ export class GraphWriter {
           e.filePath,
           e.line,
           JSON.stringify(e.extra),
+          e.confidence,
+          e.confidenceTier,
           now,
         );
       }
