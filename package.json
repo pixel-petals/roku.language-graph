@@ -7,11 +7,8 @@
     "roku-graphify": "src/cli/analyze-file.js"
   },
   "scripts": {
-    "build-grammar": "cd grammars/brightscript && npx tree-sitter generate && npx node-gyp configure && npx node-gyp build",
-    "demo": "node src/cli/analyze-file.js examples/demo.brs --format summary",
-    "demo:dot": "node src/cli/analyze-file.js examples/demo.brs --format dot",
-    "demo:json": "node src/cli/analyze-file.js examples/demo.brs --format json",
-    "test": "node src/cli/analyze-file.js examples/demo.brs --format json && node -e \"require('./src/app/graphify')\" && echo 'All checks passed'",
+    "build-grammar": "cd packages/tree-sitter/brightscript && npx tree-sitter generate && npx node-gyp configure && npx node-gyp build",
+    "test": "node -e \"require('./src/app/graphify')\" && echo 'All checks passed'",
     "generate-sdk-exports": "node src/cli/generate-exports.mjs",
     "generate-ebnf": "node src/ebnf/generate.mjs",
     "analyze-app": "node src/cli/analyze-app.mjs"

@@ -5,7 +5,10 @@ BrightScript code graph analysis tool powered by [tree-sitter](https://tree-sitt
 ## How it fits together
 
 ```
-grammars/brightscript/   Tree-sitter grammar for BrightScript (Rust, native Node addon)
+packages/
+  tree-sitter/brightscript/   Tree-sitter grammar for BrightScript (Rust, native Node addon)
+  bsc-graph/                  BrighterScript compiler plugin, extracts a code graph into a
+                               code-review-graph SQLite database
 src/
   brightscript/          Parses a single file with the grammar into a function/call graph
   app/                   Builds a whole-app graph (multiple files) and bridges to @sentropic/graphify
@@ -13,17 +16,13 @@ src/
                           into built-in Roku interfaces (roScreen, roMessagePort, ...)
   ebnf/                  Generates EBNF grammar documentation
   cli/                   Command-line entry points
-packages/
-  brighterscript-plugin-crg/   BrighterScript compiler plugin, extracts a code graph into a
-                                code-review-graph SQLite database
-examples/                Sample .brs files used for demos/tests
-demo/roku-app/           A full sample Roku app (see its own README) for exercising analyze-app
+examples/roku-app/       A full sample Roku app (see its own README) for exercising analyze-app
 exports/                 Generated artifacts: EBNF grammars, the Roku SDK reference graph, wiki/studio output
 ```
 
 ### Parsing pipeline
 
-1. **`grammars/brightscript/`** — the tree-sitter grammar itself (`grammar.js`, compiled to a native Node addon via `node-gyp`). Has its own `README.md`, `QUICKSTART.md`, and `GRAPHIFY.md` with grammar-specific details.
+1. **`packages/tree-sitter/brightscript/`** — the tree-sitter grammar itself (`grammar.js`, compiled to a native Node addon via `node-gyp`). Has its own `README.md`, `QUICKSTART.md`, and `GRAPHIFY.md` with grammar-specific details.
 2. **`src/brightscript/`** — `parser.js` wraps the compiled grammar; `queries.js` runs tree-sitter queries to extract functions, calls, assignments, and types; `graph.js` (`BrightScriptGraph`) assembles query results into a function/call graph for one file; `index.js` exposes `analyze(code)` returning `{ tree, graph, functions, calls, assignments, types }`.
 3. **`src/app/graphify.js`** — bridges a single file's tree-sitter graph into a [graphology](https://graphology.github.io/)-compatible payload consumable by [`@sentropic/graphify`](https://www.npmjs.com/package/@sentropic/graphify).
 4. **`src/app/graph.mjs`** — `buildAppGraph(appDir)` walks a whole Roku app directory (source + components) into one combined graph.
@@ -52,10 +51,7 @@ Or via npm scripts:
 | Script | Description |
 |---|---|
 | `npm run build-grammar` | Compile the tree-sitter BrightScript grammar (`tree-sitter generate` + `node-gyp`) |
-| `npm run demo` | Run `analyze-file.js` on `examples/demo.brs`, summary format |
-| `npm run demo:dot` | Same, DOT format |
-| `npm run demo:json` | Same, JSON format |
-| `npm run test` | Smoke test: analyze the demo file and require the app module |
+| `npm run test` | Smoke test: require the app module |
 | `npm run generate-sdk-exports` | Regenerate `exports/` (Roku SDK graph, wiki, static studio) |
 | `npm run generate-ebnf` | Regenerate EBNF grammar files in `exports/` |
 | `npm run analyze-app` | Run `analyze-app.mjs` |
@@ -78,13 +74,13 @@ The globally installed CLI binary is `roku-graphify` (see `bin` in `package.json
 
 ## Packages
 
-### `packages/brighterscript-plugin-crg`
+### `packages/bsc-graph`
 
 A [BrighterScript](https://github.com/rokucommunity/brighterscript) v1 compiler plugin (TypeScript) that extracts a code graph directly from BrighterScript's own compilation pipeline and writes it into a `code-review-graph` SQLite database (via `better-sqlite3`), for use by the [code-review-graph](https://www.npmjs.com/package/@sentropic/graphify) tooling. Build with `npm run build` inside that package (runs `tsc`).
 
 ## Demo app
 
-`demo/roku-app/` is a complete sample Roku app (source, components, manifest) — see `demo/roku-app/README.md` for details. Use it as input to `analyze-app.mjs` to see the full app-graph pipeline end to end.
+`examples/roku-app/` is a complete sample Roku app (source, components, manifest) — see `examples/roku-app/README.md` for details. Use it as input to `analyze-app.mjs` to see the full app-graph pipeline end to end.
 
 ## Configuration
 

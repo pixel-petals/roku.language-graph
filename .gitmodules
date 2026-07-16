@@ -1,0 +1,4 @@
+[submodule "roku-sdk"]
+	path = modules/roku-sdk
+	url = git@github.com:rokudev/dev-doc.git
+	branch = v2.0
