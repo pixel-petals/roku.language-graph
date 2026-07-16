@@ -6,7 +6,11 @@
  *
  * Node types:
  *   component  — SceneGraph component defined in an XML file
- *   function   — BrightScript function or sub
+ *   function   — BrightScript function or sub. When a `<file>.map` sidecar
+ *                exists next to its transpiled .brs (e.g. output staged by
+ *                a BrighterScript build), `sourceFile`/`sourceLine` resolve
+ *                through the map back to the original .bs; otherwise they
+ *                fall back to the transpiled `file`/line.
  *   field      — Interface field exposed by a component
  *   sdk_ref    — Reference stub pointing to a node in the SDK graph.
  *                Carries a `sdkId` attribute (e.g. "sg:Scene", "ro:roSGScreen",
@@ -25,12 +29,40 @@
 import fs from 'fs';
 import path from 'path';
 import { createRequire } from 'module';
+import { SourceMapConsumer } from 'source-map';
 import { resolveSDKNode, resolveSDKMethod, sdkGraphAvailable } from '../sdk/refs.mjs';
 
 const require = createRequire(import.meta.url);
 const Graph = require('graphology').default || require('graphology');
 const { parse } = require('../brightscript/parser.js');
 const { runQuery, QUERIES } = require('../brightscript/queries.js');
+
+/**
+ * Load a `<brsPath>.map` file next to a transpiled .brs, if present.
+ * Returns a sync-usable SourceMapConsumer, or null if no map exists.
+ */
+function loadSourceMap(brsPath) {
+  const mapPath = `${brsPath}.map`;
+  if (!fs.existsSync(mapPath)) return null;
+  try {
+    const rawMap = JSON.parse(fs.readFileSync(mapPath, 'utf8'));
+    return new SourceMapConsumer(rawMap);
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Resolve a 1-based line in transpiled output back to the original source
+ * file + line via a source map. Falls back to the transpiled location
+ * (with sourceFile defaulted to relPath) when no map or mapping is found.
+ */
+function resolveOriginalLocation(consumer, relPath, line) {
+  if (!consumer) return { sourceFile: relPath, sourceLine: line };
+  const pos = consumer.originalPositionFor({ line, column: 0 });
+  if (pos.source == null || pos.line == null) return { sourceFile: relPath, sourceLine: line };
+  return { sourceFile: pos.source, sourceLine: pos.line };
+}
 
 // ── XML helpers ───────────────────────────────────────────────────────────────
 
@@ -238,18 +270,23 @@ export function buildAppGraph(appDir) {
       const funcId = `fn:${relPath}:${f.text}`;
       appFuncIds.set(f.text.toLowerCase(), funcId);
     }
-    parsedBrs.push({ brsPath, relPath, source, tree, funcs });
+    const sourceMap = loadSourceMap(brsPath);
+    parsedBrs.push({ brsPath, relPath, source, tree, funcs, sourceMap });
   }
 
   // ── 3. Second BRS pass: build nodes and edges ─────────────────────────────
 
-  for (const { relPath, source, tree, funcs } of parsedBrs) {
+  for (const { relPath, source, tree, funcs, sourceMap } of parsedBrs) {
     const ownerComponent = scriptToComponent.get(relPath) || null;
 
     // Add function nodes
     for (const f of funcs) {
       const funcId = `fn:${relPath}:${f.text}`;
-      addNode(G, funcId, { type: 'function', label: f.text, file: relPath });
+      const { sourceFile, sourceLine } = resolveOriginalLocation(sourceMap, relPath, f.startLine);
+      addNode(G, funcId, {
+        type: 'function', label: f.text, file: relPath,
+        sourceFile, sourceLine,
+      });
 
       if (ownerComponent) {
         addEdge(G, `comp:${ownerComponent}`, funcId, { relation: 'defines' });

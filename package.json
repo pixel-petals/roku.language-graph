@@ -11,7 +11,7 @@
     "demo": "node src/cli/analyze-file.js examples/demo.brs --format summary",
     "demo:dot": "node src/cli/analyze-file.js examples/demo.brs --format dot",
     "demo:json": "node src/cli/analyze-file.js examples/demo.brs --format json",
-    "test": "node src/cli/analyze-file.js examples/demo.brs --format json && node -e \"require('./src/app/graphify')\" && echo 'All checks passed'",
+    "test": "node src/cli/analyze-file.js examples/demo.brs --format json && node -e \"require('./src/app/graphify')\" && node test/source-map-resolution.test.mjs && echo 'All checks passed'",
     "generate-sdk-exports": "node src/cli/generate-exports.mjs",
     "generate-ebnf": "node src/ebnf/generate.mjs",
     "analyze-app": "node src/cli/analyze-app.mjs"
@@ -20,6 +20,7 @@
     "@sentropic/graphify": "^0.15.0",
     "graphology": "^0.26.0",
     "graphology-types": "^0.24.7",
+    "source-map": "^0.6.1",
     "tree-sitter": "^0.20.6"
   },
   "keywords": [
