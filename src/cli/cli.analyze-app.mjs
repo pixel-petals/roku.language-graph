@@ -5,7 +5,7 @@
  * runs community detection, and exports wiki pages + a static HTML studio.
  *
  * Usage:
- *   node src/analyze-app.mjs <app-dir> [output-dir]
+ *   node src/cli/cli.analyze-app.mjs <app-dir> [output-dir]
  *
  * Outputs (default to <app-dir>/graphify-output/):
  *   graph.json       — raw graph data
@@ -15,14 +15,14 @@
 
 import fs from 'fs';
 import path from 'path';
-import { buildAppGraph } from '../app/graph.mjs';
+import { buildAppGraph } from '../parse/roku-app/roku-app.graph.mjs';
 import { cluster, toWiki, toJson, buildStaticStudio } from '@sentropic/graphify';
 
 // ── Args ──────────────────────────────────────────────────────────────────────
 
 const appDir = process.argv[2];
 if (!appDir) {
-  console.error('Usage: node src/analyze-app.mjs <app-dir> [output-dir]');
+  console.error('Usage: node src/cli/cli.analyze-app.mjs <app-dir> [output-dir]');
   console.error('');
   console.error('  <app-dir>    Path to a Roku app (must contain source/ and components/)');
   console.error('  [output-dir] Where to write outputs (default: <app-dir>/graphify-output)');

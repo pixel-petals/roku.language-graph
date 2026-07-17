@@ -8,13 +8,10 @@
  *   exports/studio/     - Self-contained HTML studio (open index.html in browser)
  */
 
-import { createRequire } from 'module';
 import { cluster, toWiki, toJson, buildStaticStudio } from '@sentropic/graphify';
-import { loadRokuSdkGraph } from '../sdk/graph.js';
+import { loadRokuSdkGraph } from '../parse/roku-sdk/roku-sdk.graph.js';
 import fs from 'fs';
 import path from 'path';
-
-const require = createRequire(import.meta.url);
 
 const sdkDocsPath = process.argv[2] || '/tmp/roku-sdk-docs';
 const exportsDir = path.resolve('exports');

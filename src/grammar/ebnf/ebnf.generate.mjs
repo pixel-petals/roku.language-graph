@@ -9,24 +9,24 @@
  *
  * Exits with code 1 if validation finds errors.
  *
- * Usage: node src/ebnf/generate.mjs [<sdk-docs-path>]
+ * Usage: node src/grammar/ebnf/ebnf.generate.mjs [<sdk-docs-path>]
  */
 
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { parseGrammar }           from './grammar-parser.mjs';
-import { grammarToEbnf }          from './ebnf-serializer.mjs';
-import { sdkToEbnf }              from './sdk-to-ebnf.mjs';
+import { parseGrammar }           from './ebnf.grammar-parser.mjs';
+import { grammarToEbnf }          from './ebnf.serializer.mjs';
+import { sdkToEbnf }              from './ebnf.sdk.mjs';
 import {
   validateGrammarAst,
   crossValidateEbnfText,
   formatReport,
-} from './validate.mjs';
+} from './ebnf.validate.mjs';
 
 const __dirname   = path.dirname(fileURLToPath(import.meta.url));
 const sdkDocsPath = process.argv[2] || '/tmp/roku-sdk-docs';
-const exportsDir  = path.resolve(__dirname, '../../exports');
+const exportsDir  = path.resolve(__dirname, '../../../exports');
 
 fs.mkdirSync(exportsDir, { recursive: true });
 

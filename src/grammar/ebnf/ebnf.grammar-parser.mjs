@@ -13,7 +13,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const GRAMMAR_PATH = path.resolve(__dirname, '../../packages/tree-sitter/brightscript/grammar.js');
+const GRAMMAR_PATH = path.resolve(__dirname, '../../../packages/graphify/grammar.js');
 
 // ── AST node constructors ─────────────────────────────────────────────────────
 

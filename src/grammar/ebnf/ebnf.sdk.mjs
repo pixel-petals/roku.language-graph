@@ -10,7 +10,7 @@
  * type system — not runtime syntax, but the valid names and signatures.
  */
 
-import { buildRokuSdkGraph } from '../sdk/graph.js';
+import { buildRokuSdkGraph } from '../../parse/roku-sdk/roku-sdk.graph.js';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 

@@ -163,7 +163,7 @@ export function grammarToEbnf(parsed) {
 
   lines.push(`(* ═══════════════════════════════════════════════════════════════`);
   lines.push(`   BrightScript Language Grammar — EBNF`);
-  lines.push(`   Derived from packages/tree-sitter/brightscript grammar.js`);
+  lines.push(`   Derived from packages/graphify/grammar.js`);
   lines.push(`   W3C-style notation: , = seq  | = alt  [ ] = opt  { } = repeat`);
   lines.push(`   ═══════════════════════════════════════════════════════════════ *)`);
   lines.push('');

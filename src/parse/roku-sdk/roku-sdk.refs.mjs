@@ -1,5 +1,5 @@
 /**
- * sdk-refs.mjs
+ * roku-sdk.refs.mjs
  *
  * Loads the pre-built SDK graph and provides lightweight lookups for
  * connecting an app graph to the SDK graph by reference.
@@ -15,7 +15,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const SDK_GRAPH_PATH = path.resolve(__dirname, '../../exports/studio/graph.json');
+const SDK_GRAPH_PATH = path.resolve(__dirname, '../../../exports/studio/graph.json');
 
 let _index = null;
 
