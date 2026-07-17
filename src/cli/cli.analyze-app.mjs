@@ -20,7 +20,7 @@ import path from 'path';
 import { parseRokuApp } from '../parse/roku-app/roku-app.parser.mjs';
 import { openGraphStore } from '../database/database.store.mjs';
 import { toGraphologyGraph, detectCommunities, assignCommunities } from '../database/database.graph.mjs';
-import { loadCostModel, benchmarkOpNodes } from '../database/database.benchmark.mjs';
+import { loadCostModel } from '../database/database.benchmark.mjs';
 import { toJson } from '../transform/json/json.transform.mjs';
 import { toWiki } from '../transform/md/md.transform.mjs';
 import { buildStaticStudio } from '@sentropic/graphify';
@@ -57,6 +57,10 @@ console.log(`Analyzing Roku app: ${resolvedApp}`);
 console.log('');
 
 console.log('Loading benchmark cost model...');
+// Read-only here — only used to bake cost estimates into this app's own
+// CALLS edges (extra.estimatedMicroseconds). Raw BenchmarkOp rows live
+// only in the reference database (cli.generate-sdk-exports.mjs), kept
+// fully separate so they never pollute this app's own graph/communities.
 const costModel = loadCostModel();
 const measuredCount = costModel.rows.filter(r => r.microsecondsPerOp != null).length;
 console.log(`  ${costModel.rows.length} known operations (${measuredCount} measured)`);
@@ -67,7 +71,7 @@ const parsed = parseRokuApp(resolvedApp, { costModel });
 console.log('Storing graph in database...');
 const dbPath = path.join(stateDir, 'graph.pgdata');
 const store = await openGraphStore(dbPath);
-await store.upsertNodes([...parsed.nodes, ...benchmarkOpNodes(costModel)]);
+await store.upsertNodes(parsed.nodes);
 await store.upsertEdges(parsed.edges);
 await store.flush();
 console.log(`  → ${dbPath}`);
