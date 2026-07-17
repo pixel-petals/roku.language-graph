@@ -16,7 +16,7 @@
   "dependencies": {
     "@electric-sql/pglite": "^0.2.17",
     "@sentropic/graphify": "^0.15.0",
-    "brighterscript": "next",
+    "brighterscript": "1.0.0-alpha.52",
     "graphology": "^0.26.0",
     "graphology-types": "^0.24.7"
   },
