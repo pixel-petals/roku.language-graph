@@ -7,4 +7,9 @@ exports/.graphify-state/
 # code-review-graph generated files
 .code-review-graph/
 
-modules/
+# Ignore submodule *contents*, not the submodule directories themselves —
+# VSCode's git scanner walks a freshly-cloned submodule's working tree as
+# plain untracked files before it recognizes the .git boundary, which can
+# freeze the UI on a large submodule. A bare `modules/` ignores the
+# top-level path too, which blocks `git submodule add` without -f.
+modules/*/**
