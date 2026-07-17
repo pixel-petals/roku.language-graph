@@ -225,40 +225,58 @@ function collectLabels(statements, out) {
   }
 }
 
+/**
+ * Rudimentary Big-O label from loop nesting depth alone — not a real
+ * algorithmic analysis (loop bounds, early exits, and actual behavior
+ * aren't accounted for), just shape. A fallback tier for when no matching
+ * benchmark measurement is available (see database.benchmark.mjs).
+ */
+function bigOFromLoopDepth(depth) {
+  if (depth === 0) return 'O(1)';
+  if (depth === 1) return 'O(n)';
+  if (depth === 2) return 'O(n^2)';
+  return `O(n^${depth})`;
+}
+
 function countComplexity(bodyStatements) {
   let decisionPoints = 0;
   let maxDepth = 0;
+  let maxLoopDepth = 0;
   let exitPoints = 0;
 
-  function walk(statements, depth) {
+  function walk(statements, depth, loopDepth) {
     maxDepth = Math.max(maxDepth, depth);
+    maxLoopDepth = Math.max(maxLoopDepth, loopDepth);
     for (const stmt of statements) {
       const kind = stmt.constructor.name;
       if (kind === 'IfStatement') {
         decisionPoints++;
-        walk(stmt.thenBranch.statements, depth + 1);
+        walk(stmt.thenBranch.statements, depth + 1, loopDepth);
         if (stmt.elseBranch) {
-          if (stmt.elseBranch.constructor.name === 'IfStatement') walk([stmt.elseBranch], depth + 1);
-          else walk(stmt.elseBranch.statements, depth + 1);
+          if (stmt.elseBranch.constructor.name === 'IfStatement') walk([stmt.elseBranch], depth + 1, loopDepth);
+          else walk(stmt.elseBranch.statements, depth + 1, loopDepth);
         }
       } else if (kind === 'ForStatement' || kind === 'ForEachStatement' || kind === 'WhileStatement') {
         decisionPoints++;
-        walk(stmt.body.statements, depth + 1);
+        walk(stmt.body.statements, depth + 1, loopDepth + 1);
       } else if (kind === 'TryCatchStatement') {
         decisionPoints++;
-        walk(stmt.tryBranch.statements, depth + 1);
-        walk(stmt.catchStatement.catchBranch.statements, depth + 1);
+        walk(stmt.tryBranch.statements, depth + 1, loopDepth);
+        walk(stmt.catchStatement.catchBranch.statements, depth + 1, loopDepth);
       } else if (kind === 'ReturnStatement' || kind === 'ExitStatement') {
         exitPoints++;
       }
     }
   }
-  walk(bodyStatements, 0);
+  walk(bodyStatements, 0, 0);
 
   return {
     cyclomaticComplexity: 1 + decisionPoints,
     maxNestingDepth: maxDepth,
     exitPointCount: Math.max(exitPoints, 1),
+    loopNestingDepth: maxLoopDepth,
+    estimatedBigO: bigOFromLoopDepth(maxLoopDepth),
+    bigOBasis: 'loop-nesting-depth',
   };
 }
 

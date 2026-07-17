@@ -25,6 +25,7 @@ import * as path from 'path';
 import { posOf, endLineOf, exprText, safe, classifyValueKind } from './roku-app.ast-utils.mjs';
 import { buildFunctionCfg } from './roku-app.cfg.mjs';
 import { buildFunctionDfg } from './roku-app.dfg.mjs';
+import { estimateMicroseconds } from '../../database/database.benchmark.mjs';
 
 function fileHash(contents) {
   return crypto.createHash('sha1').update(contents).digest('hex');
@@ -322,7 +323,7 @@ function extractImports(file, fp, fileQname, program, addEdge) {
   }
 }
 
-function extractCallsAndWrites(ast, fp, scope, addEdge) {
+function extractCallsAndWrites(ast, fp, scope, addEdge, costModel) {
   ast.walk(createVisitor({
     CallExpression: (expr) => {
       if (isNewExpression(expr.parent)) return;
@@ -330,7 +331,16 @@ function extractCallsAndWrites(ast, fp, scope, addEdge) {
       if (!calleeText) return;
       const site = enclosingScope(expr, fp, scope);
       const resolved = resolveCallTarget(expr.callee, calleeText, site.classChain, scope);
-      addEdge({ kind: 'CALLS', sourceQualified: site.qname, targetQualified: resolved.target, filePath: fp, line: posOf(expr).line, extra: { col: posOf(expr).col, argCount: expr.args?.length ?? 0, crossesNodeBoundary: isCallFuncInvocation(calleeText) }, confidence: resolved.confidence, confidenceTier: resolved.tier });
+      const costEstimate = costModel ? estimateMicroseconds(calleeText, costModel) : null;
+      addEdge({
+        kind: 'CALLS', sourceQualified: site.qname, targetQualified: resolved.target, filePath: fp, line: posOf(expr).line,
+        extra: {
+          col: posOf(expr).col, argCount: expr.args?.length ?? 0, crossesNodeBoundary: isCallFuncInvocation(calleeText),
+          estimatedMicroseconds: costEstimate?.microseconds ?? null,
+          benchmarkOpQualifiedName: costEstimate?.benchmarkOpQualifiedName ?? null,
+        },
+        confidence: resolved.confidence, confidenceTier: resolved.tier,
+      });
     },
     NewExpression: (expr) => {
       const site = enclosingScope(expr, fp, scope);
@@ -379,11 +389,26 @@ function extractCallsAndWrites(ast, fp, scope, addEdge) {
   }), { walkMode: WalkMode.visitAllRecursive });
 }
 
+/** Tag any Function/Method whose CALLS edges include a direct self-call as recursive, overriding its loop-nesting-based Big-O guess (which says nothing about recursive cost). */
+function tagRecursion(nodes, edges) {
+  const byQname = new Map(nodes.map(n => [n.qualifiedName, n]));
+  for (const edge of edges) {
+    if (edge.kind !== 'CALLS' || edge.sourceQualified !== edge.targetQualified) continue;
+    const node = byQname.get(edge.sourceQualified);
+    if (!node) continue;
+    node.extra.recursive = true;
+    node.extra.estimatedBigO = 'recursive (unbounded)';
+    node.extra.bigOBasis = 'recursion';
+  }
+}
+
 /**
  * Extract nodes/edges for a single BrsFile: namespaces, functions, classes,
  * interfaces, enums, consts, imports, calls, instantiations, writes.
+ * @param {object} file @param {object} program
+ * @param {object} [costModel] optional benchmark cost model (see database.benchmark.mjs) for best-effort CALLS cost estimates
  */
-export function extractBrsFile(file, program) {
+export function extractBrsFile(file, program, costModel) {
   const nodes = [];
   const edges = [];
   const seenEdges = new Set();
@@ -419,7 +444,8 @@ export function extractBrsFile(file, program) {
   extractClasses(ast, fp, fileQname, lang, scope, lines, addNode, addEdge);
   extractInterfaces(ast, fp, fileQname, lang, scope, lines, addNode, addEdge);
   extractEnumsAndConsts(ast, fp, fileQname, lang, lines, addNode, addEdge);
-  extractCallsAndWrites(ast, fp, scope, addEdge);
+  extractCallsAndWrites(ast, fp, scope, addEdge, costModel);
+  tagRecursion(nodes, edges);
 
   return { nodes, edges };
 }

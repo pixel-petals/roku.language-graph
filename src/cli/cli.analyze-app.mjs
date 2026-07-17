@@ -20,6 +20,7 @@ import path from 'path';
 import { parseRokuApp } from '../parse/roku-app/roku-app.parser.mjs';
 import { openGraphStore } from '../database/database.store.mjs';
 import { toGraphologyGraph, detectCommunities, assignCommunities } from '../database/database.graph.mjs';
+import { loadCostModel, benchmarkOpNodes } from '../database/database.benchmark.mjs';
 import { toJson } from '../transform/json/json.transform.mjs';
 import { toWiki } from '../transform/md/md.transform.mjs';
 import { buildStaticStudio } from '@sentropic/graphify';
@@ -55,13 +56,18 @@ fs.mkdirSync(studioDir, { recursive: true });
 console.log(`Analyzing Roku app: ${resolvedApp}`);
 console.log('');
 
+console.log('Loading benchmark cost model...');
+const costModel = loadCostModel();
+const measuredCount = costModel.rows.filter(r => r.microsecondsPerOp != null).length;
+console.log(`  ${costModel.rows.length} known operations (${measuredCount} measured)`);
+
 console.log('Parsing app...');
-const parsed = parseRokuApp(resolvedApp);
+const parsed = parseRokuApp(resolvedApp, { costModel });
 
 console.log('Storing graph in database...');
 const dbPath = path.join(stateDir, 'graph.pgdata');
 const store = await openGraphStore(dbPath);
-await store.upsertNodes(parsed.nodes);
+await store.upsertNodes([...parsed.nodes, ...benchmarkOpNodes(costModel)]);
 await store.upsertEdges(parsed.edges);
 await store.flush();
 console.log(`  → ${dbPath}`);
