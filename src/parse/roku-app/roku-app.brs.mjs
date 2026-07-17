@@ -11,7 +11,9 @@ import {
   ParseMode,
   WalkMode,
   createVisitor,
+  isCallExpression,
   isClassStatement,
+  isDottedGetExpression,
   isFunctionExpression,
   isFunctionStatement,
   isMethodStatement,
@@ -82,8 +84,29 @@ function paramsJson(func) {
     name: p.tokens?.name?.text ?? '',
     type: typeExpressionText(p.typeExpression) ?? undefined,
     optional: !!p.defaultValue,
+    defaultValue: p.defaultValue ? exprText(p.defaultValue) : undefined,
   }));
   return JSON.stringify(params);
+}
+
+/**
+ * Best-effort doc comment: the contiguous run of `'`-comment lines
+ * immediately above `node`'s start line. Scans raw source text rather than
+ * AST comment nodes, since brighterscript doesn't expose a stable
+ * leading-comment association API to depend on.
+ */
+function docCommentFor(lines, node) {
+  const startLine = node?.location?.range?.start?.line;
+  if (startLine == null) return null;
+  const collected = [];
+  let i = startLine - 1;
+  while (i >= 0) {
+    const line = (lines[i] ?? '').trim();
+    if (!line.startsWith("'")) break;
+    collected.unshift(line.replace(/^'+\s?/, ''));
+    i--;
+  }
+  return collected.length ? collected.join('\n') : null;
 }
 
 function isSubKeyword(func) {
@@ -187,7 +210,7 @@ function containerNode(kind, name, qname, fp, node, endNode, lang, parentName, e
   };
 }
 
-function extractFunctions(ast, fp, fileQname, lang, addNode, addEdge) {
+function extractFunctions(ast, fp, fileQname, lang, lines, addNode, addEdge) {
   ast.walk(createVisitor({
     FunctionStatement: (stmt) => {
       const qname = `${fp}::${stmt.getName(ParseMode.BrighterScript)}`;
@@ -197,13 +220,14 @@ function extractFunctions(ast, fp, fileQname, lang, addNode, addEdge) {
         returnType: typeExpressionText(stmt.func?.returnTypeExpression),
         modifiers: [isSubKeyword(stmt.func) ? 'sub' : 'function'],
         isTest: looksLikeTest(stmt.tokens.name.text, stmt.annotations),
+        doc: docCommentFor(lines, stmt),
       }));
       addEdge(declaredEdge(ns ? `${fp}::${ns}` : fileQname, qname, fp, posOf(stmt).line));
     },
   }), { walkMode: WalkMode.visitStatements });
 }
 
-function extractClassMembers(cls, qname, fp, lang, addNode, addEdge) {
+function extractClassMembers(cls, qname, fp, lang, lines, addNode, addEdge) {
   for (const method of cls.methods) {
     const methodQname = `${qname}.${method.tokens.name.text}`;
     addNode(containerNode('Method', method.tokens.name.text, methodQname, fp, method, method.func, lang, qname, {
@@ -211,6 +235,7 @@ function extractClassMembers(cls, qname, fp, lang, addNode, addEdge) {
       returnType: typeExpressionText(method.func?.returnTypeExpression),
       modifiers: [method.accessModifier?.text ?? 'public', method.tokens.override ? 'override' : null, isSubKeyword(method.func) ? 'sub' : 'function'].filter(Boolean),
       isTest: looksLikeTest(method.tokens.name.text, method.annotations),
+      doc: docCommentFor(lines, method),
     }));
     addEdge(declaredEdge(qname, methodQname, fp, posOf(method).line));
   }
@@ -219,24 +244,27 @@ function extractClassMembers(cls, qname, fp, lang, addNode, addEdge) {
     addNode(containerNode('Field', field.tokens.name.text, fieldQname, fp, field, field, lang, qname, {
       returnType: typeExpressionText(field.typeExpression),
       modifiers: [field.tokens.accessModifier?.text ?? 'public'],
+      doc: docCommentFor(lines, field),
     }));
     addEdge(declaredEdge(qname, fieldQname, fp, posOf(field).line));
   }
 }
 
-function extractClasses(ast, fp, fileQname, lang, scope, addNode, addEdge) {
+function extractClasses(ast, fp, fileQname, lang, scope, lines, addNode, addEdge) {
   ast.walk(createVisitor({
     ClassStatement: (cls) => {
       const qname = `${fp}::${cls.getName(ParseMode.BrighterScript)}`;
       const ns = namespaceOf(cls);
-      addNode(containerNode('Class', cls.tokens.name.text, qname, fp, cls, cls, lang, null, { namespace: ns ?? null }));
+      addNode(containerNode('Class', cls.tokens.name.text, qname, fp, cls, cls, lang, null, {
+        namespace: ns ?? null, doc: docCommentFor(lines, cls),
+      }));
       addEdge(declaredEdge(ns ? `${fp}::${ns}` : fileQname, qname, fp, posOf(cls).line));
 
       if (cls.hasParentClass()) {
         const resolved = resolveClassTarget(cls.parentClassName.expression, ns, scope);
         addEdge({ kind: 'EXTENDS', sourceQualified: qname, targetQualified: resolved.target, filePath: fp, line: posOf(cls).line, extra: {}, confidence: resolved.confidence, confidenceTier: resolved.tier });
       }
-      extractClassMembers(cls, qname, fp, lang, addNode, addEdge);
+      extractClassMembers(cls, qname, fp, lang, lines, addNode, addEdge);
     },
   }), { walkMode: WalkMode.visitStatements });
 }
@@ -252,7 +280,7 @@ function extractNamespaces(ast, fp, fileQname, lang, addNode, addEdge) {
   }), { walkMode: WalkMode.visitStatements });
 }
 
-function extractInterfaces(ast, fp, fileQname, lang, scope, addNode, addEdge) {
+function extractInterfaces(ast, fp, fileQname, lang, scope, lines, addNode, addEdge) {
   ast.walk(createVisitor({
     InterfaceStatement: (iface) => {
       const qname = `${fp}::${iface.fullName}`;
@@ -260,6 +288,7 @@ function extractInterfaces(ast, fp, fileQname, lang, scope, addNode, addEdge) {
       addNode(containerNode('Interface', iface.tokens.name.text, qname, fp, iface, iface, lang, null, {
         fields: iface.fields.map(f => f.tokens.name.text),
         methods: iface.methods.map(m => m.tokens.name.text),
+        doc: docCommentFor(lines, iface),
       }));
       addEdge(declaredEdge(ns ? `${fp}::${ns}` : fileQname, qname, fp, posOf(iface).line));
 
@@ -275,20 +304,21 @@ function extractInterfaces(ast, fp, fileQname, lang, scope, addNode, addEdge) {
   }), { walkMode: WalkMode.visitStatements });
 }
 
-function extractEnumsAndConsts(ast, fp, fileQname, lang, addNode, addEdge) {
+function extractEnumsAndConsts(ast, fp, fileQname, lang, lines, addNode, addEdge) {
   ast.walk(createVisitor({
     EnumStatement: (en) => {
       const qname = `${fp}::${en.fullName}`;
       const ns = namespaceOf(en);
       addNode(containerNode('Enum', en.tokens.name.text, qname, fp, en, en, lang, null, {
         members: en.getMembers().map(m => m.tokens.name.text),
+        doc: docCommentFor(lines, en),
       }));
       addEdge(declaredEdge(ns ? `${fp}::${ns}` : fileQname, qname, fp, posOf(en).line));
     },
     ConstStatement: (c) => {
       const qname = `${fp}::${c.fullName}`;
       const ns = namespaceOf(c);
-      addNode(containerNode('Const', c.tokens.name.text, qname, fp, c, c, lang, null));
+      addNode(containerNode('Const', c.tokens.name.text, qname, fp, c, c, lang, null, { doc: docCommentFor(lines, c) }));
       addEdge(declaredEdge(ns ? `${fp}::${ns}` : fileQname, qname, fp, posOf(c).line));
     },
   }), { walkMode: WalkMode.visitStatements });
@@ -311,7 +341,7 @@ function extractCallsAndWrites(ast, fp, scope, addEdge) {
       if (!calleeText) return;
       const site = enclosingScope(expr, fp, scope);
       const resolved = resolveCallTarget(expr.callee, calleeText, site.classChain, scope);
-      addEdge({ kind: 'CALLS', sourceQualified: site.qname, targetQualified: resolved.target, filePath: fp, line: posOf(expr).line, extra: { col: posOf(expr).col }, confidence: resolved.confidence, confidenceTier: resolved.tier });
+      addEdge({ kind: 'CALLS', sourceQualified: site.qname, targetQualified: resolved.target, filePath: fp, line: posOf(expr).line, extra: { col: posOf(expr).col, argCount: expr.args?.length ?? 0 }, confidence: resolved.confidence, confidenceTier: resolved.tier });
     },
     NewExpression: (expr) => {
       const site = enclosingScope(expr, fp, scope);
@@ -331,6 +361,28 @@ function extractCallsAndWrites(ast, fp, scope, addEdge) {
         if (found) { target = found.qname; tier = 'RESOLVED'; confidence = 0.9; }
       }
       addEdge({ kind: 'WRITES', sourceQualified: site.qname, targetQualified: target, filePath: fp, line: posOf(stmt).line, extra: { col: posOf(stmt).col }, confidence, confidenceTier: tier });
+    },
+    // ponytail: only member-access reads (m.foo, obj.bar), mirroring WRITES'
+    // existing DottedSetStatement-only scope. Plain local-variable reads
+    // (VariableExpression) are deliberately skipped — no plain-assignment
+    // WRITES tracking exists either, and tracking every loop/temp var read
+    // would dominate edge counts without much analytical value.
+    DottedGetExpression: (expr) => {
+      const parent = expr.parent;
+      if (isNewExpression(parent)) return;
+      if (isCallExpression(parent) && parent.callee === expr) return; // covered by CALLS
+      if (isDottedGetExpression(parent) && parent.obj === expr) return; // not the top of the chain
+      const memberName = expr.tokens?.name?.text ?? expr.name?.text;
+      if (!memberName) return;
+      const site = enclosingScope(expr, fp, scope);
+      const objText = exprText(expr.obj);
+      let target = objText ? `${objText}.${memberName}` : memberName;
+      let tier = 'TEXTUAL', confidence = 0.4;
+      if (site.classChain && objText?.toLowerCase() === 'm') {
+        const found = findInChain(site.classChain, memberName, 'fields');
+        if (found) { target = found.qname; tier = 'RESOLVED'; confidence = 0.9; }
+      }
+      addEdge({ kind: 'READS', sourceQualified: site.qname, targetQualified: target, filePath: fp, line: posOf(expr).line, extra: { col: posOf(expr).col }, confidence, confidenceTier: tier });
     },
   }), { walkMode: WalkMode.visitAllRecursive });
 }
@@ -356,6 +408,8 @@ export function extractBrsFile(file, program) {
     edges.push(e);
   };
 
+  const lines = (file.fileContents ?? '').split('\n');
+
   addNode({
     kind: 'File', name: path.basename(fp), qualifiedName: fileQname, filePath: fp,
     lineStart: 1, lineEnd: Math.max(endLineOf(file.ast), 0), language: lang,
@@ -369,10 +423,10 @@ export function extractBrsFile(file, program) {
   if (!ast?.walk) return { nodes, edges };
 
   extractNamespaces(ast, fp, fileQname, lang, addNode, addEdge);
-  extractFunctions(ast, fp, fileQname, lang, addNode, addEdge);
-  extractClasses(ast, fp, fileQname, lang, scope, addNode, addEdge);
-  extractInterfaces(ast, fp, fileQname, lang, scope, addNode, addEdge);
-  extractEnumsAndConsts(ast, fp, fileQname, lang, addNode, addEdge);
+  extractFunctions(ast, fp, fileQname, lang, lines, addNode, addEdge);
+  extractClasses(ast, fp, fileQname, lang, scope, lines, addNode, addEdge);
+  extractInterfaces(ast, fp, fileQname, lang, scope, lines, addNode, addEdge);
+  extractEnumsAndConsts(ast, fp, fileQname, lang, lines, addNode, addEdge);
   extractCallsAndWrites(ast, fp, scope, addEdge);
 
   return { nodes, edges };

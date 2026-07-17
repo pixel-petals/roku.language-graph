@@ -1,15 +1,22 @@
 /**
- * Generates Graphify wiki pages and static HTML studio from the Roku SDK graph.
+ * Parses the Roku SDK docs, stores the resulting graph in an embedded
+ * database, reads it back out, then generates Graphify wiki pages and a
+ * static HTML studio from it.
  *
- * Usage: node src/generate-exports.mjs [<sdk-docs-path>]
+ * Usage: node src/cli/cli.generate-sdk-exports.mjs [<sdk-docs-path>]
  *
  * Outputs:
- *   exports/wiki/       - Markdown wiki pages (one per node + community pages)
- *   exports/studio/     - Self-contained HTML studio (open index.html in browser)
+ *   exports/.graphify-state/graph.pgdata - embedded PGlite graph database
+ *   exports/wiki/                     - Markdown wiki pages (one per node + community pages)
+ *   exports/studio/                   - Self-contained HTML studio (open index.html in browser)
  */
 
-import { cluster, toWiki, toJson, buildStaticStudio } from '@sentropic/graphify';
-import { loadRokuSdkGraph } from '../parse/roku-sdk/roku-sdk.graph.js';
+import { buildStaticStudio } from '@sentropic/graphify';
+import { buildRokuSdkGraph, toGraphRecords } from '../parse/roku-sdk/roku-sdk.graph.js';
+import { openGraphStore } from '../database/database.store.mjs';
+import { toGraphologyGraph, detectCommunities, assignCommunities } from '../database/database.graph.mjs';
+import { toJson } from '../transform/json/json.transform.mjs';
+import { toWiki } from '../transform/md/md.transform.mjs';
 import fs from 'fs';
 import path from 'path';
 
@@ -23,12 +30,28 @@ fs.mkdirSync(stateDir, { recursive: true });
 fs.mkdirSync(wikiDir, { recursive: true });
 fs.mkdirSync(studioDir, { recursive: true });
 
-console.log('Loading Roku SDK graph...');
-const G = loadRokuSdkGraph(sdkDocsPath);
+console.log('Parsing Roku SDK docs...');
+const raw = buildRokuSdkGraph(sdkDocsPath);
+const { nodes: parsedNodes, edges: parsedEdges } = toGraphRecords(raw);
+
+console.log('Storing graph in database...');
+const dbPath = path.join(stateDir, 'graph.pgdata');
+const store = await openGraphStore(dbPath);
+await store.upsertNodes(parsedNodes);
+await store.upsertEdges(parsedEdges);
+await store.flush();
+console.log(`  → ${dbPath}`);
+
+console.log('Reading graph back from database...');
+const { nodes, edges } = await store.queryAll();
+await store.close();
+
+const G = toGraphologyGraph(nodes, edges);
 console.log(`  nodes: ${G.order}  edges: ${G.size}`);
 
 console.log('Running community detection...');
-const communities = cluster(G);
+const communities = detectCommunities(G);
+assignCommunities(G, communities);
 console.log(`  communities: ${communities.size}`);
 
 console.log('Writing graph.json...');
@@ -50,5 +73,6 @@ console.log(`  → ${studioDir}`);
 console.log(`  nodes: ${studioResult.nodeCount}  scene nodes: ${studioResult.sceneNodeCount}  scene edges: ${studioResult.sceneEdgeCount}`);
 
 console.log('\nDone.');
-console.log(`  Wiki:   exports/wiki/`);
-console.log(`  Studio: exports/studio/index.html`);
+console.log(`  Database: ${dbPath}`);
+console.log(`  Wiki:     exports/wiki/`);
+console.log(`  Studio:   exports/studio/index.html`);

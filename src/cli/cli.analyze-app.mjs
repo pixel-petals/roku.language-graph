@@ -1,22 +1,28 @@
 /**
  * analyze-app.mjs — Analyze a Roku app with Graphify
  *
- * Parses all .brs and .xml files in a Roku app directory, builds a code graph,
- * runs community detection, and exports wiki pages + a static HTML studio.
+ * Parses all .brs and .xml files in a Roku app directory, stores the
+ * resulting graph in an embedded database, reads it back out, then runs
+ * community detection and exports wiki pages + a static HTML studio from it.
  *
  * Usage:
  *   node src/cli/cli.analyze-app.mjs <app-dir> [output-dir]
  *
  * Outputs (default to <app-dir>/graphify-output/):
- *   graph.json       — raw graph data
- *   wiki/            — Markdown wiki pages (one per community)
- *   studio/          — Static HTML studio (open index.html in a browser)
+ *   .graphify-state/graph.pgdata — embedded PGlite graph database
+ *   graph.json                 — raw graph data
+ *   wiki/                      — Markdown wiki pages (one per community)
+ *   studio/                    — Static HTML studio (open index.html in a browser)
  */
 
 import fs from 'fs';
 import path from 'path';
-import { buildAppGraph } from '../parse/roku-app/roku-app.graph.mjs';
-import { cluster, toWiki, toJson, buildStaticStudio } from '@sentropic/graphify';
+import { parseRokuApp } from '../parse/roku-app/roku-app.parser.mjs';
+import { openGraphStore } from '../database/database.store.mjs';
+import { toGraphologyGraph, detectCommunities, assignCommunities } from '../database/database.graph.mjs';
+import { toJson } from '../transform/json/json.transform.mjs';
+import { toWiki } from '../transform/md/md.transform.mjs';
+import { buildStaticStudio } from '@sentropic/graphify';
 
 // ── Args ──────────────────────────────────────────────────────────────────────
 
@@ -49,8 +55,24 @@ fs.mkdirSync(studioDir, { recursive: true });
 console.log(`Analyzing Roku app: ${resolvedApp}`);
 console.log('');
 
-console.log('Building code graph...');
-const G = buildAppGraph(resolvedApp);
+console.log('Parsing app...');
+const parsed = parseRokuApp(resolvedApp);
+
+console.log('Storing graph in database...');
+const dbPath = path.join(stateDir, 'graph.pgdata');
+const store = await openGraphStore(dbPath);
+await store.upsertNodes(parsed.nodes);
+await store.upsertEdges(parsed.edges);
+await store.flush();
+console.log(`  → ${dbPath}`);
+
+console.log('Reading graph back from database...');
+const { nodes, edges } = await store.queryAll();
+await store.close();
+console.log(`  nodes: ${nodes.length}  edges: ${edges.length}`);
+console.log('');
+
+const G = toGraphologyGraph(nodes, edges);
 
 // Count by type
 const typeCounts = {};
@@ -71,7 +93,8 @@ if (G.order === 0) {
 }
 
 console.log('Running community detection...');
-const communities = cluster(G);
+const communities = detectCommunities(G);
+assignCommunities(G, communities);
 console.log(`  ${communities.size} communities detected`);
 console.log('');
 
@@ -95,6 +118,7 @@ console.log('');
 
 console.log('✅ Done.');
 console.log('');
-console.log(`  Studio:  ${studioDir}/index.html`);
-console.log(`  Wiki:    ${wikiDir}/`);
-console.log(`  Graph:   ${graphJsonPath}`);
+console.log(`  Database: ${dbPath}`);
+console.log(`  Studio:   ${studioDir}/index.html`);
+console.log(`  Wiki:     ${wikiDir}/`);
+console.log(`  Graph:    ${graphJsonPath}`);

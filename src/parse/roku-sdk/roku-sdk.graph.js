@@ -48,6 +48,27 @@ function extractFrontmatterDeprecated(content) {
   return m ? m[1] === 'true' : false;
 }
 
+/**
+ * Prose description: the frontmatter `excerpt` (always present, concise) plus
+ * the body's intro paragraph(s) before the first `##` section (present on
+ * some docs, absent on others that go straight into a table). This is the
+ * text meant to be fed to upsertEmbedding() for semantic search.
+ */
+function extractDescription(content) {
+  const fm = content.match(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/);
+  const frontmatter = fm ? fm[0] : '';
+  const body = fm ? content.slice(fm[0].length) : content;
+
+  const excerptMatch = frontmatter.match(/\nexcerpt:\s*['"]?([^\n]*?)['"]?\s*\n/);
+  const excerpt = excerptMatch ? excerptMatch[1].trim() : null;
+
+  const introMatch = body.match(/^[\s\S]*?(?=\n##\s|$)/);
+  const intro = introMatch ? introMatch[0].trim() : null;
+
+  const parts = [excerpt, intro].filter(Boolean);
+  return parts.length ? parts.join('\n\n') : null;
+}
+
 // ── Interface extraction ──────────────────────────────────────────────────────
 
 function extractSupportedInterfaces(content) {
@@ -167,6 +188,7 @@ function buildRokuSdkGraph(sdkDocsPath) {
       label: title,
       type: 'Node',
       deprecated: extractFrontmatterDeprecated(content),
+      description: extractDescription(content),
       docFile: `brightscript/components/${file}`,
     });
 
@@ -191,6 +213,7 @@ function buildRokuSdkGraph(sdkDocsPath) {
       label: title,
       type: 'interface',
       deprecated: extractFrontmatterDeprecated(content),
+      description: extractDescription(content),
       docFile: `brightscript/interfaces/${file}`,
     });
 
@@ -212,6 +235,7 @@ function buildRokuSdkGraph(sdkDocsPath) {
       type: 'roSGNode',
       category,
       deprecated: extractFrontmatterDeprecated(content),
+      description: extractDescription(content),
       docFile,
     });
 
@@ -259,7 +283,48 @@ function loadRokuSdkGraph(sdkDocsPath) {
   return loadGraphFromData(buildRokuSdkGraph(sdkDocsPath));
 }
 
-module.exports = { buildRokuSdkGraph, loadRokuSdkGraph };
+/**
+ * Adapt buildRokuSdkGraph()'s {nodes, links} shape into the {nodes, edges}
+ * record shape src/database's GraphStore expects — the same shape
+ * src/parse/roku-app produces, so both parsers can share one store.
+ */
+function toGraphRecords(raw) {
+  const source = raw.graph.source;
+  const nodes = raw.nodes.map(n => ({
+    kind: n.type,
+    name: n.label,
+    qualifiedName: n.id,
+    filePath: n.docFile ? path.join(source, n.docFile) : source,
+    lineStart: null,
+    lineEnd: null,
+    language: 'roku-sdk',
+    parentName: n.owner ? `${n.type === 'function' ? 'if' : 'sg'}:${n.owner}` : null,
+    params: n.params ?? null,
+    returnType: n.returnType ?? n.fieldType ?? null,
+    modifiers: null,
+    isTest: false,
+    fileHash: null,
+    extra: {
+      deprecated: n.deprecated ?? false, category: n.category ?? null, description: n.description ?? null,
+      signature: n.signature ?? null, defaultValue: n.defaultValue ?? null, access: n.access ?? null,
+    },
+  }));
+
+  const edges = raw.links.map(l => ({
+    kind: l.relation.toUpperCase(),
+    sourceQualified: l.source,
+    targetQualified: l.target,
+    filePath: source,
+    line: 0,
+    extra: {},
+    confidence: 1.0,
+    confidenceTier: 'DECLARED',
+  }));
+
+  return { nodes, edges };
+}
+
+module.exports = { buildRokuSdkGraph, loadRokuSdkGraph, toGraphRecords };
 
 // ── CLI ───────────────────────────────────────────────────────────────────────
 
