@@ -1,0 +1,9 @@
+.DS_Store
+out/
+.code-review-graph/
+.project
+.buildpath
+.settings/
+.tags1
+.tags
+Makefile

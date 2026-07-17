@@ -1,32 +1,28 @@
 {
   "name": "roku-graphify",
   "version": "0.1.0",
-  "description": "BrightScript code graph analysis tool powered by tree-sitter",
-  "main": "src/brightscript/index.js",
+  "description": "BrightScript code graph analysis tool powered by brighterscript",
   "bin": {
-    "roku-graphify": "src/cli/analyze-file.js"
+    "roku-graphify": "src/cli/cli.analyze-file.mjs"
   },
   "scripts": {
-    "build-grammar": "cd grammars/brightscript && npx tree-sitter generate && npx node-gyp configure && npx node-gyp build",
-    "demo": "node src/cli/analyze-file.js examples/demo.brs --format summary",
-    "demo:dot": "node src/cli/analyze-file.js examples/demo.brs --format dot",
-    "demo:json": "node src/cli/analyze-file.js examples/demo.brs --format json",
-    "test": "node src/cli/analyze-file.js examples/demo.brs --format json && node -e \"require('./src/app/graphify')\" && node test/source-map-resolution.test.mjs && echo 'All checks passed'",
-    "generate-sdk-exports": "node src/cli/generate-exports.mjs",
-    "generate-ebnf": "node src/ebnf/generate.mjs",
-    "analyze-app": "node src/cli/analyze-app.mjs"
+    "build-grammar": "cd packages/graphify && npx tree-sitter generate && npx node-gyp configure && npx node-gyp build",
+    "test": "node --check src/cli/cli.analyze-file.mjs && node --check src/cli/cli.analyze-app.mjs && node --check src/cli/cli.generate-sdk-exports.mjs && echo 'All checks passed'",
+    "analyze-app": "node src/cli/cli.analyze-app.mjs",
+    "analyze-file": "node src/cli/cli.analyze-file.mjs",
+    "generate-sdk-exports": "node src/cli/cli.generate-sdk-exports.mjs",
+    "generate-ebnf": "node src/grammar/ebnf/ebnf.generate.mjs"
   },
   "dependencies": {
     "@sentropic/graphify": "^0.15.0",
+    "brighterscript": "next",
     "graphology": "^0.26.0",
-    "graphology-types": "^0.24.7",
-    "source-map": "^0.6.1",
-    "tree-sitter": "^0.20.6"
+    "graphology-types": "^0.24.7"
   },
   "keywords": [
     "roku",
     "brightscript",
-    "tree-sitter",
+    "brighterscript",
     "graph",
     "code-analysis"
   ],

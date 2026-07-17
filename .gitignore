@@ -5,6 +5,6 @@ grammars/brightscript/build/
 exports/.graphify-state/
 
 # code-review-graph generated files
-.code-review-graph/graph.db
-.code-review-graph/graph.db-wal
-.code-review-graph/graph.db-shm
+.code-review-graph/
+
+modules/
