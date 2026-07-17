@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS edges (
     file_path         TEXT    NOT NULL,
     line              INTEGER DEFAULT 0,
     extra             TEXT    DEFAULT '{}',
-    confidence        DOUBLE PRECISION DEFAULT 1.0,
+    confidence        SMALLINT DEFAULT 100,
     confidence_tier   TEXT    DEFAULT 'DECLARED',
     updated_at        DOUBLE PRECISION NOT NULL
 );
@@ -97,7 +97,7 @@ function nodeParams(n, now) {
 function edgeParams(e, now) {
   return [
     e.kind, e.sourceQualified, e.targetQualified, e.filePath, e.line ?? 0,
-    JSON.stringify(e.extra ?? {}), e.confidence ?? 1.0, e.confidenceTier ?? 'DECLARED', now,
+    JSON.stringify(e.extra ?? {}), Math.round((e.confidence ?? 1.0) * 100), e.confidenceTier ?? 'DECLARED', now,
   ];
 }
 
@@ -122,7 +122,7 @@ function rowToEdge(row) {
   return {
     kind: row.kind, sourceQualified: row.source_qualified, targetQualified: row.target_qualified,
     filePath: row.file_path, line: row.line, extra: row.extra ? JSON.parse(row.extra) : {},
-    confidence: row.confidence, confidenceTier: row.confidence_tier,
+    confidence: row.confidence / 100, confidenceTier: row.confidence_tier,
   };
 }
 
