@@ -1,7 +1,7 @@
 /**
- * ebnf-serializer.mjs
+ * ebnf.serializer.mjs
  *
- * Converts the AST produced by grammar-parser into W3C-style EBNF text.
+ * Converts the AST produced by ebnf.grammar-parser.mjs into W3C-style EBNF text.
  *
  * Notation used:
  *   rule    ::= ...          (* non-terminal definition *)

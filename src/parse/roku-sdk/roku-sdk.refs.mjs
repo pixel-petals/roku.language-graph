@@ -1,6 +1,14 @@
 /**
  * roku-sdk.refs.mjs
  *
+ * STALE / UNUSED: nothing currently imports this file. SDK_GRAPH_PATH below
+ * still points at the old flat `exports/studio/graph.json` from before the
+ * SDK reference graph was split into separate SceneGraph and BrightScript
+ * reference databases (see roku-sdk.graph.js's partitionRecords and
+ * cli.generate-sdk-exports.mjs) — that path no longer gets written, so
+ * loadIndex() will always hit the "not found" warning path as-is. Don't
+ * trust this file's behavior without fixing SDK_GRAPH_PATH first.
+ *
  * Loads the pre-built SDK graph and provides lightweight lookups for
  * connecting an app graph to the SDK graph by reference.
  *

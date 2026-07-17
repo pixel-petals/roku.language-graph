@@ -3,8 +3,9 @@
  *
  * Writes a graphology graph to Markdown wiki pages (one per community).
  * Delegates to @sentropic/graphify's toWiki() — already a working, tested
- * implementation, no need to reinvent it. Does its own file I/O (unlike the
- * other five transforms, which are pure graph -> string).
+ * implementation, no need to reinvent it. Does its own file I/O, like
+ * json.transform.mjs (also graphify-backed) — unlike the four pure
+ * graph -> string transforms (dot-graph, graph-ml, md-mermaid, xml).
  */
 
 import { toWiki as graphifyToWiki } from '@sentropic/graphify';

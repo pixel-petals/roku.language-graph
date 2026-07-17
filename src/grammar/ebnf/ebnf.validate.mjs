@@ -1,5 +1,5 @@
 /**
- * validate.mjs
+ * ebnf.validate.mjs
  *
  * Validates the parsed grammar AST for:
  *   - Undefined rule references (a rule is used but never defined)

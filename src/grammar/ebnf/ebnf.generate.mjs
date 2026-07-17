@@ -1,5 +1,5 @@
 /**
- * generate.mjs — Entry point
+ * ebnf.generate.mjs — Entry point
  *
  * Generates EBNF files and a validation report:
  *   exports/brightscript-syntax.ebnf   — BrightScript language grammar
