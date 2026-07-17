@@ -4,6 +4,10 @@ grammars/brightscript/build/
 *.node
 exports/.graphify-state/
 
+# raw/ephemeral captures (bsbench, etc.) — the durable output lives in
+# checked-in files like src/parse/roku-benchmark/roku-benchmark.catalog.json
+.artifacts/
+
 # code-review-graph generated files
 .code-review-graph/
 
