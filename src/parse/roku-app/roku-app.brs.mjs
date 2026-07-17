@@ -22,52 +22,12 @@ import {
 } from 'brighterscript';
 import * as crypto from 'crypto';
 import * as path from 'path';
-
-const ORIGIN = { line: 0, col: 0 };
-
-function posOf(node) {
-  const start = node?.location?.range?.start;
-  return start ? { line: start.line + 1, col: start.character } : ORIGIN;
-}
-
-function endLineOf(node) {
-  return (node?.location?.range?.end?.line ?? -1) + 1;
-}
+import { posOf, endLineOf, exprText, safe, classifyValueKind } from './roku-app.ast-utils.mjs';
+import { buildFunctionCfg } from './roku-app.cfg.mjs';
+import { buildFunctionDfg } from './roku-app.dfg.mjs';
 
 function fileHash(contents) {
   return crypto.createHash('sha1').update(contents).digest('hex');
-}
-
-/** Resolve a callee-ish expression to a dotted name string (foo, a.b.c, ...). */
-function exprText(node) {
-  if (!node) return null;
-  if (typeof node.getText === 'function') {
-    const text = node.getText()?.trim() ?? '';
-    if (text) return text;
-  }
-  const parts = [];
-  let cur = node;
-  while (cur) {
-    const nameText = cur.name?.text ?? cur.tokens?.name?.text;
-    if (nameText) {
-      parts.unshift(nameText);
-      cur = cur.obj;
-    } else {
-      const varName = cur.tokens?.name?.text ?? cur.name?.text;
-      if (varName) parts.unshift(varName);
-      break;
-    }
-  }
-  return parts.length > 0 ? parts.join('.') : null;
-}
-
-/** Safely invoke a brighterscript resolution API that may throw on partial programs. */
-function safe(fn) {
-  try {
-    return fn();
-  } catch {
-    return undefined;
-  }
 }
 
 function typeExpressionText(typeExpr) {
@@ -198,6 +158,21 @@ function resolveClassTarget(classNameExpr, containingNamespace, scope) {
   return { target: text, tier: 'TEXTUAL', confidence: 0.4 };
 }
 
+/**
+ * Best-effort copy-vs-reference boundary detection: `m.top.*` is a
+ * component's own SceneGraph interface (a field get/set crosses the node
+ * boundary — Array/AssociativeArray values get deep-cloned there,
+ * roSGNode values stay by-reference); `.callFunc(...)` is the other real
+ * BrightScript node-boundary crossing.
+ */
+function crossesInterfaceBoundary(objText) {
+  return objText === 'm.top' || (objText?.startsWith('m.top.') ?? false);
+}
+
+function isCallFuncInvocation(calleeText) {
+  return /\.callfunc$/i.test(calleeText ?? '');
+}
+
 function declaredEdge(sourceQualified, targetQualified, filePath, line) {
   return { kind: 'CONTAINS', sourceQualified, targetQualified, filePath, line, extra: {}, confidence: 1.0, confidenceTier: 'DECLARED' };
 }
@@ -215,14 +190,21 @@ function extractFunctions(ast, fp, fileQname, lang, lines, addNode, addEdge) {
     FunctionStatement: (stmt) => {
       const qname = `${fp}::${stmt.getName(ParseMode.BrighterScript)}`;
       const ns = namespaceOf(stmt);
+      const cfg = buildFunctionCfg(stmt.func, qname, fp);
       addNode(containerNode('Function', stmt.tokens.name.text, qname, fp, stmt, stmt.func, lang, null, {
         col: posOf(stmt).col, namespace: ns ?? null, params: paramsJson(stmt.func),
         returnType: typeExpressionText(stmt.func?.returnTypeExpression),
         modifiers: [isSubKeyword(stmt.func) ? 'sub' : 'function'],
         isTest: looksLikeTest(stmt.tokens.name.text, stmt.annotations),
         doc: docCommentFor(lines, stmt),
+        ...cfg.metrics,
       }));
       addEdge(declaredEdge(ns ? `${fp}::${ns}` : fileQname, qname, fp, posOf(stmt).line));
+      cfg.nodes.forEach(addNode);
+      cfg.edges.forEach(addEdge);
+      const dfg = buildFunctionDfg(stmt.func, qname, fp, lang);
+      dfg.nodes.forEach(addNode);
+      dfg.edges.forEach(addEdge);
     },
   }), { walkMode: WalkMode.visitStatements });
 }
@@ -230,14 +212,21 @@ function extractFunctions(ast, fp, fileQname, lang, lines, addNode, addEdge) {
 function extractClassMembers(cls, qname, fp, lang, lines, addNode, addEdge) {
   for (const method of cls.methods) {
     const methodQname = `${qname}.${method.tokens.name.text}`;
+    const cfg = buildFunctionCfg(method.func, methodQname, fp);
     addNode(containerNode('Method', method.tokens.name.text, methodQname, fp, method, method.func, lang, qname, {
       col: posOf(method).col, params: paramsJson(method.func),
       returnType: typeExpressionText(method.func?.returnTypeExpression),
       modifiers: [method.accessModifier?.text ?? 'public', method.tokens.override ? 'override' : null, isSubKeyword(method.func) ? 'sub' : 'function'].filter(Boolean),
       isTest: looksLikeTest(method.tokens.name.text, method.annotations),
       doc: docCommentFor(lines, method),
+      ...cfg.metrics,
     }));
     addEdge(declaredEdge(qname, methodQname, fp, posOf(method).line));
+    cfg.nodes.forEach(addNode);
+    cfg.edges.forEach(addEdge);
+    const dfg = buildFunctionDfg(method.func, methodQname, fp, lang);
+    dfg.nodes.forEach(addNode);
+    dfg.edges.forEach(addEdge);
   }
   for (const field of cls.fields) {
     const fieldQname = `${qname}.${field.tokens.name.text}`;
@@ -341,7 +330,7 @@ function extractCallsAndWrites(ast, fp, scope, addEdge) {
       if (!calleeText) return;
       const site = enclosingScope(expr, fp, scope);
       const resolved = resolveCallTarget(expr.callee, calleeText, site.classChain, scope);
-      addEdge({ kind: 'CALLS', sourceQualified: site.qname, targetQualified: resolved.target, filePath: fp, line: posOf(expr).line, extra: { col: posOf(expr).col, argCount: expr.args?.length ?? 0 }, confidence: resolved.confidence, confidenceTier: resolved.tier });
+      addEdge({ kind: 'CALLS', sourceQualified: site.qname, targetQualified: resolved.target, filePath: fp, line: posOf(expr).line, extra: { col: posOf(expr).col, argCount: expr.args?.length ?? 0, crossesNodeBoundary: isCallFuncInvocation(calleeText) }, confidence: resolved.confidence, confidenceTier: resolved.tier });
     },
     NewExpression: (expr) => {
       const site = enclosingScope(expr, fp, scope);
@@ -360,7 +349,10 @@ function extractCallsAndWrites(ast, fp, scope, addEdge) {
         const found = findInChain(site.classChain, memberName, 'fields');
         if (found) { target = found.qname; tier = 'RESOLVED'; confidence = 0.9; }
       }
-      addEdge({ kind: 'WRITES', sourceQualified: site.qname, targetQualified: target, filePath: fp, line: posOf(stmt).line, extra: { col: posOf(stmt).col }, confidence, confidenceTier: tier });
+      const crossesBoundary = crossesInterfaceBoundary(objText);
+      const valueKind = crossesBoundary ? classifyValueKind(stmt.value) : null;
+      const copySemantics = valueKind === 'roSGNode' ? 'by-reference' : valueKind ? 'deep-clone' : crossesBoundary ? 'unknown' : undefined;
+      addEdge({ kind: 'WRITES', sourceQualified: site.qname, targetQualified: target, filePath: fp, line: posOf(stmt).line, extra: { col: posOf(stmt).col, crossesNodeBoundary: crossesBoundary, copySemantics }, confidence, confidenceTier: tier });
     },
     // ponytail: only member-access reads (m.foo, obj.bar), mirroring WRITES'
     // existing DottedSetStatement-only scope. Plain local-variable reads
@@ -382,7 +374,7 @@ function extractCallsAndWrites(ast, fp, scope, addEdge) {
         const found = findInChain(site.classChain, memberName, 'fields');
         if (found) { target = found.qname; tier = 'RESOLVED'; confidence = 0.9; }
       }
-      addEdge({ kind: 'READS', sourceQualified: site.qname, targetQualified: target, filePath: fp, line: posOf(expr).line, extra: { col: posOf(expr).col }, confidence, confidenceTier: tier });
+      addEdge({ kind: 'READS', sourceQualified: site.qname, targetQualified: target, filePath: fp, line: posOf(expr).line, extra: { col: posOf(expr).col, crossesNodeBoundary: crossesInterfaceBoundary(objText) }, confidence, confidenceTier: tier });
     },
   }), { walkMode: WalkMode.visitAllRecursive });
 }
