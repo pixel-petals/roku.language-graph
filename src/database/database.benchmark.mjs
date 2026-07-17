@@ -43,6 +43,7 @@ export function benchmarkOpNodes(costModel) {
     extra: {
       operation: r.operation, testFile: r.testFile, microsecondsPerOp: r.microsecondsPerOp,
       sampleCount: r.sampleCount, min: r.min, max: r.max, measuredAt: r.measuredAt, source: 'bsbench',
+      comparativeSuite: r.comparativeSuite ?? false,
     },
   }));
 }
