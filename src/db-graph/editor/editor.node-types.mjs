@@ -16,9 +16,10 @@
 import { LiteGraph, LGraph, LGraphCanvas } from 'litegraph.js';
 import { toGraphData } from '../db-graph.data.mjs';
 import { matchesFilter, valueOptionsFor, summarizeValues, NODE_FIELDS, EDGE_FIELDS, CLUSTER_FIELDS, OPERATORS } from './editor.pipeline.mjs';
+import { buildUmlClasses, classifyUmlEdges, DEFAULT_CLASS_KINDS } from './editor.uml.mjs';
 import './editor.value-picker.mjs';
 
-const OUR_TYPES = ['Graph Source', 'Filter Nodes', 'Filter Edges', 'Cluster Nodes', 'Color Nodes By', 'Render Graph'];
+const OUR_TYPES = ['Graph Source', 'Filter Nodes', 'Filter Edges', 'Cluster Nodes', 'Color Nodes By', 'Build UML Classes', 'Render Graph'];
 
 function openValuePicker({ x, y, options, selected, onChange }) {
   document.querySelector('db-graph-value-picker')?.remove();
@@ -133,6 +134,23 @@ export function setupPipeline({ canvasEl, rawData, onRender }) {
     this.setOutputData(1, this.fieldWidget.value);
   };
   LiteGraph.registerNodeType('Color Nodes By', ColorNodesByNode);
+
+  function BuildUmlClassesNode() {
+    this.addInput('nodes', 'nodes');
+    this.addInput('edges', 'edges');
+    this.addOutput('nodes', 'nodes');
+    this.addOutput('edges', 'edges');
+  }
+  BuildUmlClassesNode.title = 'Build UML Classes';
+  BuildUmlClassesNode.desc = 'Folds Method/Field members into their owning Class/Interface/Component and reclassifies inter-class edges as UML relations (EXTENDS -> INHERITANCE, INSTANTIATES -> COMPOSITION, calls/reads/writes/etc -> DEPENDENCY)';
+  BuildUmlClassesNode.prototype.onExecute = function () {
+    const nodes = this.getInputData(0) || [];
+    const edges = this.getInputData(1) || [];
+    const { nodes: classNodes, classIds, ownerMap } = buildUmlClasses({ nodes, edges }, { classKinds: DEFAULT_CLASS_KINDS });
+    this.setOutputData(0, classNodes);
+    this.setOutputData(1, classifyUmlEdges(edges, { classIds, ownerMap }));
+  };
+  LiteGraph.registerNodeType('Build UML Classes', BuildUmlClassesNode);
 
   function RenderGraphNode() {
     this.addInput('nodes', 'nodes');

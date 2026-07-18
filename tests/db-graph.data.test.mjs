@@ -54,7 +54,7 @@ describe('db-graph.data: toGraphData', () => {
       combo: 'components/Foo',
       data: {
         kind: 'Function', name: 'foo', filePath: 'components/Foo/file.brs', lineStart: 1, lineEnd: 2,
-        language: 'brs', parentName: null, folder: 'components/Foo',
+        language: 'brs', parentName: null, folder: 'components/Foo', members: undefined,
       },
     }]);
   });

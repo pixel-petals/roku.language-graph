@@ -59,6 +59,10 @@ export function toGraphData({ nodes, edges }, { comboField = null } = {}) {
         language: n.language,
         parentName: n.parentName,
         folder: dirname(n.filePath),
+        // Present only on class-shaped nodes the "Build UML Classes" editor
+        // node produces ({fields: string[], methods: string[]}); the viewer
+        // switches a node to its UML box rendering when this is set.
+        members: n.members,
       },
     };
   });
