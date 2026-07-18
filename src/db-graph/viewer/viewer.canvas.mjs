@@ -64,7 +64,16 @@ export class DbGraphCanvas extends SignalWatcher(LitElement) {
         this.#resizeDebounce = setTimeout(() => {
           this.#pending = this.#pending
             .catch(() => {})
-            .then(() => this.#g6Graph?.resize(this.clientWidth, this.clientHeight));
+            .then(async () => {
+              await this.#g6Graph?.resize(this.clientWidth, this.clientHeight);
+              // G6's resize() only resizes the canvas layers — it doesn't
+              // recompute the viewport, so a large size jump (e.g. the
+              // editor panel collapsing to 0 width) leaves the previously
+              // fit content clipped/off-camera, reproduced directly by
+              // switching straight to the viewer-only route: fitView()
+              // after every resize keeps the graph in frame.
+              await this.#g6Graph?.fitView();
+            });
         }, 120);
       },
     });
