@@ -19,7 +19,7 @@
  * Edge:  { kind, sourceQualified, targetQualified, filePath, line, extra,
  *          confidence, confidenceTier }
  * (the shape src/parse/roku-app already produces; src/parse/roku-sdk graphs
- * are adapted to it before storing — see roku-sdk.graph.js's toGraphRecords)
+ * are adapted to it before storing — see roku-sdk.records.js's toGraphRecords)
  */
 
 import { openPgliteStore } from './pglite/pglite.db.mjs';

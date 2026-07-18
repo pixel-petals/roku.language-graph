@@ -21,7 +21,8 @@
  */
 
 import { buildStaticStudio } from '@sentropic/graphify';
-import { buildRokuSdkGraph, toGraphRecords, partitionRecords } from '../parse/roku-sdk/roku-sdk.graph.js';
+import { buildRokuSdkGraph } from '../parse/roku-sdk/roku-sdk.graph.js';
+import { toGraphRecords, partitionRecords } from '../parse/roku-sdk/roku-sdk.records.js';
 import { partitionCatalog } from '../parse/roku-benchmark/roku-benchmark.classify.mjs';
 import { openGraphStore } from '../db/db.store.mjs';
 import { toGraphologyGraph, detectCommunities, assignCommunities } from '../db/db.graph.mjs';
