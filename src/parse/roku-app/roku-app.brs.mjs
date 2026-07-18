@@ -26,6 +26,7 @@ import { posOf, endLineOf, exprText, safe, classifyValueKind } from './roku-app.
 import { buildFunctionCfg } from './roku-app.cfg.mjs';
 import { buildFunctionDfg } from './roku-app.dfg.mjs';
 import { estimateMicroseconds } from '../../database/database.benchmark.mjs';
+import { extractJsDoc } from '../jsdoc/jsdoc.extract.mjs';
 
 function fileHash(contents) {
   return crypto.createHash('sha1').update(contents).digest('hex');
@@ -40,14 +41,17 @@ function namespaceOf(node) {
   return ns ? ns.getName(ParseMode.BrighterScript) : undefined;
 }
 
-function paramsJson(func) {
-  const params = (func?.parameters ?? []).map(p => ({
+function paramsArray(func) {
+  return (func?.parameters ?? []).map(p => ({
     name: p.tokens?.name?.text ?? '',
     type: typeExpressionText(p.typeExpression) ?? undefined,
     optional: !!p.defaultValue,
     defaultValue: p.defaultValue ? exprText(p.defaultValue) : undefined,
   }));
-  return JSON.stringify(params);
+}
+
+function paramsJson(func) {
+  return JSON.stringify(paramsArray(func));
 }
 
 /**
@@ -192,12 +196,14 @@ function extractFunctions(ast, fp, fileQname, lang, lines, addNode, addEdge) {
       const qname = `${fp}::${stmt.getName(ParseMode.BrighterScript)}`;
       const ns = namespaceOf(stmt);
       const cfg = buildFunctionCfg(stmt.func, qname, fp);
+      const doc = docCommentFor(lines, stmt);
+      const isSub = isSubKeyword(stmt.func);
+      const returnType = typeExpressionText(stmt.func?.returnTypeExpression);
       addNode(containerNode('Function', stmt.tokens.name.text, qname, fp, stmt, stmt.func, lang, null, {
         col: posOf(stmt).col, namespace: ns ?? null, params: paramsJson(stmt.func),
-        returnType: typeExpressionText(stmt.func?.returnTypeExpression),
-        modifiers: [isSubKeyword(stmt.func) ? 'sub' : 'function'],
+        returnType, modifiers: [isSub ? 'sub' : 'function'],
         isTest: looksLikeTest(stmt.tokens.name.text, stmt.annotations),
-        doc: docCommentFor(lines, stmt),
+        doc, jsdoc: extractJsDoc({ kind: 'Function', name: stmt.tokens.name.text, doc, params: paramsArray(stmt.func), isSub, returnType }),
         ...cfg.metrics,
       }));
       addEdge(declaredEdge(ns ? `${fp}::${ns}` : fileQname, qname, fp, posOf(stmt).line));
@@ -214,12 +220,14 @@ function extractClassMembers(cls, qname, fp, lang, lines, addNode, addEdge) {
   for (const method of cls.methods) {
     const methodQname = `${qname}.${method.tokens.name.text}`;
     const cfg = buildFunctionCfg(method.func, methodQname, fp);
+    const doc = docCommentFor(lines, method);
+    const isSub = isSubKeyword(method.func);
+    const returnType = typeExpressionText(method.func?.returnTypeExpression);
     addNode(containerNode('Method', method.tokens.name.text, methodQname, fp, method, method.func, lang, qname, {
       col: posOf(method).col, params: paramsJson(method.func),
-      returnType: typeExpressionText(method.func?.returnTypeExpression),
-      modifiers: [method.accessModifier?.text ?? 'public', method.tokens.override ? 'override' : null, isSubKeyword(method.func) ? 'sub' : 'function'].filter(Boolean),
+      returnType, modifiers: [method.accessModifier?.text ?? 'public', method.tokens.override ? 'override' : null, isSub ? 'sub' : 'function'].filter(Boolean),
       isTest: looksLikeTest(method.tokens.name.text, method.annotations),
-      doc: docCommentFor(lines, method),
+      doc, jsdoc: extractJsDoc({ kind: 'Method', name: method.tokens.name.text, doc, params: paramsArray(method.func), isSub, returnType }),
       ...cfg.metrics,
     }));
     addEdge(declaredEdge(qname, methodQname, fp, posOf(method).line));
@@ -231,10 +239,11 @@ function extractClassMembers(cls, qname, fp, lang, lines, addNode, addEdge) {
   }
   for (const field of cls.fields) {
     const fieldQname = `${qname}.${field.tokens.name.text}`;
+    const doc = docCommentFor(lines, field);
+    const returnType = typeExpressionText(field.typeExpression);
     addNode(containerNode('Field', field.tokens.name.text, fieldQname, fp, field, field, lang, qname, {
-      returnType: typeExpressionText(field.typeExpression),
-      modifiers: [field.tokens.accessModifier?.text ?? 'public'],
-      doc: docCommentFor(lines, field),
+      returnType, modifiers: [field.tokens.accessModifier?.text ?? 'public'],
+      doc, jsdoc: extractJsDoc({ kind: 'Field', name: field.tokens.name.text, doc, returnType }),
     }));
     addEdge(declaredEdge(qname, fieldQname, fp, posOf(field).line));
   }
@@ -245,8 +254,9 @@ function extractClasses(ast, fp, fileQname, lang, scope, lines, addNode, addEdge
     ClassStatement: (cls) => {
       const qname = `${fp}::${cls.getName(ParseMode.BrighterScript)}`;
       const ns = namespaceOf(cls);
+      const doc = docCommentFor(lines, cls);
       addNode(containerNode('Class', cls.tokens.name.text, qname, fp, cls, cls, lang, null, {
-        namespace: ns ?? null, doc: docCommentFor(lines, cls),
+        namespace: ns ?? null, doc, jsdoc: extractJsDoc({ kind: 'Class', name: cls.tokens.name.text, doc }),
       }));
       addEdge(declaredEdge(ns ? `${fp}::${ns}` : fileQname, qname, fp, posOf(cls).line));
 
@@ -275,10 +285,11 @@ function extractInterfaces(ast, fp, fileQname, lang, scope, lines, addNode, addE
     InterfaceStatement: (iface) => {
       const qname = `${fp}::${iface.fullName}`;
       const ns = namespaceOf(iface);
+      const doc = docCommentFor(lines, iface);
       addNode(containerNode('Interface', iface.tokens.name.text, qname, fp, iface, iface, lang, null, {
         fields: iface.fields.map(f => f.tokens.name.text),
         methods: iface.methods.map(m => m.tokens.name.text),
-        doc: docCommentFor(lines, iface),
+        doc, jsdoc: extractJsDoc({ kind: 'Interface', name: iface.tokens.name.text, doc }),
       }));
       addEdge(declaredEdge(ns ? `${fp}::${ns}` : fileQname, qname, fp, posOf(iface).line));
 
@@ -299,16 +310,20 @@ function extractEnumsAndConsts(ast, fp, fileQname, lang, lines, addNode, addEdge
     EnumStatement: (en) => {
       const qname = `${fp}::${en.fullName}`;
       const ns = namespaceOf(en);
+      const doc = docCommentFor(lines, en);
       addNode(containerNode('Enum', en.tokens.name.text, qname, fp, en, en, lang, null, {
         members: en.getMembers().map(m => m.tokens.name.text),
-        doc: docCommentFor(lines, en),
+        doc, jsdoc: extractJsDoc({ kind: 'Enum', name: en.tokens.name.text, doc }),
       }));
       addEdge(declaredEdge(ns ? `${fp}::${ns}` : fileQname, qname, fp, posOf(en).line));
     },
     ConstStatement: (c) => {
       const qname = `${fp}::${c.fullName}`;
       const ns = namespaceOf(c);
-      addNode(containerNode('Const', c.tokens.name.text, qname, fp, c, c, lang, null, { doc: docCommentFor(lines, c) }));
+      const doc = docCommentFor(lines, c);
+      addNode(containerNode('Const', c.tokens.name.text, qname, fp, c, c, lang, null, {
+        doc, jsdoc: extractJsDoc({ kind: 'Const', name: c.tokens.name.text, doc }),
+      }));
       addEdge(declaredEdge(ns ? `${fp}::${ns}` : fileQname, qname, fp, posOf(c).line));
     },
   }), { walkMode: WalkMode.visitStatements });
