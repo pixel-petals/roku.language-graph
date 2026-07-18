@@ -59,10 +59,18 @@ export function umlLabelText(data, visibility) {
   return lines.join('\n');
 }
 
+// Fixed rather than measured per box: every UML class box is the same
+// width regardless of member-name length (long names/signatures just wrap
+// or run to the box's edge), which keeps the force layout's spacing math
+// simple and lets the label's left-inset offset (see viewer.canvas.mjs,
+// which reads this constant) be a single number instead of computed per box.
+export const UML_BOX_WIDTH = 240;
+export const UML_LABEL_PADDING_X = 10;
+
 /** [width, height] sized to a UML class box's (capped, fold-aware) line count so text isn't clipped. */
 export function umlNodeSize(data, visibility) {
   const lineCount = UML_HEADER_LINES + umlSectionLayout(data, visibility).reduce((sum, s) => sum + s.lines.length, 0);
-  return [240, 16 + lineCount * 16];
+  return [UML_BOX_WIDTH, 16 + lineCount * 16];
 }
 
 /**
