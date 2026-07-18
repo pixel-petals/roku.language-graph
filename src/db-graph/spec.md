@@ -59,12 +59,17 @@ src/db-graph/
   viewer/
     viewer.canvas.mjs        <db-graph-canvas> — owns the G6 Graph instance
                               lifecycle, consumes graphDataSignal
+    viewer.uml-layout.mjs    Pure UML class-box layout: label text, box size,
+                              and click-position -> section-key hit-testing,
+                              shared so all three can't disagree
     viewer.stats.mjs         <db-graph-stats> — node/edge/group-count readout,
                               takes graphData as a plain property from its direct
                               parent (not its own signal subscription — see below)
 tests/
   db-graph.data.test.mjs
   editor.pipeline.test.mjs
+  editor.uml.test.mjs
+  viewer.uml-layout.test.mjs
 ```
 
 ## Viewer
@@ -77,6 +82,7 @@ Rendered graph features:
 - Nodes colored by whatever field the pipeline's Color Nodes By node picks (`kind` by default) with an auto-generated legend.
 - Edges colored/dashed by `confidenceTier` (`DECLARED` gray, `RESOLVED` blue solid, `TEXTUAL` orange dashed) — fixed, not yet pipeline-configurable.
 - Hover tooltip showing a node's kind/qualifiedName/file:line, or an edge's kind/endpoints/file:line/confidence.
+- In UML mode (see Build UML Classes above), clicking a class box's section header (or its member list) folds/unfolds that section *for that one box*, layered on top of the editor node's graph-wide toggle — one dense class's Private Functions can stay expanded while every other box follows the global default. The click-to-section geometry (which line a click's fractional position down the box lands on) is pure logic in `viewer/viewer.uml-layout.mjs` (unit-tested, `tests/viewer.uml-layout.test.mjs`), shared with the label/size calculation so all three can never disagree about a box's layout. `getElementRenderBounds()`'s coordinate space turned out to differ from a click event's own `viewport` coordinates (world/layout units vs. on-screen pixels) — `getViewportByCanvas()` converts between them, found by logging both and comparing rather than assumed from the method names.
 
 **`<db-graph-stats>` takes `graphData` as a plain property**, not its own `graphDataSignal` subscription, even though `SignalWatcher` would seem like the obvious fit (per the `lit-app-structure` skill: direct parent-child data doesn't need context/signals). This isn't just a style preference — using `SignalWatcher` here hit a real `@lit-labs/ssr` hydration bug: `db-graph-canvas` (which does read the signal directly, since it's the actual data owner) re-rendered correctly after hydration, but `db-graph-stats`'s own `SignalWatcher`-driven update silently failed to patch its text into the DOM the first time real data replaced the SSR default — no error, just frozen text, reproduced directly by comparing the two components' behavior. A second, related hydration bug: the stats template must render as **one** interpolated part (`html\`${text}\`` built from a single JS string), not several adjacent parts — a part whose SSR value is an empty string that later becomes non-empty (the "N groups" suffix, empty until the pipeline runs) never hydrates correctly either. Both are real, reproduced gotchas in an explicitly experimental package, not assumptions — worth revisiting if a newer `@lit-labs/ssr` fixes empty-string/multi-part hydration.
 

@@ -20,6 +20,7 @@ import { Graph } from '@antv/g6';
 import { SignalWatcher } from '@lit-labs/signals';
 import { ResizeController } from '@lit-labs/observers/resize-controller.js';
 import { graphDataSignal } from '../db-graph.state.mjs';
+import { umlLabelText, umlNodeSize, umlSectionAtFraction } from './viewer.uml-layout.mjs';
 import './viewer.stats.mjs';
 
 // Dark-surface-validated (see dataviz skill's references/palette.md): the
@@ -52,57 +53,6 @@ const UML_RELATION_STYLE = {
   ASSOCIATION: { stroke: DARK_INK_MUTED, lineDash: null, endArrow: true, endArrowType: 'vee', endArrowFill: DARK_INK_MUTED, startArrow: false },
 };
 
-// A class with dozens of members (real code has these) would otherwise
-// produce a box so tall the force layout can't keep it from overlapping its
-// neighbors regardless of spacing — capped per section, like a real UML
-// tool eliding a large member list, rather than chasing layout tuning that
-// can't fix an unboundedly tall box.
-const MAX_MEMBER_LINES = 8;
-
-function cappedMemberLines(members) {
-  if (members.length <= MAX_MEMBER_LINES) return members;
-  return [...members.slice(0, MAX_MEMBER_LINES), `… and ${members.length - MAX_MEMBER_LINES} more`];
-}
-
-// Section key -> its box header. Order here is the order sections render in
-// (properties above public functions above private functions, matching
-// conventional UML layout).
-const UML_SECTIONS = [
-  ['fields', 'Properties'],
-  ['publicMethods', 'Public Functions'],
-  ['privateMethods', 'Private Functions'],
-];
-
-/**
- * How many label lines a class box's members produce — shared by
- * umlLabelText and umlNodeSize so they can never disagree about a box's
- * required height. A folded section (sectionVisibility[key] === false)
- * always costs exactly 1 line (its header, with a count) regardless of how
- * many members it actually has; an unfolded section costs its header plus
- * its capped member list.
- */
-function umlSectionLines(data) {
-  const visibility = data.sectionVisibility || {};
-  return UML_SECTIONS.filter(([key]) => data.members[key].length).map(([key, label]) => {
-    const members = data.members[key];
-    const folded = visibility[key] === false;
-    const header = `― ${label} (${members.length}${folded ? ', folded' : ''}) ―`;
-    return folded ? [header] : [header, ...cappedMemberLines(members)];
-  });
-}
-
-/** A UML class box's multi-line label: stereotype + name, then one folded/unfolded section per populated member bucket. */
-function umlLabelText(data) {
-  const lines = [`«${data.kind}»`, data.name, ...umlSectionLines(data).flat()];
-  return lines.join('\n');
-}
-
-/** [width, height] sized to a UML class box's (capped, fold-aware) line count so text isn't clipped. */
-function umlNodeSize(data) {
-  const lineCount = 2 + umlSectionLines(data).reduce((sum, section) => sum + section.length, 0);
-  return [240, 16 + lineCount * 16];
-}
-
 export class DbGraphCanvas extends SignalWatcher(LitElement) {
   static styles = css`
     :host { display: block; position: relative; width: 100%; height: 100%; }
@@ -124,6 +74,20 @@ export class DbGraphCanvas extends SignalWatcher(LitElement) {
   #pending = Promise.resolve();
 
   #resizeDebounce = null;
+
+  // Per-node fold overrides on top of the "Build UML Classes" editor node's
+  // graph-wide section toggles (id -> {fields?, publicMethods?,
+  // privateMethods?}) — lets one box's Private Functions stay expanded
+  // while every other box follows the global default. Reset on every
+  // pipeline re-run (a fresh #applyGraphData gets a fresh graphData object,
+  // so old node ids' overrides simply go unused) rather than threaded
+  // through — a brand-new render is a legitimate point to fall back to the
+  // editor node's own settings.
+  #foldOverrides = new Map();
+
+  #visibilityFor(d) {
+    return { ...d.data.sectionVisibility, ...this.#foldOverrides.get(d.id) };
+  }
 
   constructor() {
     super();
@@ -183,8 +147,8 @@ export class DbGraphCanvas extends SignalWatcher(LitElement) {
         // sized/labeled to its member count) instead of the default circle.
         type: d => (d.data.members ? 'rect' : 'circle'),
         style: {
-          size: d => (d.data.members ? umlNodeSize(d.data) : 24),
-          labelText: d => (d.data.members ? umlLabelText(d.data) : d.data.name),
+          size: d => (d.data.members ? umlNodeSize(d.data, this.#visibilityFor(d)) : 24),
+          labelText: d => (d.data.members ? umlLabelText(d.data, this.#visibilityFor(d)) : d.data.name),
           labelFontSize: 10,
           labelFontFamily: 'monospace',
           labelTextAlign: d => (d.data.members ? 'left' : 'center'),
@@ -262,12 +226,57 @@ export class DbGraphCanvas extends SignalWatcher(LitElement) {
       ],
     });
     await this.#g6Graph.render();
+    this.#g6Graph.on('node:click', (e) => this.#onUmlNodeClick(e));
+  }
+
+  /**
+   * A click on a UML class box's section header (or its member list) folds
+   * or unfolds that section for *this node only*, layered on top of the
+   * editor node's graph-wide default (see #foldOverrides). `getElementRenderBounds`
+   * and the click event's own coordinates turned out to live in two
+   * different coordinate spaces (world/layout units vs. on-screen pixels;
+   * `getViewportByCanvas` converts between them) — found by logging both
+   * and comparing, not assumed from the method names alone. Using the
+   * *fraction* of the way down the box's own rendered height sidesteps ever
+   * needing to know the current zoom scale explicitly.
+   */
+  #onUmlNodeClick(e) {
+    const id = e.target?.id;
+    if (!id) return;
+    const datum = this.#g6Graph.getNodeData(id);
+    if (!datum?.data?.members) return;
+
+    const bbox = this.#g6Graph.getElementRenderBounds(id);
+    // getViewportByCanvas returns a plain [x, y, z] tuple (unlike the click
+    // event's own `viewport`, which is an {x, y} object — verified by
+    // logging both rather than assumed from one matching the other).
+    const [, viewportMinY] = this.#g6Graph.getViewportByCanvas(bbox.min);
+    const [, viewportMaxY] = this.#g6Graph.getViewportByCanvas(bbox.max);
+    const fraction = (e.viewport.y - viewportMinY) / (viewportMaxY - viewportMinY);
+    if (fraction < 0 || fraction > 1) return;
+
+    const visibility = this.#visibilityFor(datum);
+    const section = umlSectionAtFraction(datum.data, visibility, fraction);
+    if (!section) return;
+
+    this.#foldOverrides.set(id, { ...this.#foldOverrides.get(id), [section]: !visibility[section] });
+    // Re-derive this node's own style (size/labelText read #visibilityFor
+    // via the node-level style functions already wired in #applyGraphData)
+    // rather than a full #applyGraphData rebuild — cheap, and avoids
+    // disturbing every other node's current position.
+    this.#g6Graph.updateNodeData([{ id }]);
+    this.#g6Graph.draw();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     clearTimeout(this.#resizeDebounce);
     this.#g6Graph?.destroy();
+  }
+
+  /** The live G6 Graph instance — for introspection/debugging (e.g. from a devtools console), not needed by other components. */
+  get g6Graph() {
+    return this.#g6Graph;
   }
 }
 customElements.define('db-graph-canvas', DbGraphCanvas);
