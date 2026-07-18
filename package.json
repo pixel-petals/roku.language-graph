@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build-grammar": "cd packages/graphify && npx tree-sitter generate && npx node-gyp configure && npx node-gyp build",
-    "test": "node --check src/cli/cli.analyze-file.mjs && node --check src/cli/cli.analyze-app.mjs && node --check src/cli/cli.generate-sdk-exports.mjs && node --check src/cli/cli.run-benchmark.mjs && echo 'All checks passed'",
+    "test": "node --check src/cli/cli.analyze-file.mjs && node --check src/cli/cli.analyze-app.mjs && node --check src/cli/cli.generate-sdk-exports.mjs && node --check src/cli/cli.run-benchmark.mjs && node --test",
     "analyze-app": "node src/cli/cli.analyze-app.mjs",
     "analyze-file": "node src/cli/cli.analyze-file.mjs",
     "generate-sdk-exports": "node src/cli/cli.generate-sdk-exports.mjs",
