@@ -7,24 +7,38 @@
   },
   "scripts": {
     "build-grammar": "cd packages/graphify && npx tree-sitter generate && npx node-gyp configure && npx node-gyp build",
-    "test": "node --check src/cli/cli.analyze-file.mjs && node --check src/cli/cli.analyze-app.mjs && node --check src/cli/cli.generate-sdk-exports.mjs && node --check src/cli/cli.run-benchmark.mjs && node --check src/cli/cli.inspect-db.mjs && node --test",
+    "test": "node --check src/cli/cli.analyze-file.mjs && node --check src/cli/cli.analyze-app.mjs && node --check src/cli/cli.generate-sdk-exports.mjs && node --check src/cli/cli.generate-ebnf.mjs && node --check src/cli/cli.run-benchmark.mjs && node --check src/cli/cli.inspect-db.mjs && node --check src/cli/cli.view-graph.mjs && node --check src/db-graph/db-graph.ssr.mjs && node --test",
     "analyze-app": "node src/cli/cli.analyze-app.mjs",
     "analyze-file": "node src/cli/cli.analyze-file.mjs",
     "generate-sdk-exports": "node src/cli/cli.generate-sdk-exports.mjs",
-    "generate-ebnf": "node src/grammar/ebnf/ebnf.generate.mjs",
+    "generate-ebnf": "node src/cli/cli.generate-ebnf.mjs",
     "run-benchmark": "node src/cli/cli.run-benchmark.mjs",
     "inspect-db": "node src/cli/cli.inspect-db.mjs",
     "inspect-db:app": "node src/cli/cli.inspect-db.mjs examples/roku-app/graphify-output/.graphify-state/graph.pgdata",
     "inspect-db:scenegraph": "node src/cli/cli.inspect-db.mjs exports/scenegraph/.graphify-state/graph.pgdata",
-    "inspect-db:brightscript": "node src/cli/cli.inspect-db.mjs exports/brightscript/.graphify-state/graph.pgdata"
+    "inspect-db:brightscript": "node src/cli/cli.inspect-db.mjs exports/brightscript/.graphify-state/graph.pgdata",
+    "build:db-graph": "vite build --config src/db-graph/db-graph.vite.config.mjs",
+    "view-graph": "npm run build:db-graph && node src/cli/cli.view-graph.mjs",
+    "view-graph:app": "npm run build:db-graph && node src/cli/cli.view-graph.mjs examples/roku-app/graphify-output/.graphify-state/graph.pgdata"
   },
   "dependencies": {
+    "@antv/g6": "^5.1.1",
     "@electric-sql/pglite": "^0.2.17",
+    "@lit-labs/motion": "^1.1.0",
+    "@lit-labs/observers": "^2.1.0",
+    "@lit-labs/router": "^0.1.4",
+    "@lit-labs/signals": "^0.3.0",
+    "@lit-labs/ssr": "^4.1.0",
+    "@lit-labs/ssr-client": "^1.1.8",
+    "@lit/context": "^1.1.6",
     "@sentropic/graphify": "^0.15.0",
     "brighterscript": "1.0.0-alpha.52",
     "brighterscript-jsdocs-plugin": "^0.8.0",
     "graphology": "^0.26.0",
-    "graphology-types": "^0.24.7"
+    "graphology-types": "^0.24.7",
+    "lit": "^3.3.3",
+    "litegraph.js": "^0.7.18",
+    "urlpattern-polyfill": "^10.1.0"
   },
   "keywords": [
     "roku",
@@ -33,5 +47,9 @@
     "graph",
     "code-analysis"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^8.1.5",
+    "vite-plugin-singlefile": "^2.3.3"
+  }
 }

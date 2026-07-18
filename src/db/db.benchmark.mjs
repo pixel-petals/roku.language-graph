@@ -1,5 +1,5 @@
 /**
- * database.benchmark.mjs
+ * db.benchmark.mjs
  *
  * Turns the checked-in benchmark catalog (src/parse/roku-benchmark/
  * roku-benchmark.catalog.json) into a cost model: BenchmarkOp nodes to

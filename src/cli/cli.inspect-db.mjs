@@ -19,7 +19,7 @@
  */
 
 import path from 'path';
-import { openGraphStore } from '../database/database.store.mjs';
+import { openGraphStore } from '../db/db.store.mjs';
 
 /** file.brs::Foo::bar -> Foo::bar (drops the absolute-path prefix shared with its own filePath, for terminal-width readability). */
 function shortQualifiedName(qualifiedName, filePath) {

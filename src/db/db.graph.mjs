@@ -1,5 +1,5 @@
 /**
- * database.graph.mjs
+ * db.graph.mjs
  *
  * Turns a stored graph (the {nodes, edges} record shape queryAll() returns)
  * into a `graphology` `Graph` usable by src/transform, and centralizes the

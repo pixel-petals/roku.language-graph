@@ -6,8 +6,9 @@
  * is the source of truth, exports are just views over it.
  */
 
-import { buildRokuSdkGraph, toGraphRecords } from './roku-sdk.graph.js';
-import { openGraphStore } from '../../database/database.store.mjs';
+import { buildRokuSdkGraph } from './roku-sdk.graph.js';
+import { toGraphRecords } from './roku-sdk.records.js';
+import { openGraphStore } from '../../db/db.store.mjs';
 
 /** Parse the Roku SDK docs at `sdkDocsPath` and store the graph via `storeConfig`. */
 export async function parseAndStoreRokuSdk(sdkDocsPath, storeConfig) {

@@ -28,7 +28,7 @@ function findSourceFiles(appDir) {
 /**
  * Parse a Roku app directory into { nodes, edges } via the brighterscript compiler.
  * @param {string} appDir
- * @param {{ costModel?: object }} [options] optional benchmark cost model (see database.benchmark.mjs) for best-effort CALLS cost estimates
+ * @param {{ costModel?: object }} [options] optional benchmark cost model (see db.benchmark.mjs) for best-effort CALLS cost estimates
  */
 export function parseRokuApp(appDir, { costModel } = {}) {
   const program = new Program({ rootDir: appDir });

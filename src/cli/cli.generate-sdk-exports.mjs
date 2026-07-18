@@ -21,11 +21,12 @@
  */
 
 import { buildStaticStudio } from '@sentropic/graphify';
-import { buildRokuSdkGraph, toGraphRecords, partitionRecords } from '../parse/roku-sdk/roku-sdk.graph.js';
+import { buildRokuSdkGraph } from '../parse/roku-sdk/roku-sdk.graph.js';
+import { toGraphRecords, partitionRecords } from '../parse/roku-sdk/roku-sdk.records.js';
 import { partitionCatalog } from '../parse/roku-benchmark/roku-benchmark.classify.mjs';
-import { openGraphStore } from '../database/database.store.mjs';
-import { toGraphologyGraph, detectCommunities, assignCommunities } from '../database/database.graph.mjs';
-import { loadCostModel, benchmarkOpNodes } from '../database/database.benchmark.mjs';
+import { openGraphStore } from '../db/db.store.mjs';
+import { toGraphologyGraph, detectCommunities, assignCommunities } from '../db/db.graph.mjs';
+import { loadCostModel, benchmarkOpNodes } from '../db/db.benchmark.mjs';
 import { toJson } from '../transform/json/json.transform.mjs';
 import { toWiki } from '../transform/md/md.transform.mjs';
 import fs from 'fs';

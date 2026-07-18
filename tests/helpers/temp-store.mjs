@@ -9,7 +9,7 @@
  * `t.after` in the calling test).
  */
 
-import { openGraphStore } from '../../src/database/database.store.mjs';
+import { openGraphStore } from '../../src/db/db.store.mjs';
 import os from 'os';
 import path from 'path';
 import fs from 'fs';

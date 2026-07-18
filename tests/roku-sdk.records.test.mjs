@@ -1,12 +1,12 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
-import { toGraphRecords, partitionRecords } from '../src/parse/roku-sdk/roku-sdk.graph.js';
+import { toGraphRecords, partitionRecords } from '../src/parse/roku-sdk/roku-sdk.records.js';
 
 function makeRaw({ nodes, links }) {
   return { directed: true, graph: { label: 'test', source: '/sdk-docs' }, nodes, links };
 }
 
-describe('roku-sdk.graph: toGraphRecords', () => {
+describe('roku-sdk.records: toGraphRecords', () => {
   test('a method node gets its real owner via the has_method link, not an assumed prefix', () => {
     const raw = makeRaw({
       nodes: [
@@ -58,7 +58,7 @@ describe('roku-sdk.graph: toGraphRecords', () => {
   });
 });
 
-describe('roku-sdk.graph: partitionRecords', () => {
+describe('roku-sdk.records: partitionRecords', () => {
   test('sg: and field: nodes go to sceneGraph', () => {
     const raw = makeRaw({
       nodes: [
