@@ -32,13 +32,14 @@ export class DbGraphStats extends LitElement {
       position: absolute;
       top: 8px;
       left: 8px;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(26, 26, 25, 0.9);
       padding: 6px 10px;
       border-radius: 4px;
       font-size: 12px;
       font-family: system-ui, sans-serif;
-      color: #333;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
     }
   `;
 

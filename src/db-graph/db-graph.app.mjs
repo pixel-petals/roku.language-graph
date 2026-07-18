@@ -62,7 +62,7 @@ class DbGraphApp extends LitElement {
   };
 
   static styles = css`
-    :host { display: flex; width: 100vw; height: 100vh; font-family: system-ui, sans-serif; overflow: hidden; background: #fff; }
+    :host { display: flex; width: 100vw; height: 100vh; font-family: system-ui, sans-serif; overflow: hidden; background: #1a1a19; color-scheme: dark; }
     #viewer { flex: 1 1 auto; min-width: 0; position: relative; }
     #viewer.hidden { display: none; }
     #divider {

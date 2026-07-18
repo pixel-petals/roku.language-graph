@@ -22,11 +22,24 @@ import { ResizeController } from '@lit-labs/observers/resize-controller.js';
 import { graphDataSignal } from '../db-graph.state.mjs';
 import './viewer.stats.mjs';
 
+// Dark-surface-validated (see dataviz skill's references/palette.md): the
+// project's chart surface is #1a1a19, chrome/ink below is that surface's
+// dark-mode column, not eyeballed.
 const EDGE_TIER_STYLE = {
-  DECLARED: { stroke: '#8C8C8C', lineDash: null },
-  RESOLVED: { stroke: '#5B8FF9', lineDash: null },
-  TEXTUAL: { stroke: '#F6BD16', lineDash: [4, 2] },
+  DECLARED: { stroke: '#898781', lineDash: null }, // muted ink
+  RESOLVED: { stroke: '#3987e5', lineDash: null }, // categorical slot 1 (blue)
+  TEXTUAL: { stroke: '#c98500', lineDash: [4, 2] }, // categorical slot 4 (yellow), dashed for "less certain"
 };
+
+// Categorical slots 1-8, dark column, in the validated fixed order (worst
+// adjacent CVD ΔE 8.4, worst adjacent normal-vision ΔE 19.3 — both clear
+// the gates for this graph's node-kind count).
+const NODE_PALETTE_DARK = ['#3987e5', '#008300', '#d55181', '#c98500', '#199e70', '#d95926', '#9085e9', '#e66767'];
+
+const DARK_SURFACE = '#1a1a19';
+const DARK_INK = '#ffffff';
+const DARK_INK_MUTED = '#c3c2b7';
+const DARK_BORDER = 'rgba(255,255,255,0.15)';
 
 export class DbGraphCanvas extends SignalWatcher(LitElement) {
   static styles = css`
@@ -97,8 +110,8 @@ export class DbGraphCanvas extends SignalWatcher(LitElement) {
       autoFit: 'view',
       data: graphData,
       node: {
-        style: { size: 24, labelText: d => d.data.name, labelFontSize: 10 },
-        palette: { type: 'group', field: graphData.paletteField || 'kind' },
+        style: { size: 24, labelText: d => d.data.name, labelFontSize: 10, labelFill: DARK_INK },
+        palette: { type: 'group', field: graphData.paletteField || 'kind', color: NODE_PALETTE_DARK },
       },
       edge: {
         style: {
@@ -108,7 +121,13 @@ export class DbGraphCanvas extends SignalWatcher(LitElement) {
         },
       },
       combo: {
-        style: { labelText: d => d.data.label, labelFontSize: 11 },
+        style: {
+          labelText: d => d.data.label,
+          labelFontSize: 11,
+          labelFill: DARK_INK_MUTED,
+          fill: 'rgba(255,255,255,0.04)',
+          stroke: DARK_BORDER,
+        },
       },
       layout: {
         type: 'combo-combined',
@@ -118,15 +137,20 @@ export class DbGraphCanvas extends SignalWatcher(LitElement) {
       },
       behaviors: ['drag-canvas', 'zoom-canvas', 'drag-element', 'click-select', 'hover-activate', 'collapse-expand'],
       plugins: [
-        { type: 'legend', nodeField: graphData.paletteField || 'kind', position: 'bottom' },
+        {
+          type: 'legend',
+          nodeField: graphData.paletteField || 'kind',
+          position: 'bottom',
+          containerStyle: { background: DARK_SURFACE, color: DARK_INK },
+        },
         {
           type: 'tooltip',
           getContent: (event, items) => items.map(d => {
             const isEdge = 'source' in d;
-            if (isEdge) {
-              return `<div><b>${d.data.kind}</b><br>${d.source} → ${d.target}<br>${d.data.filePath}:${d.data.line}<br>${d.data.confidenceTier} (${d.data.confidence})</div>`;
-            }
-            return `<div><b>${d.data.name}</b> (${d.data.kind})<br>${d.data.filePath}:${d.data.lineStart}-${d.data.lineEnd}<br><code>${d.id}</code></div>`;
+            const body = isEdge
+              ? `<b>${d.data.kind}</b><br>${d.source} → ${d.target}<br>${d.data.filePath}:${d.data.line}<br>${d.data.confidenceTier} (${d.data.confidence})`
+              : `<b>${d.data.name}</b> (${d.data.kind})<br>${d.data.filePath}:${d.data.lineStart}-${d.data.lineEnd}<br><code>${d.id}</code>`;
+            return `<div style="background:${DARK_SURFACE}; color:${DARK_INK}; border:1px solid ${DARK_BORDER}; border-radius:4px; padding:6px 8px; font-size:12px;">${body}</div>`;
           }).join(''),
         },
       ],
