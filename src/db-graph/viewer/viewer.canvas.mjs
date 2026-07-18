@@ -64,20 +64,43 @@ function cappedMemberLines(members) {
   return [...members.slice(0, MAX_MEMBER_LINES), `… and ${members.length - MAX_MEMBER_LINES} more`];
 }
 
-/** A UML class box's multi-line label: stereotype + name, then fields, then methods, "―" dividers between populated sections. */
+// Section key -> its box header. Order here is the order sections render in
+// (properties above public functions above private functions, matching
+// conventional UML layout).
+const UML_SECTIONS = [
+  ['fields', 'Properties'],
+  ['publicMethods', 'Public Functions'],
+  ['privateMethods', 'Private Functions'],
+];
+
+/**
+ * How many label lines a class box's members produce — shared by
+ * umlLabelText and umlNodeSize so they can never disagree about a box's
+ * required height. A folded section (sectionVisibility[key] === false)
+ * always costs exactly 1 line (its header, with a count) regardless of how
+ * many members it actually has; an unfolded section costs its header plus
+ * its capped member list.
+ */
+function umlSectionLines(data) {
+  const visibility = data.sectionVisibility || {};
+  return UML_SECTIONS.filter(([key]) => data.members[key].length).map(([key, label]) => {
+    const members = data.members[key];
+    const folded = visibility[key] === false;
+    const header = `― ${label} (${members.length}${folded ? ', folded' : ''}) ―`;
+    return folded ? [header] : [header, ...cappedMemberLines(members)];
+  });
+}
+
+/** A UML class box's multi-line label: stereotype + name, then one folded/unfolded section per populated member bucket. */
 function umlLabelText(data) {
-  const lines = [`«${data.kind}»`, data.name];
-  if (data.members.fields.length) lines.push('―'.repeat(18), ...cappedMemberLines(data.members.fields));
-  if (data.members.methods.length) lines.push('―'.repeat(18), ...cappedMemberLines(data.members.methods));
+  const lines = [`«${data.kind}»`, data.name, ...umlSectionLines(data).flat()];
   return lines.join('\n');
 }
 
-/** [width, height] sized to a UML class box's (capped) line count so text isn't clipped. */
+/** [width, height] sized to a UML class box's (capped, fold-aware) line count so text isn't clipped. */
 function umlNodeSize(data) {
-  const fieldLines = Math.min(data.members.fields.length, MAX_MEMBER_LINES + 1);
-  const methodLines = Math.min(data.members.methods.length, MAX_MEMBER_LINES + 1);
-  const lineCount = 2 + fieldLines + methodLines + (fieldLines ? 1 : 0) + (methodLines ? 1 : 0);
-  return [220, 16 + lineCount * 16];
+  const lineCount = 2 + umlSectionLines(data).reduce((sum, section) => sum + section.length, 0);
+  return [240, 16 + lineCount * 16];
 }
 
 export class DbGraphCanvas extends SignalWatcher(LitElement) {

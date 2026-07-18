@@ -140,13 +140,24 @@ export function setupPipeline({ canvasEl, rawData, onRender }) {
     this.addInput('edges', 'edges');
     this.addOutput('nodes', 'nodes');
     this.addOutput('edges', 'edges');
+    this.properties = { showFields: true, showPublicMethods: true, showPrivateMethods: true };
+    // Each section folds/unfolds independently in the rendered UML box (see
+    // viewer.canvas.mjs's umlLabelText) — these don't change what's
+    // *collected* as members, only whether the viewer shows the full list
+    // or a one-line "N folded" summary for that section.
+    this.addWidget('toggle', 'Properties', this.properties.showFields, v => { this.properties.showFields = v; scheduleRun(); });
+    this.addWidget('toggle', 'Public Functions', this.properties.showPublicMethods, v => { this.properties.showPublicMethods = v; scheduleRun(); });
+    this.addWidget('toggle', 'Private Functions', this.properties.showPrivateMethods, v => { this.properties.showPrivateMethods = v; scheduleRun(); });
   }
   BuildUmlClassesNode.title = 'Build UML Classes';
-  BuildUmlClassesNode.desc = 'Folds Method/Field members into their owning Class/Interface/Component and reclassifies inter-class edges as UML relations (EXTENDS -> INHERITANCE, INSTANTIATES -> COMPOSITION, calls/reads/writes/etc -> DEPENDENCY)';
+  BuildUmlClassesNode.desc = 'Folds Method/Field members into their owning Class/Interface/Component and reclassifies inter-class edges as UML relations (EXTENDS -> INHERITANCE, INSTANTIATES -> COMPOSITION, calls/reads/writes/etc -> DEPENDENCY); the three toggles control which member sections render expanded vs folded to a summary line';
   BuildUmlClassesNode.prototype.onExecute = function () {
     const nodes = this.getInputData(0) || [];
     const edges = this.getInputData(1) || [];
-    const { nodes: classNodes, classIds, ownerMap } = buildUmlClasses({ nodes, edges }, { classKinds: DEFAULT_CLASS_KINDS });
+    const { showFields, showPublicMethods, showPrivateMethods } = this.properties;
+    const { nodes: classNodes, classIds, ownerMap } = buildUmlClasses({ nodes, edges }, {
+      classKinds: DEFAULT_CLASS_KINDS, showFields, showPublicMethods, showPrivateMethods,
+    });
     this.setOutputData(0, classNodes);
     this.setOutputData(1, classifyUmlEdges(edges, { classIds, ownerMap }));
   };

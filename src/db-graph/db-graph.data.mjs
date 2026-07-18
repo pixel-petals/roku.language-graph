@@ -60,9 +60,12 @@ export function toGraphData({ nodes, edges }, { comboField = null } = {}) {
         parentName: n.parentName,
         folder: dirname(n.filePath),
         // Present only on class-shaped nodes the "Build UML Classes" editor
-        // node produces ({fields: string[], methods: string[]}); the viewer
-        // switches a node to its UML box rendering when this is set.
+        // node produces ({fields, publicMethods, privateMethods}, each
+        // string[]) plus which of those three sections should render
+        // expanded vs folded; the viewer switches a node to its UML box
+        // rendering when `members` is set.
         members: n.members,
+        sectionVisibility: n.sectionVisibility,
       },
     };
   });

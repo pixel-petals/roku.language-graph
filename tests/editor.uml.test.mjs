@@ -6,6 +6,10 @@ function contains(source, target) {
   return { kind: 'CONTAINS', sourceQualified: source, targetQualified: target, confidence: 1, confidenceTier: 'DECLARED' };
 }
 
+function hasScript(source, target) {
+  return { kind: 'HAS_SCRIPT', sourceQualified: source, targetQualified: target, confidence: 1, confidenceTier: 'DECLARED' };
+}
+
 describe('editor.uml: buildOwnerMap', () => {
   it('maps a CONTAINS edge target to its source', () => {
     const owner = buildOwnerMap([contains('A', 'A.m')]);
@@ -42,10 +46,10 @@ describe('editor.uml: nearestClassAncestor', () => {
 });
 
 describe('editor.uml: buildUmlClasses', () => {
-  it('folds Method/Field members into their owning class, dropping the raw member nodes', () => {
+  it('folds a public Method/Field into their owning class, dropping the raw member nodes', () => {
     const nodes = [
       { kind: 'Class', qualifiedName: 'Foo', name: 'Foo' },
-      { kind: 'Method', qualifiedName: 'Foo.bar', name: 'bar', params: '[]', returnType: null },
+      { kind: 'Method', qualifiedName: 'Foo.bar', name: 'bar', params: '[]', returnType: null, modifiers: ['public'] },
       { kind: 'Field', qualifiedName: 'Foo.count', name: 'count', returnType: 'integer' },
     ];
     const edges = [contains('Foo', 'Foo.bar'), contains('Foo', 'Foo.count')];
@@ -54,8 +58,9 @@ describe('editor.uml: buildUmlClasses', () => {
 
     assert.equal(result.length, 1);
     assert.equal(result[0].qualifiedName, 'Foo');
-    assert.deepEqual(result[0].members.methods, ['bar()']);
+    assert.deepEqual(result[0].members.publicMethods, ['bar()']);
     assert.deepEqual(result[0].members.fields, ['count: integer']);
+    assert.deepEqual(result[0].members.privateMethods, []);
   });
 
   it('renders a method signature with typed params', () => {
@@ -67,13 +72,74 @@ describe('editor.uml: buildUmlClasses', () => {
 
     const { nodes: result } = buildUmlClasses({ nodes, edges });
 
-    assert.deepEqual(result[0].members.methods, ['init(x as integer): void']);
+    assert.deepEqual(result[0].members.publicMethods, ['init(x as integer): void']);
+  });
+
+  it('a ComponentFunction (XML interface entry) is always public, regardless of any modifiers', () => {
+    const nodes = [
+      { kind: 'Component', qualifiedName: 'Widget', name: 'Widget' },
+      { kind: 'ComponentFunction', qualifiedName: 'Widget.onShow', name: 'onShow', params: '[]', returnType: null },
+    ];
+    const edges = [contains('Widget', 'Widget.onShow')];
+
+    const { nodes: result } = buildUmlClasses({ nodes, edges });
+
+    assert.deepEqual(result[0].members.publicMethods, ['onShow()']);
+  });
+
+  it('a Method with a private access modifier goes to privateMethods', () => {
+    const nodes = [
+      { kind: 'Class', qualifiedName: 'Foo', name: 'Foo' },
+      { kind: 'Method', qualifiedName: 'Foo.secret', name: 'secret', params: '[]', returnType: null, modifiers: ['private'] },
+    ];
+    const edges = [contains('Foo', 'Foo.secret')];
+
+    const { nodes: result } = buildUmlClasses({ nodes, edges });
+
+    assert.deepEqual(result[0].members.privateMethods, ['secret()']);
+    assert.deepEqual(result[0].members.publicMethods, []);
+  });
+
+  it('a bare Function reached via the HAS_SCRIPT bridge (a component\'s internal .brs function, not declared in its XML interface) is private', () => {
+    const nodes = [
+      { kind: 'Component', qualifiedName: 'Widget', name: 'Widget' },
+      { kind: 'File', qualifiedName: 'Widget.brs', name: 'Widget.brs' },
+      { kind: 'Function', qualifiedName: 'Widget.brs::helper', name: 'helper', params: '[]', returnType: null },
+    ];
+    const edges = [hasScript('Widget', 'Widget.brs'), contains('Widget.brs', 'Widget.brs::helper')];
+
+    const { nodes: result } = buildUmlClasses({ nodes, edges });
+
+    assert.deepEqual(result[0].members.privateMethods, ['helper()']);
   });
 
   it('drops members that never reach a class-like ancestor', () => {
     const nodes = [{ kind: 'Function', qualifiedName: 'orphan.fn', name: 'fn' }];
     const { nodes: result } = buildUmlClasses({ nodes, edges: [] });
     assert.deepEqual(result, []);
+  });
+
+  it('defaults every section to visible, and stashes the same sectionVisibility onto every returned class', () => {
+    const nodes = [
+      { kind: 'Class', qualifiedName: 'A', name: 'A' },
+      { kind: 'Class', qualifiedName: 'B', name: 'B' },
+    ];
+    const { nodes: result } = buildUmlClasses({ nodes, edges: [] });
+    assert.deepEqual(result[0].sectionVisibility, { fields: true, publicMethods: true, privateMethods: true });
+    assert.deepEqual(result[1].sectionVisibility, result[0].sectionVisibility);
+  });
+
+  it('threads showFields/showPublicMethods/showPrivateMethods through to sectionVisibility without dropping any collected members', () => {
+    const nodes = [
+      { kind: 'Class', qualifiedName: 'Foo', name: 'Foo' },
+      { kind: 'Field', qualifiedName: 'Foo.count', name: 'count', returnType: 'integer' },
+    ];
+    const edges = [contains('Foo', 'Foo.count')];
+
+    const { nodes: result } = buildUmlClasses({ nodes, edges }, { showFields: false, showPublicMethods: true, showPrivateMethods: false });
+
+    assert.deepEqual(result[0].sectionVisibility, { fields: false, publicMethods: true, privateMethods: false });
+    assert.deepEqual(result[0].members.fields, ['count: integer']);
   });
 });
 
