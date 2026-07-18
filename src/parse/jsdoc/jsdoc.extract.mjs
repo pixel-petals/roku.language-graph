@@ -35,21 +35,29 @@ const JSDOC_BLOCK = /\/\*\*[\s\S]*?\*\//;
 const toCommentBlock = (doc) => `\n${doc.split('\n').map(line => `' ${line}`).join('\n')}`;
 
 /**
- * Best-effort JSDoc block for one declaration. `node.doc` is the raw
- * comment text already collected by `docCommentFor` — falls straight
- * through to `''` when there's no comment or no snippet template for
- * `node.kind`. Any failure past that (parser choking on the synthesized
- * snippet, unexpected plugin output shape) also falls back to `''` — a bad
- * jsdoc run must never break the rest of the parse.
+ * Best-effort JSDoc block for one declaration, to be spread into that
+ * node's `extra` (`...extractJsDoc(node)`). Two outcomes, both meant to be
+ * distinguishable downstream (see `pglite.db.mjs`'s `flush()`):
+ *
+ * - Success (including "there's no comment, or the plugin legitimately
+ *   produced nothing") -> `{ jsdoc: string }` — an authoritative value,
+ *   `''` included, that should overwrite whatever was stored before.
+ * - Failure (the plugin threw — a bad synthesized snippet, an unexpected
+ *   AST shape) -> `{ jsdocError: true }`, no `jsdoc` key at all, logged to
+ *   console. A bad jsdoc run must never break the rest of the parse *or*
+ *   wipe out a previously-stored doc for this node — the storage layer
+ *   preserves the last-known-good `jsdoc` value whenever it sees this flag
+ *   instead of overwriting it with nothing.
  */
 export function extractJsDoc(node) {
   const buildSnippet = node.doc && SNIPPETS[node.kind];
-  if (!buildSnippet) return '';
+  if (!buildSnippet) return { jsdoc: '' };
   try {
     const source = buildSnippet({ ...node, commentBlock: toCommentBlock(node.doc) });
     const converted = convertBrighterscriptDocs(source, 'BrighterScript', '');
-    return JSDOC_BLOCK.exec(converted)?.[0] ?? '';
-  } catch {
-    return '';
+    return { jsdoc: JSDOC_BLOCK.exec(converted)?.[0] ?? '' };
+  } catch (err) {
+    console.error(`[jsdoc.extract] failed for ${node.kind} "${node.name}" (${node.qualifiedName ?? 'unknown'}): ${err.message}`);
+    return { jsdocError: true };
   }
 }

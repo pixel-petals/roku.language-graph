@@ -101,6 +101,22 @@ function edgeParams(e, now) {
   ];
 }
 
+/**
+ * `extra.jsdocError: true` (see jsdoc.extract.mjs) means this run's jsdoc
+ * extraction threw and carries no `jsdoc` value of its own — rather than
+ * overwrite whatever was stored last time with nothing, look up the prior
+ * row's `extra.jsdoc` and carry it forward. No prior row (or no prior
+ * `jsdoc`) is a no-op; either way the transient error marker never gets
+ * persisted.
+ */
+async function preserveFailedJsdoc(tx, n) {
+  if (!n.extra?.jsdocError) return n;
+  const { rows } = await tx.query('SELECT extra FROM nodes WHERE qualified_name = $1', [n.qualifiedName]);
+  const priorJsdoc = rows[0]?.extra ? JSON.parse(rows[0].extra).jsdoc : undefined;
+  const { jsdocError, ...rest } = n.extra;
+  return { ...n, extra: priorJsdoc !== undefined ? { ...rest, jsdoc: priorJsdoc } : rest };
+}
+
 function toVectorLiteral(embedding) {
   return `[${embedding.join(',')}]`;
 }
@@ -161,7 +177,7 @@ export async function openPgliteStore(config = {}) {
       const now = Date.now() / 1000;
       await db.transaction(async (tx) => {
         for (const fp of dirtyFilePaths) await tx.query('DELETE FROM edges WHERE file_path = $1', [fp]);
-        for (const n of pendingNodes) await tx.query(UPSERT_NODE, nodeParams(n, now));
+        for (const n of pendingNodes) await tx.query(UPSERT_NODE, nodeParams(await preserveFailedJsdoc(tx, n), now));
         for (const e of pendingEdges) await tx.query(INSERT_EDGE, edgeParams(e, now));
       });
       pendingNodes = [];

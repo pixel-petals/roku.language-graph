@@ -203,7 +203,7 @@ function extractFunctions(ast, fp, fileQname, lang, lines, addNode, addEdge) {
         col: posOf(stmt).col, namespace: ns ?? null, params: paramsJson(stmt.func),
         returnType, modifiers: [isSub ? 'sub' : 'function'],
         isTest: looksLikeTest(stmt.tokens.name.text, stmt.annotations),
-        doc, jsdoc: extractJsDoc({ kind: 'Function', name: stmt.tokens.name.text, doc, params: paramsArray(stmt.func), isSub, returnType }),
+        doc, ...extractJsDoc({ kind: 'Function', name: stmt.tokens.name.text, qualifiedName: qname, doc, params: paramsArray(stmt.func), isSub, returnType }),
         ...cfg.metrics,
       }));
       addEdge(declaredEdge(ns ? `${fp}::${ns}` : fileQname, qname, fp, posOf(stmt).line));
@@ -227,7 +227,7 @@ function extractClassMembers(cls, qname, fp, lang, lines, addNode, addEdge) {
       col: posOf(method).col, params: paramsJson(method.func),
       returnType, modifiers: [method.accessModifier?.text ?? 'public', method.tokens.override ? 'override' : null, isSub ? 'sub' : 'function'].filter(Boolean),
       isTest: looksLikeTest(method.tokens.name.text, method.annotations),
-      doc, jsdoc: extractJsDoc({ kind: 'Method', name: method.tokens.name.text, doc, params: paramsArray(method.func), isSub, returnType }),
+      doc, ...extractJsDoc({ kind: 'Method', name: method.tokens.name.text, qualifiedName: methodQname, doc, params: paramsArray(method.func), isSub, returnType }),
       ...cfg.metrics,
     }));
     addEdge(declaredEdge(qname, methodQname, fp, posOf(method).line));
@@ -243,7 +243,7 @@ function extractClassMembers(cls, qname, fp, lang, lines, addNode, addEdge) {
     const returnType = typeExpressionText(field.typeExpression);
     addNode(containerNode('Field', field.tokens.name.text, fieldQname, fp, field, field, lang, qname, {
       returnType, modifiers: [field.tokens.accessModifier?.text ?? 'public'],
-      doc, jsdoc: extractJsDoc({ kind: 'Field', name: field.tokens.name.text, doc, returnType }),
+      doc, ...extractJsDoc({ kind: 'Field', name: field.tokens.name.text, qualifiedName: fieldQname, doc, returnType }),
     }));
     addEdge(declaredEdge(qname, fieldQname, fp, posOf(field).line));
   }
@@ -256,7 +256,7 @@ function extractClasses(ast, fp, fileQname, lang, scope, lines, addNode, addEdge
       const ns = namespaceOf(cls);
       const doc = docCommentFor(lines, cls);
       addNode(containerNode('Class', cls.tokens.name.text, qname, fp, cls, cls, lang, null, {
-        namespace: ns ?? null, doc, jsdoc: extractJsDoc({ kind: 'Class', name: cls.tokens.name.text, doc }),
+        namespace: ns ?? null, doc, ...extractJsDoc({ kind: 'Class', name: cls.tokens.name.text, qualifiedName: qname, doc }),
       }));
       addEdge(declaredEdge(ns ? `${fp}::${ns}` : fileQname, qname, fp, posOf(cls).line));
 
@@ -289,7 +289,7 @@ function extractInterfaces(ast, fp, fileQname, lang, scope, lines, addNode, addE
       addNode(containerNode('Interface', iface.tokens.name.text, qname, fp, iface, iface, lang, null, {
         fields: iface.fields.map(f => f.tokens.name.text),
         methods: iface.methods.map(m => m.tokens.name.text),
-        doc, jsdoc: extractJsDoc({ kind: 'Interface', name: iface.tokens.name.text, doc }),
+        doc, ...extractJsDoc({ kind: 'Interface', name: iface.tokens.name.text, qualifiedName: qname, doc }),
       }));
       addEdge(declaredEdge(ns ? `${fp}::${ns}` : fileQname, qname, fp, posOf(iface).line));
 
@@ -313,7 +313,7 @@ function extractEnumsAndConsts(ast, fp, fileQname, lang, lines, addNode, addEdge
       const doc = docCommentFor(lines, en);
       addNode(containerNode('Enum', en.tokens.name.text, qname, fp, en, en, lang, null, {
         members: en.getMembers().map(m => m.tokens.name.text),
-        doc, jsdoc: extractJsDoc({ kind: 'Enum', name: en.tokens.name.text, doc }),
+        doc, ...extractJsDoc({ kind: 'Enum', name: en.tokens.name.text, qualifiedName: qname, doc }),
       }));
       addEdge(declaredEdge(ns ? `${fp}::${ns}` : fileQname, qname, fp, posOf(en).line));
     },
@@ -322,7 +322,7 @@ function extractEnumsAndConsts(ast, fp, fileQname, lang, lines, addNode, addEdge
       const ns = namespaceOf(c);
       const doc = docCommentFor(lines, c);
       addNode(containerNode('Const', c.tokens.name.text, qname, fp, c, c, lang, null, {
-        doc, jsdoc: extractJsDoc({ kind: 'Const', name: c.tokens.name.text, doc }),
+        doc, ...extractJsDoc({ kind: 'Const', name: c.tokens.name.text, qualifiedName: qname, doc }),
       }));
       addEdge(declaredEdge(ns ? `${fp}::${ns}` : fileQname, qname, fp, posOf(c).line));
     },
