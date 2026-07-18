@@ -1,7 +1,7 @@
 {
   "name": "bsc-graph",
   "version": "0.1.0",
-  "description": "Adapter that ports the project's graph (src/database) into the code-review-graph SQLite format",
+  "description": "Adapter that ports the project's graph (src/db) into the code-review-graph SQLite format",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

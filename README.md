@@ -11,7 +11,7 @@ modules/                          Git submodules
 
 packages/                         Standalone integrations, not used by src/ for parsing
   graphify/                       Tree-sitter grammar for BrightScript (Rust, native Node addon)
-  code-review-graph/              Thin adapter stub, will port src/database's output into the code-review-graph
+  code-review-graph/              Thin adapter stub, will port src/db's output into the code-review-graph
                                    SQLite format once that's worth doing
   rooibos/                        (empty, reserved)
 
@@ -23,7 +23,7 @@ src/
     roku-sdk/                     Scrapes modules/roku-sdk's markdown docs into an SDK reference graph
     roku-benchmark/                Runs modules/roku-benchmark against a real device and maintains a checked-in,
                                    incrementally-updated benchmark catalog
-  database/                       Embedded PGlite (WASM Postgres + pgvector) GraphStore, the persistence layer
+  db/                            Embedded PGlite (WASM Postgres + pgvector) GraphStore, the persistence layer
                                    every parser writes into
   transform/                      Graph -> export format (JSON/Markdown wiki via @sentropic/graphify;
                                    DOT/GraphML/Mermaid/XML hand-rolled)
@@ -48,7 +48,7 @@ flowchart LR
     end
 
     Catalog --> RokuApp
-    RokuApp --> DB[(src/database: PGlite + pgvector)]
+    RokuApp --> DB[(src/db: PGlite + pgvector)]
     RokuSdk --> DB
     Catalog --> DB
 
@@ -64,7 +64,7 @@ flowchart LR
 - **The SceneGraph reference database** (`exports/scenegraph/`) — `roSGNode` types, their fields, and SceneGraph-relevant benchmark ops.
 - **The BrightScript reference database** (`exports/brightscript/`) — core `ro*`/`if*` language objects/interfaces and BrightScript-language benchmark ops.
 
-The SceneGraph/BrightScript split mirrors how Roku developers already think about the platform. Both reference databases share the exact same schema as an app's own database (`nodes`/`edges`/`metadata` — see `src/database/pglite/pglite.db.mjs`), just as separate files, built once via `cli.generate-sdk-exports.mjs` and meant to be reused across every app analyzed rather than rebuilt per app.
+The SceneGraph/BrightScript split mirrors how Roku developers already think about the platform. Both reference databases share the exact same schema as an app's own database (`nodes`/`edges`/`metadata` — see `src/db/pglite/pglite.db.mjs`), just as separate files, built once via `cli.generate-sdk-exports.mjs` and meant to be reused across every app analyzed rather than rebuilt per app.
 
 ```mermaid
 flowchart TB

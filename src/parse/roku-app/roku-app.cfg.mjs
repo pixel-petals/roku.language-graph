@@ -229,7 +229,7 @@ function collectLabels(statements, out) {
  * Rudimentary Big-O label from loop nesting depth alone — not a real
  * algorithmic analysis (loop bounds, early exits, and actual behavior
  * aren't accounted for), just shape. A fallback tier for when no matching
- * benchmark measurement is available (see database.benchmark.mjs).
+ * benchmark measurement is available (see db.benchmark.mjs).
  */
 function bigOFromLoopDepth(depth) {
   if (depth === 0) return 'O(1)';

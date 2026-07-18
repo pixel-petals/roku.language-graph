@@ -7,7 +7,7 @@
  */
 
 import { buildRokuSdkGraph, toGraphRecords } from './roku-sdk.graph.js';
-import { openGraphStore } from '../../database/database.store.mjs';
+import { openGraphStore } from '../../db/db.store.mjs';
 
 /** Parse the Roku SDK docs at `sdkDocsPath` and store the graph via `storeConfig`. */
 export async function parseAndStoreRokuSdk(sdkDocsPath, storeConfig) {

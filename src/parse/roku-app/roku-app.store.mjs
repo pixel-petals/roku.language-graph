@@ -7,7 +7,7 @@
  */
 
 import { parseRokuApp } from './roku-app.parser.mjs';
-import { openGraphStore } from '../../database/database.store.mjs';
+import { openGraphStore } from '../../db/db.store.mjs';
 
 /** Parse the Roku app at `appDir` and store the graph via `storeConfig`. */
 export async function parseAndStoreRokuApp(appDir, storeConfig) {

@@ -1,8 +1,8 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
-import { loadCostModel, benchmarkOpNodes, estimateMicroseconds } from '../src/database/database.benchmark.mjs';
+import { loadCostModel, benchmarkOpNodes, estimateMicroseconds } from '../src/db/db.benchmark.mjs';
 
-describe('database.benchmark: loadCostModel', () => {
+describe('db.benchmark: loadCostModel', () => {
   test('loads the checked-in catalog with a rows array and a byKey lookup', () => {
     const costModel = loadCostModel();
     assert.ok(Array.isArray(costModel.rows));
@@ -13,7 +13,7 @@ describe('database.benchmark: loadCostModel', () => {
   });
 });
 
-describe('database.benchmark: benchmarkOpNodes', () => {
+describe('db.benchmark: benchmarkOpNodes', () => {
   test('maps each catalog row to a BenchmarkOp node with a bench: qualified name', () => {
     const rows = [{ suiteName: 'Baseline', testName: 'noop', operation: 'do nothing', testFile: 'Baseline.bs', microsecondsPerOp: 0.06, sampleCount: 10, min: 0.05, max: 0.07, measuredAt: '2026-01-01' }];
     const [node] = benchmarkOpNodes({ rows });
@@ -34,7 +34,7 @@ describe('database.benchmark: benchmarkOpNodes', () => {
   });
 });
 
-describe('database.benchmark: estimateMicroseconds', () => {
+describe('db.benchmark: estimateMicroseconds', () => {
   const costModel = {
     byKey: new Map([
       ['RoSGNodeCreation::node', { microsecondsPerOp: 1.5 }],

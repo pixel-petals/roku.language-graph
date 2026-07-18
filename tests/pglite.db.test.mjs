@@ -53,7 +53,7 @@ async function queryEdgesForFile(filePath) {
   return edges.filter(e => e.filePath === filePath);
 }
 
-describe('database.pglite: node round-trip', () => {
+describe('pglite.db: node round-trip', () => {
   test('a stored node round-trips through queryAll with the same shape', async () => {
     const p = uniquify();
     await store.upsertNodes([makeNode(p, { extra: { doc: 'hello' } })]);
@@ -104,7 +104,7 @@ describe('database.pglite: node round-trip', () => {
   });
 });
 
-describe('database.pglite: jsdocError preserves the prior jsdoc value', () => {
+describe('pglite.db: jsdocError preserves the prior jsdoc value', () => {
   test('a jsdocError-flagged node keeps the previously stored jsdoc instead of erasing it', async () => {
     const p = uniquify();
     await store.upsertNodes([makeNode(p, { extra: { jsdoc: '/** original */' } })]);
@@ -140,7 +140,7 @@ describe('database.pglite: jsdocError preserves the prior jsdoc value', () => {
   });
 });
 
-describe('database.pglite: edge round-trip', () => {
+describe('pglite.db: edge round-trip', () => {
   test('confidence float round-trips exactly through the SMALLINT (0-100) storage format', async () => {
     const p = uniquify();
     await store.upsertEdges([makeEdge(p, { confidence: 0.9 })]);
@@ -175,7 +175,7 @@ describe('database.pglite: edge round-trip', () => {
   });
 });
 
-describe('database.pglite: empty input', () => {
+describe('pglite.db: empty input', () => {
   test('flush() with no queued nodes/edges is a no-op, not an error', async () => {
     const before = await store.queryAll();
     await assert.doesNotReject(() => store.flush());

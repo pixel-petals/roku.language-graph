@@ -25,7 +25,7 @@ import * as path from 'path';
 import { posOf, endLineOf, exprText, safe, classifyValueKind } from './roku-app.ast-utils.mjs';
 import { buildFunctionCfg } from './roku-app.cfg.mjs';
 import { buildFunctionDfg } from './roku-app.dfg.mjs';
-import { estimateMicroseconds } from '../../database/database.benchmark.mjs';
+import { estimateMicroseconds } from '../../db/db.benchmark.mjs';
 import { extractJsDoc } from '../jsdoc/jsdoc.extract.mjs';
 
 function fileHash(contents) {
@@ -421,7 +421,7 @@ function tagRecursion(nodes, edges) {
  * Extract nodes/edges for a single BrsFile: namespaces, functions, classes,
  * interfaces, enums, consts, imports, calls, instantiations, writes.
  * @param {object} file @param {object} program
- * @param {object} [costModel] optional benchmark cost model (see database.benchmark.mjs) for best-effort CALLS cost estimates
+ * @param {object} [costModel] optional benchmark cost model (see db.benchmark.mjs) for best-effort CALLS cost estimates
  */
 export function extractBrsFile(file, program, costModel) {
   const nodes = [];

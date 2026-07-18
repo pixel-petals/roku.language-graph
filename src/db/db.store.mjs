@@ -1,5 +1,5 @@
 /**
- * database.store.mjs
+ * db.store.mjs
  *
  * Public entry point for persisting a parsed graph. Backed by PGlite
  * (embedded WASM Postgres) with the pgvector extension enabled, so nodes

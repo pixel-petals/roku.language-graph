@@ -18,9 +18,9 @@
 import fs from 'fs';
 import path from 'path';
 import { parseRokuApp } from '../parse/roku-app/roku-app.parser.mjs';
-import { openGraphStore } from '../database/database.store.mjs';
-import { toGraphologyGraph, detectCommunities, assignCommunities } from '../database/database.graph.mjs';
-import { loadCostModel } from '../database/database.benchmark.mjs';
+import { openGraphStore } from '../db/db.store.mjs';
+import { toGraphologyGraph, detectCommunities, assignCommunities } from '../db/db.graph.mjs';
+import { loadCostModel } from '../db/db.benchmark.mjs';
 import { toJson } from '../transform/json/json.transform.mjs';
 import { toWiki } from '../transform/md/md.transform.mjs';
 import { buildStaticStudio } from '@sentropic/graphify';
