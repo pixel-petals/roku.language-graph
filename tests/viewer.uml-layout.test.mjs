@@ -55,11 +55,18 @@ describe('viewer.uml-layout: umlLabelText', () => {
     assert.deepEqual(lines.slice(0, 2), ['«Component»', 'Widget']);
   });
 
-  it('renders sections in Properties/Public Functions/Private Functions order', () => {
+  it('renders sections in Properties/Public Functions order', () => {
     const data = makeData({ members: { fields: ['a'], publicMethods: ['b()'], privateMethods: ['c()'] } });
     const text = umlLabelText(data, ALL_VISIBLE);
     const headerLines = text.split('\n').filter(l => l.startsWith('―'));
-    assert.deepEqual(headerLines, ['― Properties (1) ―', '― Public Functions (1) ―', '― Private Functions (1) ―']);
+    assert.deepEqual(headerLines, ['― Properties (1) ―', '― Public Functions (1) ―']);
+  });
+
+  it('never renders a Private Functions section, even when populated and "visible"', () => {
+    const data = makeData({ members: { fields: [], publicMethods: [], privateMethods: ['secret()'] } });
+    const text = umlLabelText(data, ALL_VISIBLE);
+    assert.ok(!text.includes('Private Functions'));
+    assert.ok(!text.includes('secret()'));
   });
 });
 

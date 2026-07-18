@@ -25,12 +25,15 @@ export function cappedMemberLines(members) {
 }
 
 // Section key -> its box header. Order here is the order sections render in
-// (properties above public functions above private functions, matching
-// conventional UML layout).
+// (properties above public functions, matching conventional UML layout).
+// Private functions are deliberately excluded — a class's public interface
+// is what a UML diagram is for; internal implementation detail is noise
+// here, not just something to fold away. editor.uml.mjs still computes
+// `members.privateMethods` (real, tested data), the viewer just never
+// reads it.
 export const UML_SECTIONS = [
   ['fields', 'Properties'],
   ['publicMethods', 'Public Functions'],
-  ['privateMethods', 'Private Functions'],
 ];
 
 // Lines before the first section (the «stereotype» and name lines) — shared

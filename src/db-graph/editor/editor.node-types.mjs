@@ -140,23 +140,24 @@ export function setupPipeline({ canvasEl, rawData, onRender }) {
     this.addInput('edges', 'edges');
     this.addOutput('nodes', 'nodes');
     this.addOutput('edges', 'edges');
-    this.properties = { showFields: true, showPublicMethods: true, showPrivateMethods: true };
-    // Each section folds/unfolds independently in the rendered UML box (see
-    // viewer.canvas.mjs's umlLabelText) — these don't change what's
-    // *collected* as members, only whether the viewer shows the full list
-    // or a one-line "N folded" summary for that section.
+    // Both start folded — a class diagram is easiest to read as a list of
+    // class names first, with the viewer's per-box click-to-expand (see
+    // viewer.canvas.mjs) opening up only the ones actually being looked at.
+    // No Private Functions toggle: the viewer never renders that section at
+    // all (see viewer.uml-layout.mjs's UML_SECTIONS), so there'd be nothing
+    // for it to control.
+    this.properties = { showFields: false, showPublicMethods: false };
     this.addWidget('toggle', 'Properties', this.properties.showFields, v => { this.properties.showFields = v; scheduleRun(); });
     this.addWidget('toggle', 'Public Functions', this.properties.showPublicMethods, v => { this.properties.showPublicMethods = v; scheduleRun(); });
-    this.addWidget('toggle', 'Private Functions', this.properties.showPrivateMethods, v => { this.properties.showPrivateMethods = v; scheduleRun(); });
   }
   BuildUmlClassesNode.title = 'Build UML Classes';
-  BuildUmlClassesNode.desc = 'Folds Method/Field members into their owning Class/Interface/Component and reclassifies inter-class edges as UML relations (EXTENDS -> INHERITANCE, INSTANTIATES -> COMPOSITION, calls/reads/writes/etc -> DEPENDENCY); the three toggles control which member sections render expanded vs folded to a summary line';
+  BuildUmlClassesNode.desc = 'Folds Method/Field members into their owning Class/Interface/Component and reclassifies inter-class edges as UML relations (EXTENDS -> INHERITANCE, INSTANTIATES -> COMPOSITION, calls/reads/writes/etc -> DEPENDENCY); the two toggles control whether Properties/Public Functions render expanded or folded to a summary line by default (private functions are never rendered)';
   BuildUmlClassesNode.prototype.onExecute = function () {
     const nodes = this.getInputData(0) || [];
     const edges = this.getInputData(1) || [];
-    const { showFields, showPublicMethods, showPrivateMethods } = this.properties;
+    const { showFields, showPublicMethods } = this.properties;
     const { nodes: classNodes, classIds, ownerMap } = buildUmlClasses({ nodes, edges }, {
-      classKinds: DEFAULT_CLASS_KINDS, showFields, showPublicMethods, showPrivateMethods,
+      classKinds: DEFAULT_CLASS_KINDS, showFields, showPublicMethods,
     });
     this.setOutputData(0, classNodes);
     this.setOutputData(1, classifyUmlEdges(edges, { classIds, ownerMap }));
