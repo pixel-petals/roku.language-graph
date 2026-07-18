@@ -92,6 +92,16 @@ function collectLoopCounterDefs(statements, depth, defs) {
 // visits for control flow — swap the export below to point here instead.
 // function getLocalDefsDiy(func) { throw new Error('not implemented'); }
 
+// TODO: getLocalDefsViaCompilerInternals itself can return two identical
+// entries for the same varName@line (confirmed on a real ~13k-node app:
+// 200 duplicate LocalDef qualifiedNames, all byte-for-byte identical —
+// e.g. a FunctionParameterExpression binding visited twice via nested
+// pocket tables). roku-app.dfg.mjs currently masks this at the storage
+// layer (pglite.db.mjs dedupes by qualifiedName, last-write-wins), but the
+// double-visit itself is unfixed here. Root-cause: dedupe `defs` below the
+// same way loopCounterDefs already gets deduped against `seen`, or trace
+// why getSymbolTypes/pocketTables walk visits some symbols twice.
+
 /** Every local-variable definition in `func`, across nested branch/loop scopes. */
 export function getLocalDefs(func) {
   const defs = getLocalDefsViaCompilerInternals(func);
