@@ -58,13 +58,28 @@ function currentRoutePath() {
 class DbGraphApp extends LitElement {
   static properties = {
     rawData: { attribute: false },
+    editorWidth: { state: true },
   };
 
   static styles = css`
     :host { display: flex; width: 100vw; height: 100vh; font-family: system-ui, sans-serif; overflow: hidden; background: #fff; }
     #viewer { flex: 1 1 auto; min-width: 0; position: relative; }
     #viewer.hidden { display: none; }
+    #divider {
+      flex: 0 0 5px;
+      cursor: col-resize;
+      background: transparent;
+      position: relative;
+    }
+    #divider:hover, #divider.dragging { background: #5B8FF9; }
+    #divider.inactive { display: none; }
   `;
+
+  // Min/max keep the editor panel from being dragged to something too
+  // cramped to use (a LiteGraph canvas needs real room) or so wide it
+  // swallows the viewer entirely.
+  #MIN_WIDTH = 240;
+  #MAX_WIDTH_RATIO = 0.75;
 
   constructor() {
     super();
@@ -74,6 +89,7 @@ class DbGraphApp extends LitElement {
     // (falls back to empty when opened without going through the CLI, e.g.
     // previewing the built shell directly).
     this.rawData = readSeedRawData();
+    this.editorWidth = 440;
     new ContextProvider(this, { context: graphDataContext, initialValue: graphDataSignal.get() });
     this._routes = new Routes(this, [
       { path: '/viewer', render: () => 'viewer' },
@@ -101,7 +117,8 @@ class DbGraphApp extends LitElement {
     const mode = this._routes.outlet() ?? 'split';
     return html`
       <div id="viewer" class=${mode === 'editor' ? 'hidden' : ''}><db-graph-canvas></db-graph-canvas></div>
-      <db-graph-editor-panel .rawData=${this.rawData} .collapsed=${mode === 'viewer'} .full=${mode === 'editor'}></db-graph-editor-panel>
+      <div id="divider" class=${mode === 'split' ? '' : 'inactive'} @pointerdown=${this.#onDividerPointerDown}></div>
+      <db-graph-editor-panel .rawData=${this.rawData} .width=${this.editorWidth} .collapsed=${mode === 'viewer'} .full=${mode === 'editor'}></db-graph-editor-panel>
     `;
   }
 
@@ -109,6 +126,29 @@ class DbGraphApp extends LitElement {
 
   #onToggleCollapse = () => {
     location.hash = currentRoutePath() === '/viewer' ? '/' : '/viewer';
+  };
+
+  #onDividerPointerDown = (event) => {
+    if (currentRoutePath() !== '/') return; // only draggable in split mode
+    event.preventDefault();
+    const divider = event.currentTarget;
+    const startX = event.clientX;
+    const startWidth = this.editorWidth;
+    divider.classList.add('dragging');
+    divider.setPointerCapture(event.pointerId);
+
+    const onMove = (moveEvent) => {
+      const maxWidth = window.innerWidth * this.#MAX_WIDTH_RATIO;
+      const proposed = startWidth - (moveEvent.clientX - startX);
+      this.editorWidth = Math.min(maxWidth, Math.max(this.#MIN_WIDTH, proposed));
+    };
+    const onUp = () => {
+      divider.classList.remove('dragging');
+      divider.removeEventListener('pointermove', onMove);
+      divider.removeEventListener('pointerup', onUp);
+    };
+    divider.addEventListener('pointermove', onMove);
+    divider.addEventListener('pointerup', onUp);
   };
 }
 customElements.define('db-graph-app', DbGraphApp);

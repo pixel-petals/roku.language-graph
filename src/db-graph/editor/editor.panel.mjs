@@ -18,6 +18,7 @@ export class DbGraphEditorPanel extends LitElement {
     rawData: { attribute: false },
     collapsed: { type: Boolean, reflect: true },
     full: { type: Boolean, reflect: true },
+    width: { type: Number },
   };
 
   static styles = css`
@@ -62,6 +63,7 @@ export class DbGraphEditorPanel extends LitElement {
     this.rawData = { nodes: [], edges: [] };
     this.collapsed = false;
     this.full = false;
+    this.width = 440;
     this._resize = new ResizeController(this, {
       callback: () => this.#resizeCanvas(),
     });
@@ -90,7 +92,14 @@ export class DbGraphEditorPanel extends LitElement {
   }
 
   updated(changed) {
-    if (changed.has('collapsed') || changed.has('full')) requestAnimationFrame(() => this.#resizeCanvas());
+    if (changed.has('collapsed') || changed.has('full') || changed.has('width')) {
+      // Inline style beats the :host([collapsed])/:host([full]) attribute
+      // rules by CSS specificity, so an explicit width only applies in the
+      // normal (split-view) state — collapsed/full stay driven by CSS.
+      if (this.collapsed || this.full) this.style.removeProperty('width');
+      else this.style.width = `${this.width}px`;
+      requestAnimationFrame(() => this.#resizeCanvas());
+    }
   }
 
   #resizeCanvas() {

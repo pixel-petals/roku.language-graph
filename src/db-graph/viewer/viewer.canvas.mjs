@@ -48,13 +48,24 @@ export class DbGraphCanvas extends SignalWatcher(LitElement) {
   // one's completion so a graph is never touched while still initializing.
   #pending = Promise.resolve();
 
+  #resizeDebounce = null;
+
   constructor() {
     super();
     this._resize = new ResizeController(this, {
+      // Debounced: a drag (e.g. the app's editor/viewer split divider)
+      // fires this on every intermediate frame, and calling G6's own
+      // .resize() that rapidly — faster than G6 settles between calls —
+      // corrupts its internal render state (canvas goes blank and stays
+      // blank, doesn't self-heal), reproduced directly while building the
+      // divider rather than assumed. Only resize once movement pauses.
       callback: () => {
-        this.#pending = this.#pending
-          .catch(() => {})
-          .then(() => this.#g6Graph?.resize(this.clientWidth, this.clientHeight));
+        clearTimeout(this.#resizeDebounce);
+        this.#resizeDebounce = setTimeout(() => {
+          this.#pending = this.#pending
+            .catch(() => {})
+            .then(() => this.#g6Graph?.resize(this.clientWidth, this.clientHeight));
+        }, 120);
       },
     });
   }
@@ -116,6 +127,7 @@ export class DbGraphCanvas extends SignalWatcher(LitElement) {
 
   disconnectedCallback() {
     super.disconnectedCallback();
+    clearTimeout(this.#resizeDebounce);
     this.#g6Graph?.destroy();
   }
 }
