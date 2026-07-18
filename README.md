@@ -1,90 +1,168 @@
 # roku-graphify
 
-BrightScript code graph analysis tool powered by [tree-sitter](https://tree-sitter.github.io/tree-sitter/). Parses Roku BrightScript (`.brs`) source into a call graph of functions/subs and their call edges, and can analyze a whole Roku app (source + components) into a browsable graph with community detection, a Markdown wiki, and a static HTML studio.
+BrightScript/BrighterScript code graph analysis tool, powered by the [`brighterscript`](https://github.com/rokucommunity/brighterscript) compiler (v1 alpha). Parses a Roku app (source + components) into a rich graph — declarations, calls, reads/writes, control flow, local data flow, and best-effort performance estimates — persisted in an embedded database, then exportable as a Markdown wiki, static HTML studio, DOT/GraphML/Mermaid/XML, or queried directly.
 
 ## How it fits together
 
 ```
-packages/
-  tree-sitter/brightscript/   Tree-sitter grammar for BrightScript (Rust, native Node addon)
-  bsc-graph/                  BrighterScript compiler plugin, extracts a code graph into a
-                               code-review-graph SQLite database
+modules/                          Git submodules
+  roku-sdk/                       Roku developer docs (scraped for the SDK reference graph)
+  roku-benchmark/                 rokucommunity/bsbench, real-device BrightScript micro-benchmarks
+
+packages/                         Standalone integrations, not used by src/ for parsing
+  graphify/                       Tree-sitter grammar for BrightScript (Rust, native Node addon)
+  code-review-graph/              Thin adapter stub, will port src/database's output into the code-review-graph
+                                   SQLite format once that's worth doing
+  rooibos/                        (empty, reserved)
+
 src/
-  brightscript/          Parses a single file with the grammar into a function/call graph
-  app/                   Builds a whole-app graph (multiple files) and bridges to @sentropic/graphify
-  sdk/                   Loads/queries a pre-built Roku SDK reference graph, for resolving calls
-                          into built-in Roku interfaces (roScreen, roMessagePort, ...)
-  ebnf/                  Generates EBNF grammar documentation
-  cli/                   Command-line entry points
-examples/roku-app/       A full sample Roku app (see its own README) for exercising analyze-app
-exports/                 Generated artifacts: EBNF grammars, the Roku SDK reference graph, wiki/studio output
+  parse/
+    roku-app/                     Parses one Roku app via the brighterscript compiler: declarations, calls,
+                                   reads/writes, a hand-built CFG, an approximate local-variable DFG, and
+                                   best-effort copy-vs-reference/cost annotations
+    roku-sdk/                     Scrapes modules/roku-sdk's markdown docs into an SDK reference graph
+    roku-benchmark/                Runs modules/roku-benchmark against a real device and maintains a checked-in,
+                                   incrementally-updated benchmark catalog
+  database/                       Embedded PGlite (WASM Postgres + pgvector) GraphStore, the persistence layer
+                                   every parser writes into
+  transform/                      Graph -> export format (JSON/Markdown wiki via @sentropic/graphify;
+                                   DOT/GraphML/Mermaid/XML hand-rolled)
+  grammar/ebnf/                   Generates EBNF grammar documentation from packages/graphify's grammar.js and
+                                   the SDK reference graph
+  cli/                            Command-line entry points (below)
+
+examples/roku-app/                A full sample Roku app for exercising cli.analyze-app.mjs
+exports/                          Generated reference-graph artifacts (gitignored)
+.artifacts/                       Raw/ephemeral capture output, e.g. bsbench runs (gitignored)
 ```
 
-### Parsing pipeline
+```mermaid
+flowchart LR
+    App[Roku app source] --> Parse
+    SDK[modules/roku-sdk docs] --> Parse
+    Bench[modules/roku-benchmark device runs] --> Catalog[roku-benchmark.catalog.json]
 
-1. **`packages/tree-sitter/brightscript/`** — the tree-sitter grammar itself (`grammar.js`, compiled to a native Node addon via `node-gyp`). Has its own `README.md`, `QUICKSTART.md`, and `GRAPHIFY.md` with grammar-specific details.
-2. **`src/brightscript/`** — `parser.js` wraps the compiled grammar; `queries.js` runs tree-sitter queries to extract functions, calls, assignments, and types; `graph.js` (`BrightScriptGraph`) assembles query results into a function/call graph for one file; `index.js` exposes `analyze(code)` returning `{ tree, graph, functions, calls, assignments, types }`.
-3. **`src/app/graphify.js`** — bridges a single file's tree-sitter graph into a [graphology](https://graphology.github.io/)-compatible payload consumable by [`@sentropic/graphify`](https://www.npmjs.com/package/@sentropic/graphify).
-4. **`src/app/graph.mjs`** — `buildAppGraph(appDir)` walks a whole Roku app directory (source + components) into one combined graph.
-5. **`src/sdk/`** — `graph.js` loads a pre-built Roku SDK reference graph (interfaces, methods, fields scraped from Roku's SDK docs); `refs.mjs` resolves app-graph nodes (e.g. `CreateObject("roScreen")`, method calls) to that SDK graph *by reference* — it links to the SDK graph's IDs without copying SDK definitions into the app graph.
+    subgraph Parse [src/parse]
+        RokuApp[roku-app]
+        RokuSdk[roku-sdk]
+    end
+
+    Catalog --> RokuApp
+    RokuApp --> DB[(src/database: PGlite + pgvector)]
+    RokuSdk --> DB
+    Catalog --> DB
+
+    DB --> Transform[src/transform]
+    Transform --> Wiki[Markdown wiki]
+    Transform --> Studio[HTML studio]
+    Transform --> Other[DOT / GraphML / Mermaid / XML]
+```
+
+### Three databases, deliberately kept separate
+
+- **An app's own database** (`cli.analyze-app.mjs` → `<app-dir>/graphify-output/.graphify-state/graph.pgdata`) — that app's declarations/calls/CFG/DFG only. Benchmark cost estimates get baked into `CALLS` edges (`extra.estimatedMicroseconds`) at parse time, but no raw benchmark rows are stored here — reference data never pollutes an app's own graph or community detection.
+- **The SceneGraph reference database** (`exports/scenegraph/`) — `roSGNode` types, their fields, and SceneGraph-relevant benchmark ops.
+- **The BrightScript reference database** (`exports/brightscript/`) — core `ro*`/`if*` language objects/interfaces and BrightScript-language benchmark ops.
+
+The SceneGraph/BrightScript split mirrors how Roku developers already think about the platform. Both reference databases share the exact same schema as an app's own database (`nodes`/`edges`/`metadata` — see `src/database/pglite/pglite.db.mjs`), just as separate files, built once via `cli.generate-sdk-exports.mjs` and meant to be reused across every app analyzed rather than rebuilt per app.
+
+```mermaid
+flowchart TB
+    subgraph AppDB ["App database (per app)"]
+        direction LR
+        AN[declarations / calls / CFG / DFG]
+    end
+    subgraph SGDB ["SceneGraph reference database"]
+        direction LR
+        SN[roSGNode types + fields + SG benchmark ops]
+    end
+    subgraph BSDB ["BrightScript reference database"]
+        direction LR
+        BN[ro*/if* objects + BrightScript benchmark ops]
+    end
+
+    AppDB -. never mixed .- SGDB
+    AppDB -. never mixed .- BSDB
+    SGDB -. own schema, own file .- BSDB
+```
+
+### What gets extracted per BrightScript function (`src/parse/roku-app/`)
+
+- **Declarations & structure**: functions, classes, methods, fields, interfaces, enums, consts, namespaces, SceneGraph component composition (`roku-app.brs.mjs`, `roku-app.xml.mjs`)
+- **Calls & data flow**: `CALLS`/`INSTANTIATES`/`READS`/`WRITES` edges, each tagged `RESOLVED`/`TEXTUAL`/`DECLARED` by how confidently the target was matched
+- **Control-flow graph**: basic blocks + `FLOWS_TO` edges (`roku-app.cfg.mjs`), plus `cyclomaticComplexity`/`maxNestingDepth`/`exitPointCount` and a rudimentary Big-O estimate from loop-nesting depth
+- **Local-variable data-flow graph**: `LocalDef` nodes + scope-aware `USES` edges (`roku-app.dfg.mjs`), backed by a thin adapter (`roku-app.flow-adapter.mjs`) around `brighterscript`'s own `SymbolTable`/`PocketTable` internals — with a documented swap-to-hand-rolled fallback path if a future compiler release changes that shape
+- **Copy-vs-reference semantics**: best-effort `roSGNode` (always by-reference) vs `Array`/`AssociativeArray` (deep-cloned crossing a node boundary — `m.top.*` field access, `.callFunc(...)`) tagging on the relevant edges
+- **Cost estimates**: real `estimatedMicroseconds` where a `CALLS` edge matches a measured benchmark op, else the CFG's Big-O estimate
 
 ## CLI usage
 
 ```bash
 npm install
 
-# Analyze a single .brs file
-node src/cli/analyze-file.js <file.brs> --format dot|json|summary
+# Analyze a single .brs/.bs file (no cross-file resolution)
+node src/cli/cli.analyze-file.mjs [--summary] <file.brs> [...]
 
 # Analyze a whole Roku app directory (must contain source/ and components/)
-node src/cli/analyze-app.mjs <app-dir> [output-dir]
+node src/cli/cli.analyze-app.mjs <app-dir> [output-dir]
 
-# Regenerate the Roku SDK reference graph from SDK docs
-node src/cli/generate-exports.mjs [<sdk-docs-path>]
+# Rebuild the SceneGraph + BrightScript reference databases from SDK docs
+node src/cli/cli.generate-sdk-exports.mjs [<sdk-docs-path>]
 
-# Regenerate EBNF grammar documentation
-node src/ebnf/generate.mjs
+# Run bsbench against a real Roku device, update the checked-in benchmark catalog
+node src/cli/cli.run-benchmark.mjs [--host 192.168.18.17] [--password 1234] [--only PATTERN] [--quiescence-ms 8000]
+
+# Browse a graph.pgdata database's tables from the terminal (counts + a formatted sample)
+node src/cli/cli.inspect-db.mjs <path-to-graph.pgdata> [--kind KIND] [--edges] [--limit N]
 ```
 
-Or via npm scripts:
+Or via npm scripts: `build-grammar`, `test`, `analyze-app`, `analyze-file`, `generate-sdk-exports`, `generate-ebnf`, `run-benchmark`.
 
-| Script | Description |
-|---|---|
-| `npm run build-grammar` | Compile the tree-sitter BrightScript grammar (`tree-sitter generate` + `node-gyp`) |
-| `npm run test` | Smoke test: require the app module |
-| `npm run generate-sdk-exports` | Regenerate `exports/` (Roku SDK graph, wiki, static studio) |
-| `npm run generate-ebnf` | Regenerate EBNF grammar files in `exports/` |
-| `npm run analyze-app` | Run `analyze-app.mjs` |
+### Inspecting a database
 
-`analyze-app.mjs` writes to `<app-dir>/graphify-output/` by default:
+`cli.inspect-db.mjs` covers terminal browsing today — it's built on the
+project's own pinned PGlite (0.2.17) and `console.table`, no extra
+dependency. A real point-and-click GUI (a VSCode Postgres/Database Client
+extension connected live) is possible via
+[`@electric-sql/pglite-socket`](https://www.npmjs.com/package/@electric-sql/pglite-socket),
+but every version of it requires `@electric-sql/pglite >=0.4.0` — verified
+directly (not assumed): pglite 0.5.4 fails outright to open a `.pgdata`
+directory this project's pinned 0.2.17 created ("PGlite failed to
+initialize properly"). Taking that path means:
 
+1. Bumping `@electric-sql/pglite` from `^0.2.17` to `0.5.4` project-wide.
+2. Re-verifying the schema (pgvector, the JSON-as-TEXT `extra`/`modifiers`
+   columns) still behaves under whatever Postgres version 0.5.4 bundles.
+3. Regenerating every existing `.pgdata` file — including the checked-in
+   reference databases — since old ones won't open under the new version.
+4. `npm install @electric-sql/pglite-socket`, then a small script wrapping
+   an open store in a `PGliteSocketServer` on a TCP port, and connecting a
+   VSCode Postgres extension to `localhost:<port>`.
+
+Not done here — a real dependency bump with real migration cost, not a
+default to make silently.
+
+`cli.analyze-app.mjs` writes to `<app-dir>/graphify-output/` by default:
+
+- `.graphify-state/graph.pgdata` — the embedded PGlite database
 - `.graphify-state/graph.json` — raw graph data
 - `wiki/` — Markdown wiki pages, one per detected community
 - `studio/index.html` — self-contained static HTML graph explorer
 
-The globally installed CLI binary is `roku-graphify` (see `bin` in `package.json`), which maps to `src/cli/analyze-file.js`.
+The globally installed CLI binary is `roku-graphify` (see `bin` in `package.json`), mapping to `cli.analyze-file.mjs`.
 
-## Output formats
+## Benchmark catalog
 
-`analyze-file.js` supports:
+`src/parse/roku-benchmark/roku-benchmark.catalog.json` is checked into the repo — one row per bsbench test (492 total), with a real description of the operation it measures and a link to its source file, built by reading every benchmark file directly rather than inferring from names. Cost fields (`microsecondsPerOp`, `min`, `max`, `sampleCount`, `measuredAt`) start `null` and get filled in by `cli.run-benchmark.mjs` runs against a real device — a device is only needed to *refresh* the numbers, not to have the catalog at all. 13 suites are genuinely cross-cutting (e.g. comparing a SceneGraph-node field against a local variable) and are tagged `comparativeSuite: true` since their rows land in both reference databases by design.
 
-- `dot` (default) — Graphviz DOT format of the function/call graph
-- `json` — raw graph JSON (`functions`, `calls`)
-- `summary` — human-readable function list and call edges with weights
+## Submodules
 
-## Packages
+```bash
+git submodule update --init --recursive
+```
 
-### `packages/bsc-graph`
-
-A [BrighterScript](https://github.com/rokucommunity/brighterscript) v1 compiler plugin (TypeScript) that extracts a code graph directly from BrighterScript's own compilation pipeline and writes it into a `code-review-graph` SQLite database (via `better-sqlite3`), for use by the [code-review-graph](https://www.npmjs.com/package/@sentropic/graphify) tooling. Build with `npm run build` inside that package (runs `tsc`).
-
-## Demo app
-
-`examples/roku-app/` is a complete sample Roku app (source, components, manifest) — see `examples/roku-app/README.md` for details. Use it as input to `analyze-app.mjs` to see the full app-graph pipeline end to end.
-
-## Configuration
-
-`.code-review-graph/languages.toml` configures language support for the [code-review-graph](https://www.npmjs.com/package/@sentropic/graphify) tooling used across this repo's analysis pipeline.
+- `modules/roku-sdk` — Roku developer docs, scraped by `src/parse/roku-sdk`
+- `modules/roku-benchmark` — bsbench; needs its own `npm install` before `cli.run-benchmark.mjs` can use it
 
 ## License
 

@@ -2,9 +2,10 @@
  * roku-app.xml.mjs
  *
  * Extracts graph nodes/edges from a single SceneGraph component (.xml) file:
- * the component itself, its <interface> fields/functions, and its EXTENDS /
- * HAS_SCRIPT / OBSERVES relationships, resolved via the `brighterscript`
- * program where possible.
+ * the component itself, its <interface> fields/functions, its <children>
+ * SceneGraph composition tree, and its EXTENDS / HAS_SCRIPT / OBSERVES /
+ * USES_TYPE relationships, resolved via the `brighterscript` program where
+ * possible.
  */
 
 import { ParseMode } from 'brighterscript';
@@ -66,6 +67,53 @@ function extractInterfaceFunctions(iface, qname, fp, scope, nodes, edges) {
   }
 }
 
+function tagOf(el) {
+  return el.tokens?.startTagName?.text ?? null;
+}
+
+function attrsOf(el) {
+  const out = {};
+  for (const a of el.attributes ?? []) {
+    const key = a.tokens?.key?.text;
+    if (key) out[key] = a.tokens?.value?.text ?? null;
+  }
+  return out;
+}
+
+/** USES_TYPE target: a local custom component if one exists, else the roku-sdk.graph.js `sg:` node ID convention (unverified at parse time). */
+function usesTypeEdge(program, tag, qname, fp, line) {
+  const local = safe(() => program.getComponent(tag));
+  const target = local?.file ? `${local.file.srcPath}::${tag}` : `sg:${tag}`;
+  return { kind: 'USES_TYPE', sourceQualified: qname, targetQualified: target, filePath: fp, line, extra: {}, confidence: local?.file ? 1.0 : 0.6, confidenceTier: local?.file ? 'RESOLVED' : 'TEXTUAL' };
+}
+
+/** Recursively extract a component's <children> SceneGraph composition tree (Label, Poster, nested custom components, ...). */
+function walkChildren(el, parentQname, fp, program, index, nodes, edges) {
+  const tag = tagOf(el);
+  if (!tag) return;
+  const attrs = attrsOf(el);
+  const instanceId = attrs.id ?? `#${index}`;
+  const qname = `${parentQname}::child:${instanceId}`;
+  const line = lineOf(el);
+
+  nodes.push({
+    kind: 'SGNodeInstance', name: attrs.id ?? tag, qualifiedName: qname, filePath: fp,
+    lineStart: line, lineEnd: line, language: 'xml', parentName: parentQname,
+    params: null, returnType: null, modifiers: null, isTest: false, fileHash: null,
+    extra: { nodeType: tag, attributes: attrs },
+  });
+  edges.push({ kind: 'CONTAINS', sourceQualified: parentQname, targetQualified: qname, filePath: fp, line, extra: {}, confidence: 1.0, confidenceTier: 'DECLARED' });
+  edges.push(usesTypeEdge(program, tag, qname, fp, line));
+
+  (el.elements ?? []).forEach((child, i) => walkChildren(child, qname, fp, program, i, nodes, edges));
+}
+
+function extractChildren(component, qname, fp, program, nodes, edges) {
+  const childrenEl = (component.elements ?? []).find(e => tagOf(e) === 'children');
+  if (!childrenEl) return;
+  (childrenEl.elements ?? []).forEach((child, i) => walkChildren(child, qname, fp, program, i, nodes, edges));
+}
+
 /** Extract nodes/edges for a single XmlFile: the component, its interface, and its relationships. */
 export function extractXmlFile(file, program) {
   const nodes = [];
@@ -97,10 +145,14 @@ export function extractXmlFile(file, program) {
     edges.push({ kind: 'HAS_SCRIPT', sourceQualified: qname, targetQualified: resolved?.srcPath ?? target, filePath: fp, line: 0, extra: {}, confidence: resolved ? 1.0 : 0.6, confidenceTier: resolved ? 'RESOLVED' : 'TEXTUAL' });
   }
 
-  const iface = file.ast.componentElement?.interfaceElement;
+  const component = file.ast.componentElement;
+  const iface = component?.interfaceElement;
   if (iface) {
     extractInterfaceFields(iface, qname, fp, scope, nodes, edges);
     extractInterfaceFunctions(iface, qname, fp, scope, nodes, edges);
+  }
+  if (component) {
+    extractChildren(component, qname, fp, program, nodes, edges);
   }
 
   return { nodes, edges };

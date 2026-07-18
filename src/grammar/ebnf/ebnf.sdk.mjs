@@ -1,5 +1,5 @@
 /**
- * sdk-to-ebnf.mjs
+ * ebnf.sdk.mjs
  *
  * Generates EBNF-style type definitions from the Roku SDK graph:
  *   - ro* component names (for use in CreateObject strings)

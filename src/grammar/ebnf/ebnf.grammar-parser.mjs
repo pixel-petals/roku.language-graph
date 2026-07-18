@@ -1,5 +1,5 @@
 /**
- * grammar-parser.mjs
+ * ebnf.grammar-parser.mjs
  *
  * Evaluates the tree-sitter grammar.js in a sandboxed vm context where every
  * DSL function (seq, choice, optional, …) returns a plain AST node instead of

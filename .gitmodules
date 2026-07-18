@@ -2,3 +2,7 @@
 	path = modules/roku-sdk
 	url = git@github.com:rokudev/dev-doc.git
 	branch = v2.0
+[submodule "roku-benchmark"]
+	path = modules/roku-benchmark
+	url = https://github.com/rokucommunity/bsbench
+	branch = master

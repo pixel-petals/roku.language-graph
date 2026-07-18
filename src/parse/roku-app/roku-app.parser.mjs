@@ -25,8 +25,12 @@ function findSourceFiles(appDir) {
   return results;
 }
 
-/** Parse a Roku app directory into { nodes, edges } via the brighterscript compiler. */
-export function parseRokuApp(appDir) {
+/**
+ * Parse a Roku app directory into { nodes, edges } via the brighterscript compiler.
+ * @param {string} appDir
+ * @param {{ costModel?: object }} [options] optional benchmark cost model (see database.benchmark.mjs) for best-effort CALLS cost estimates
+ */
+export function parseRokuApp(appDir, { costModel } = {}) {
   const program = new Program({ rootDir: appDir });
   for (const filePath of findSourceFiles(appDir)) {
     program.setFile(path.relative(appDir, filePath), fs.readFileSync(filePath, 'utf-8'));
@@ -36,7 +40,7 @@ export function parseRokuApp(appDir) {
   const nodes = [];
   const edges = [];
   for (const file of Object.values(program.files)) {
-    const result = isBrsFile(file) ? extractBrsFile(file, program)
+    const result = isBrsFile(file) ? extractBrsFile(file, program, costModel)
       : isXmlFile(file) ? extractXmlFile(file, program)
       : null;
     if (!result) continue;

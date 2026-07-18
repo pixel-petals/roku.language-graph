@@ -1,12 +1,16 @@
 /**
  * md.transform.mjs
  *
- * TODO: transform src/database's graph into Markdown wiki pages.
- * Currently @sentropic/graphify's toWiki() covers this from cli.*.mjs
- * directly; move that responsibility here once src/database is real.
+ * Writes a graphology graph to Markdown wiki pages (one per community).
+ * Delegates to @sentropic/graphify's toWiki() — already a working, tested
+ * implementation, no need to reinvent it. Does its own file I/O, like
+ * json.transform.mjs (also graphify-backed) — unlike the four pure
+ * graph -> string transforms (dot-graph, graph-ml, md-mermaid, xml).
  */
 
-/** @param {{nodes: object[], edges: object[]}} graph */
-export function toWiki(graph) {
-  throw new Error('not implemented');
+import { toWiki as graphifyToWiki } from '@sentropic/graphify';
+
+/** @param {import('graphology')} graph @param {Map} communities @param {string} outputDir */
+export function toWiki(graph, communities, outputDir, opts) {
+  return graphifyToWiki(graph, communities, outputDir, opts);
 }

@@ -2,6 +2,8 @@
 
 A complete Tree-Sitter grammar for Roku's BrightScript language, enabling advanced syntax analysis and integration with tools like Graphify.
 
+> **Role in this repo**: standalone grammar package, not currently used for parsing. `src/parse/` uses the `brighterscript` compiler directly instead (richer semantic info — types, symbol tables, cross-file resolution — than a syntax-only grammar provides). Kept here for non-parsing uses (syntax highlighting, editor integration) and as a fallback path.
+
 ## Overview
 
 This grammar provides comprehensive parsing support for BrightScript, including:
