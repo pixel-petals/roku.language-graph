@@ -149,6 +149,12 @@ export class DbGraphCanvas extends SignalWatcher(LitElement) {
         style: {
           size: d => (d.data.members ? umlNodeSize(d.data, this.#visibilityFor(d)) : 24),
           labelText: d => (d.data.members ? umlLabelText(d.data, this.#visibilityFor(d)) : d.data.name),
+          // G6's own default is labelPlacement: 'bottom' — a label rendered
+          // *below* the key shape, not inside it (fine for a small circle's
+          // name tag, but it left a UML box's text floating away from its
+          // own rectangle entirely). 'center' anchors the label to the key
+          // shape's own bounds instead.
+          labelPlacement: d => (d.data.members ? 'center' : 'bottom'),
           labelFontSize: 10,
           labelFontFamily: 'monospace',
           labelTextAlign: d => (d.data.members ? 'left' : 'center'),
