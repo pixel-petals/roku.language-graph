@@ -1,5 +1,5 @@
 /**
- * ebnf.generate.mjs — Entry point
+ * cli.generate-ebnf.mjs — Entry point
  *
  * Generates EBNF files and a validation report:
  *   exports/brightscript-syntax.ebnf   — BrightScript language grammar
@@ -9,24 +9,19 @@
  *
  * Exits with code 1 if validation finds errors.
  *
- * Usage: node src/grammar/ebnf/ebnf.generate.mjs [<sdk-docs-path>]
+ * Usage: node src/cli/cli.generate-ebnf.mjs [<sdk-docs-path>]
  */
 
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
-import { parseGrammar }           from './ebnf.grammar-parser.mjs';
-import { grammarToEbnf }          from './ebnf.serializer.mjs';
-import { sdkToEbnf }              from './ebnf.sdk.mjs';
-import {
-  validateGrammarAst,
-  crossValidateEbnfText,
-  formatReport,
-} from './ebnf.validate.mjs';
+import { parseGrammar }           from '../grammar/ebnf/ebnf.grammar-parser.mjs';
+import { grammarToEbnf }          from '../grammar/ebnf/ebnf.serializer.mjs';
+import { sdkToEbnf }              from '../grammar/ebnf/ebnf.sdk.mjs';
+import { validateGrammarAst, crossValidateEbnfText } from '../grammar/ebnf/ebnf.validate.mjs';
+import { formatReport }           from '../grammar/ebnf/ebnf.report.mjs';
 
-const __dirname   = path.dirname(fileURLToPath(import.meta.url));
 const sdkDocsPath = process.argv[2] || '/tmp/roku-sdk-docs';
-const exportsDir  = path.resolve(__dirname, '../../../exports');
+const exportsDir  = path.resolve('exports');
 
 fs.mkdirSync(exportsDir, { recursive: true });
 
