@@ -20,7 +20,7 @@ import { Graph } from '@antv/g6';
 import { SignalWatcher } from '@lit-labs/signals';
 import { ResizeController } from '@lit-labs/observers/resize-controller.js';
 import { graphDataSignal } from '../db-graph.state.mjs';
-import { umlLabelText, umlNodeSize, umlSectionAtFraction, UML_BOX_WIDTH, UML_LABEL_PADDING_X } from './viewer.uml-layout.mjs';
+import { umlLabelText, umlNodeSize, umlLabelOffsetX, umlSectionAtFraction } from './viewer.uml-layout.mjs';
 import './viewer.stats.mjs';
 
 // Dark-surface-validated (see dataviz skill's references/palette.md): the
@@ -155,16 +155,10 @@ export class DbGraphCanvas extends SignalWatcher(LitElement) {
           // own rectangle entirely). 'center' anchors the label to the key
           // shape's own bounds instead.
           labelPlacement: d => (d.data.members ? 'center' : 'bottom'),
-          // 'center' placement anchors the label's x position at the key
-          // shape's horizontal *center* — labelTextAlign only controls which
-          // way a multi-line block grows from that anchor, not where the
-          // anchor itself sits, so 'left' text align alone still started
-          // every line at the box's midpoint, not its left edge (reproduced
-          // directly, not assumed). Shifting the anchor left by half the
-          // box's own fixed width (minus a little padding) puts it at the
-          // box's left edge instead, so 'left'-aligned text actually starts
-          // there.
-          labelOffsetX: d => (d.data.members ? -(UML_BOX_WIDTH / 2 - UML_LABEL_PADDING_X) : 0),
+          // See umlLabelOffsetX's own doc comment: 'center' placement
+          // anchors the label's x position at the key shape's horizontal
+          // center, not its left edge, regardless of labelTextAlign.
+          labelOffsetX: d => (d.data.members ? umlLabelOffsetX(d.data, this.#visibilityFor(d)) : 0),
           labelFontSize: 10,
           labelFontFamily: 'monospace',
           labelTextAlign: d => (d.data.members ? 'left' : 'center'),

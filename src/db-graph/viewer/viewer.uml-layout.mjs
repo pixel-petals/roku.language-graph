@@ -53,24 +53,48 @@ export function umlSectionLayout(data, visibility) {
   });
 }
 
-/** A UML class box's multi-line label: stereotype + name, then one folded/unfolded section per populated member bucket. */
-export function umlLabelText(data, visibility) {
-  const lines = [`«${data.kind}»`, data.name, ...umlSectionLayout(data, visibility).flatMap(s => s.lines)];
-  return lines.join('\n');
+/** Every line a class box's label renders, in order — the stereotype/name header, then each section's own lines. */
+export function umlAllLines(data, visibility) {
+  return [`«${data.kind}»`, data.name, ...umlSectionLayout(data, visibility).flatMap(s => s.lines)];
 }
 
-// Fixed rather than measured per box: every UML class box is the same
-// width regardless of member-name length (long names/signatures just wrap
-// or run to the box's edge), which keeps the force layout's spacing math
-// simple and lets the label's left-inset offset (see viewer.canvas.mjs,
-// which reads this constant) be a single number instead of computed per box.
-export const UML_BOX_WIDTH = 240;
-export const UML_LABEL_PADDING_X = 10;
+/** A UML class box's multi-line label: stereotype + name, then one folded/unfolded section per populated member bucket. */
+export function umlLabelText(data, visibility) {
+  return umlAllLines(data, visibility).join('\n');
+}
 
-/** [width, height] sized to a UML class box's (capped, fold-aware) line count so text isn't clipped. */
+export const UML_LABEL_PADDING_X = 10;
+export const UML_MIN_BOX_WIDTH = 150;
+export const UML_MAX_BOX_WIDTH = 320;
+// A rough monospace advance width at labelFontSize 10 (see viewer.canvas.mjs)
+// — close enough to size the box to its own text without needing an actual
+// canvas measureText() call (this is pure, DOM-free layout logic; see the
+// file header).
+const CHAR_WIDTH = 6;
+
+/** A box's width, sized (and clamped) to its own longest line — shared by umlNodeSize and umlLabelOffsetX so they can't disagree about it. */
+export function umlNodeWidth(lines) {
+  const longest = lines.reduce((max, line) => Math.max(max, line.length), 0);
+  return Math.min(UML_MAX_BOX_WIDTH, Math.max(UML_MIN_BOX_WIDTH, longest * CHAR_WIDTH + UML_LABEL_PADDING_X * 2));
+}
+
+/** [width, height] sized to a UML class box's (capped, fold-aware) content — wide enough for its longest line, tall enough for its line count. */
 export function umlNodeSize(data, visibility) {
-  const lineCount = UML_HEADER_LINES + umlSectionLayout(data, visibility).reduce((sum, s) => sum + s.lines.length, 0);
-  return [UML_BOX_WIDTH, 16 + lineCount * 16];
+  const lines = umlAllLines(data, visibility);
+  return [umlNodeWidth(lines), 16 + lines.length * 16];
+}
+
+/**
+ * The label's left-inset x offset (see viewer.canvas.mjs): `labelPlacement:
+ * 'center'` anchors a label at the key shape's horizontal *center*, so
+ * `labelTextAlign: 'left'` alone still starts every line at the box's
+ * midpoint rather than its left edge (reproduced directly, not assumed) —
+ * shifting the anchor left by half the box's own width (minus a little
+ * padding) puts it at the box's left edge instead.
+ */
+export function umlLabelOffsetX(data, visibility) {
+  const width = umlNodeWidth(umlAllLines(data, visibility));
+  return -(width / 2 - UML_LABEL_PADDING_X);
 }
 
 /**

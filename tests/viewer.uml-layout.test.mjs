@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { umlSectionLayout, umlLabelText, umlNodeSize, umlSectionAtFraction, cappedMemberLines, MAX_MEMBER_LINES } from '../src/db-graph/viewer/viewer.uml-layout.mjs';
+import { umlSectionLayout, umlLabelText, umlNodeSize, umlLabelOffsetX, umlSectionAtFraction, cappedMemberLines, MAX_MEMBER_LINES, UML_MIN_BOX_WIDTH, UML_MAX_BOX_WIDTH } from '../src/db-graph/viewer/viewer.uml-layout.mjs';
 
 const ALL_VISIBLE = { fields: true, publicMethods: true, privateMethods: true };
 
@@ -77,6 +77,39 @@ describe('viewer.uml-layout: umlNodeSize', () => {
     const totalLines = 2 + umlSectionLayout(data, visibility).reduce((sum, s) => sum + s.lines.length, 0);
     const [, height] = umlNodeSize(data, visibility);
     assert.equal(height, 16 + totalLines * 16);
+  });
+
+  it('a box with only short lines is clamped to the minimum width', () => {
+    const data = makeData({ name: 'X', members: { fields: [], publicMethods: [], privateMethods: [] } });
+    const [width] = umlNodeSize(data, ALL_VISIBLE);
+    assert.equal(width, UML_MIN_BOX_WIDTH);
+  });
+
+  it('a box with a very long line is clamped to the maximum width, not left to grow unbounded', () => {
+    const data = makeData({ members: { fields: ['x'.repeat(500)], publicMethods: [], privateMethods: [] } });
+    const [width] = umlNodeSize(data, ALL_VISIBLE);
+    assert.equal(width, UML_MAX_BOX_WIDTH);
+  });
+
+  it('a box with a moderately long line is wider than the minimum, narrower than the maximum', () => {
+    const data = makeData({ members: { fields: ['someModeratelyLongPropertyName: string'], publicMethods: [], privateMethods: [] } });
+    const [width] = umlNodeSize(data, ALL_VISIBLE);
+    assert.ok(width > UML_MIN_BOX_WIDTH && width < UML_MAX_BOX_WIDTH);
+  });
+});
+
+describe('viewer.uml-layout: umlLabelOffsetX', () => {
+  it('shifts the label anchor left by exactly half the box\'s own computed width', () => {
+    const data = makeData();
+    const [width] = umlNodeSize(data, ALL_VISIBLE);
+    const offsetX = umlLabelOffsetX(data, ALL_VISIBLE);
+    assert.equal(offsetX, -(width / 2 - 10));
+  });
+
+  it('a wider box (longer content) gets a more negative offset than a narrower one', () => {
+    const narrow = makeData({ name: 'X', members: { fields: [], publicMethods: [], privateMethods: [] } });
+    const wide = makeData({ members: { fields: ['someModeratelyLongPropertyName: string'], publicMethods: [], privateMethods: [] } });
+    assert.ok(umlLabelOffsetX(wide, ALL_VISIBLE) < umlLabelOffsetX(narrow, ALL_VISIBLE));
   });
 });
 
