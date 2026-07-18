@@ -1,25 +1,41 @@
-node_modules/
-grammars/brightscript/node_modules/
-grammars/brightscript/build/
-*.node
+# 1. Ignore everything by default
+*
+
+# 2. Whitelist tracked files and folders
+!/.claude/
+!/.claude/**
+!/.gitignore
+!/.gitmodules
+!/CLAUDE.md
+!/KNOWN_ISSUES.md
+!/README.md
+!/package.json
+!/package-lock.json
+!/examples/
+!/examples/**
+!/modules/
+!/modules/*/
+!/packages/
+!/packages/**
+!/src/
+!/src/**
+!/tests/
+!/tests/**
+
+# 3. Blacklist nested exceptions inside whitelisted trees
+
+# local-only Claude settings — must never be committed
+.claude/settings.local.json
 
 # Generated CLI output — reference databases (cli.generate-sdk-exports.mjs)
 # and any analyzed app's own output (cli.analyze-app.mjs, e.g.
-# examples/roku-app/graphify-output/). exports/.graphify-state/ (the old
-# flat pre-split path) is covered by the broader exports/ pattern below.
-exports/
-graphify-output/
+# examples/roku-app/graphify-output/).
+examples/**/exports/
+examples/**/graphify-output/
 
 # raw/ephemeral captures (bsbench, etc.) — the durable output lives in
 # checked-in files like src/parse/roku-benchmark/roku-benchmark.catalog.json
 .artifacts/
 
 # code-review-graph generated files
-.code-review-graph/
-
-# Ignore submodule *contents*, not the submodule directories themselves —
-# VSCode's git scanner walks a freshly-cloned submodule's working tree as
-# plain untracked files before it recognizes the .git boundary, which can
-# freeze the UI on a large submodule. A bare `modules/` ignores the
-# top-level path too, which blocks `git submodule add` without -f.
-modules/*/**
+examples/**/.code-review-graph/
