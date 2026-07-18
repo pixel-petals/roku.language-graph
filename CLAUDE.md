@@ -44,16 +44,32 @@ with its own prefix, not a loose file bolted onto an existing one.
 
 ## Verification discipline
 
-Before trusting an architectural claim about a third-party dependency —
-"pglite should handle this," "the plugin parses X correctly" — verify it
-against the real thing with a small throwaway script, not the docs or
-intuition. This project's history is full of real bugs found exactly this
-way (a CFG dangling-edge bug found by tracing before ever running; a
-benchmark parser that only recognized an output format the real tool never
-emits; a JSDoc plugin that silently drops single-line comments; a bulk-DB
-crash traced to a specific call, not "large data" in general). Read the
-actual source, run the actual command against real data, and only then
-decide the fix.
+Before implementing or recommending a fix based on a technical claim —
+whether it's an architectural assumption about a third-party dependency
+("pglite should handle this," "the plugin parses X correctly"), a
+performance hypothesis ("batching the writes should fix the crash"), or
+something the user hands you from outside research ("disable durability
+and use COPY FROM /dev/blob, that's the efficient way to bulk-load
+PGlite") — verify it against the real thing with a small throwaway script,
+not the docs, intuition, or the claim's own confidence. Treat every such
+claim as a hypothesis to test, say so explicitly, and only decide the fix
+once you've seen it fail or hold up for real. This project's history is
+full of real bugs and dead ends found exactly this way:
+
+- A CFG dangling-edge bug found by tracing before ever running.
+- A benchmark parser that only recognized an output format the real tool
+  never emits.
+- A JSDoc plugin that silently drops single-line comments.
+- A "let's batch the writes" fix for a pglite shutdown crash that turned
+  out to do nothing — the real cause was a large `queryAll()` read, found
+  only by testing writes and reads independently instead of assuming.
+- A "COPY is the efficient way to bulk-load" claim from outside research
+  that turned out to be correct, but only confirmed as such by measuring
+  COPY (~175ms) against per-row `INSERT` (~77s) on the same real rows
+  before adopting it — not by trusting the source.
+
+Read the actual source, run the actual command against real data, and
+only then decide the fix.
 
 ## Testing
 
