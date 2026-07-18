@@ -2,7 +2,13 @@ node_modules/
 grammars/brightscript/node_modules/
 grammars/brightscript/build/
 *.node
-exports/.graphify-state/
+
+# Generated CLI output — reference databases (cli.generate-sdk-exports.mjs)
+# and any analyzed app's own output (cli.analyze-app.mjs, e.g.
+# examples/roku-app/graphify-output/). exports/.graphify-state/ (the old
+# flat pre-split path) is covered by the broader exports/ pattern below.
+exports/
+graphify-output/
 
 # raw/ephemeral captures (bsbench, etc.) — the durable output lives in
 # checked-in files like src/parse/roku-benchmark/roku-benchmark.catalog.json

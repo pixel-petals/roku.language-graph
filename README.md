@@ -111,9 +111,36 @@ node src/cli/cli.generate-sdk-exports.mjs [<sdk-docs-path>]
 
 # Run bsbench against a real Roku device, update the checked-in benchmark catalog
 node src/cli/cli.run-benchmark.mjs [--host 192.168.18.17] [--password 1234] [--only PATTERN] [--quiescence-ms 8000]
+
+# Browse a graph.pgdata database's tables from the terminal (counts + a formatted sample)
+node src/cli/cli.inspect-db.mjs <path-to-graph.pgdata> [--kind KIND] [--edges] [--limit N]
 ```
 
 Or via npm scripts: `build-grammar`, `test`, `analyze-app`, `analyze-file`, `generate-sdk-exports`, `generate-ebnf`, `run-benchmark`.
+
+### Inspecting a database
+
+`cli.inspect-db.mjs` covers terminal browsing today — it's built on the
+project's own pinned PGlite (0.2.17) and `console.table`, no extra
+dependency. A real point-and-click GUI (a VSCode Postgres/Database Client
+extension connected live) is possible via
+[`@electric-sql/pglite-socket`](https://www.npmjs.com/package/@electric-sql/pglite-socket),
+but every version of it requires `@electric-sql/pglite >=0.4.0` — verified
+directly (not assumed): pglite 0.5.4 fails outright to open a `.pgdata`
+directory this project's pinned 0.2.17 created ("PGlite failed to
+initialize properly"). Taking that path means:
+
+1. Bumping `@electric-sql/pglite` from `^0.2.17` to `0.5.4` project-wide.
+2. Re-verifying the schema (pgvector, the JSON-as-TEXT `extra`/`modifiers`
+   columns) still behaves under whatever Postgres version 0.5.4 bundles.
+3. Regenerating every existing `.pgdata` file — including the checked-in
+   reference databases — since old ones won't open under the new version.
+4. `npm install @electric-sql/pglite-socket`, then a small script wrapping
+   an open store in a `PGliteSocketServer` on a TCP port, and connecting a
+   VSCode Postgres extension to `localhost:<port>`.
+
+Not done here — a real dependency bump with real migration cost, not a
+default to make silently.
 
 `cli.analyze-app.mjs` writes to `<app-dir>/graphify-output/` by default:
 

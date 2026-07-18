@@ -7,12 +7,16 @@
   },
   "scripts": {
     "build-grammar": "cd packages/graphify && npx tree-sitter generate && npx node-gyp configure && npx node-gyp build",
-    "test": "node --check src/cli/cli.analyze-file.mjs && node --check src/cli/cli.analyze-app.mjs && node --check src/cli/cli.generate-sdk-exports.mjs && node --check src/cli/cli.run-benchmark.mjs && node --test",
+    "test": "node --check src/cli/cli.analyze-file.mjs && node --check src/cli/cli.analyze-app.mjs && node --check src/cli/cli.generate-sdk-exports.mjs && node --check src/cli/cli.run-benchmark.mjs && node --check src/cli/cli.inspect-db.mjs && node --test",
     "analyze-app": "node src/cli/cli.analyze-app.mjs",
     "analyze-file": "node src/cli/cli.analyze-file.mjs",
     "generate-sdk-exports": "node src/cli/cli.generate-sdk-exports.mjs",
     "generate-ebnf": "node src/grammar/ebnf/ebnf.generate.mjs",
-    "run-benchmark": "node src/cli/cli.run-benchmark.mjs"
+    "run-benchmark": "node src/cli/cli.run-benchmark.mjs",
+    "inspect-db": "node src/cli/cli.inspect-db.mjs",
+    "inspect-db:app": "node src/cli/cli.inspect-db.mjs examples/roku-app/graphify-output/.graphify-state/graph.pgdata",
+    "inspect-db:scenegraph": "node src/cli/cli.inspect-db.mjs exports/scenegraph/.graphify-state/graph.pgdata",
+    "inspect-db:brightscript": "node src/cli/cli.inspect-db.mjs exports/brightscript/.graphify-state/graph.pgdata"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.2.17",
