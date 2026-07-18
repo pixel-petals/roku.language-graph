@@ -25,6 +25,8 @@ src/
                                    incrementally-updated benchmark catalog
   db/                            Embedded PGlite (WASM Postgres + pgvector) GraphStore, the persistence layer
                                    every parser writes into
+  db-graph/                      Lit web-components app (G6 viewer + LiteGraph.js node editor, Vite-built,
+                                   SSR'd via @lit-labs/ssr) for browsing and reshaping a GraphStore's graph
   transform/                      Graph -> export format (JSON/Markdown wiki via @sentropic/graphify;
                                    DOT/GraphML/Mermaid/XML hand-rolled)
   grammar/ebnf/                   Generates EBNF grammar documentation from packages/graphify's grammar.js and
