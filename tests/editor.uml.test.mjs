@@ -147,20 +147,21 @@ describe('editor.uml: classifyUmlEdges', () => {
   const classIds = new Set(['A', 'B']);
   const ownerMap = new Map([['A.m1', 'A'], ['B.m2', 'B']]);
 
-  it('maps EXTENDS to INHERITANCE between two classes', () => {
+  it('maps EXTENDS to relation INHERITANCE between two classes, keeping EXTENDS as kind', () => {
     const edges = [{ kind: 'EXTENDS', sourceQualified: 'A', targetQualified: 'B', confidence: 1 }];
     const result = classifyUmlEdges(edges, { classIds, ownerMap });
     assert.equal(result.length, 1);
-    assert.equal(result[0].kind, 'INHERITANCE');
+    assert.equal(result[0].kind, 'EXTENDS');
+    assert.equal(result[0].relation, 'INHERITANCE');
     assert.equal(result[0].sourceQualified, 'A');
     assert.equal(result[0].targetQualified, 'B');
   });
 
-  it('retargets a member-to-member CALLS edge up to the owning classes', () => {
+  it('retargets a member-to-member CALLS edge up to the owning classes, keeping CALLS as kind', () => {
     const edges = [{ kind: 'CALLS', sourceQualified: 'A.m1', targetQualified: 'B.m2', confidence: 1 }];
     const result = classifyUmlEdges(edges, { classIds, ownerMap });
     assert.equal(result.length, 1);
-    assert.deepEqual([result[0].sourceQualified, result[0].targetQualified, result[0].kind], ['A', 'B', 'DEPENDENCY']);
+    assert.deepEqual([result[0].sourceQualified, result[0].targetQualified, result[0].kind, result[0].relation], ['A', 'B', 'CALLS', 'DEPENDENCY']);
   });
 
   it('drops a self-loop once retargeted to the same class', () => {
@@ -194,6 +195,7 @@ describe('editor.uml: classifyUmlEdges', () => {
   it('falls back to ASSOCIATION for an edge kind with no explicit relation mapping', () => {
     const edges = [{ kind: 'SOME_UNKNOWN_KIND', sourceQualified: 'A', targetQualified: 'B', confidence: 1 }];
     const result = classifyUmlEdges(edges, { classIds, ownerMap });
-    assert.equal(result[0].kind, 'ASSOCIATION');
+    assert.equal(result[0].kind, 'SOME_UNKNOWN_KIND');
+    assert.equal(result[0].relation, 'ASSOCIATION');
   });
 });

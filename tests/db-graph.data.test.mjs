@@ -120,7 +120,7 @@ describe('db-graph.data: toGraphData', () => {
       id: 'e0',
       source: 'components/Foo/file.brs::foo',
       target: 'components/Foo/file.brs::bar',
-      data: { kind: 'CALLS', filePath: 'components/Foo/file.brs', line: 1, confidence: 1, confidenceTier: 'DECLARED' },
+      data: { kind: 'CALLS', filePath: 'components/Foo/file.brs', line: 1, confidence: 1, confidenceTier: 'DECLARED', relation: undefined },
     }]);
   });
 

@@ -90,6 +90,13 @@ export function toGraphData({ nodes, edges }, { comboField = null } = {}) {
           line: e.line,
           confidence: e.confidence,
           confidenceTier: e.confidenceTier,
+          // Present only on edges the "Build UML Classes" editor node
+          // produces — the UML relation bucket (INHERITANCE/COMPOSITION/
+          // DEPENDENCY/ASSOCIATION) `kind` was classified into, for arrow
+          // styling; `kind` itself stays the original specific edge kind
+          // (CALLS, EXTENDS, HAS_SCRIPT, ...) so a label can show what the
+          // relationship actually is instead of just its UML bucket.
+          relation: e.relation,
         },
       })),
   };

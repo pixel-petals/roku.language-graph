@@ -53,6 +53,11 @@ const UML_RELATION_STYLE = {
   ASSOCIATION: { stroke: DARK_INK_MUTED, lineDash: null, endArrow: true, endArrowType: 'vee', endArrowFill: DARK_INK_MUTED, startArrow: false },
 };
 
+/** 'IMPORTS_FROM' -> 'imports from' — an edge kind constant is a fine label once it's not shouting in underscored caps. */
+function humanizeEdgeKind(kind) {
+  return kind ? kind.toLowerCase().replace(/_/g, ' ') : '';
+}
+
 export class DbGraphCanvas extends SignalWatcher(LitElement) {
   static styles = css`
     :host { display: block; position: relative; width: 100%; height: 100%; }
@@ -190,7 +195,11 @@ export class DbGraphCanvas extends SignalWatcher(LitElement) {
           // by default, unless `router` is set), so orthogonal routing is
           // what actually delivers the "polyline" look, not just the type.
           router: d => (graphData.edgeType === 'polyline' ? { type: 'orth' } : undefined),
-          labelText: d => (graphData.showEdgeLabels ? d.data.kind : ''),
+          // The specific edge kind (CALLS, EXTENDS, HAS_SCRIPT, ...), not
+          // the UML bucket it styles by — "DEPENDENCY" on every non-
+          // inheritance edge told a reader nothing about what the
+          // relationship actually was.
+          labelText: d => (graphData.showEdgeLabels ? humanizeEdgeKind(d.data.kind) : ''),
           labelFontSize: 9,
           labelFill: DARK_INK_MUTED,
           labelBackground: true,
@@ -198,10 +207,15 @@ export class DbGraphCanvas extends SignalWatcher(LitElement) {
           labelBackgroundOpacity: 0.85,
           labelBackgroundRadius: 3,
           labelPadding: [1, 4],
-          stroke: d => UML_RELATION_STYLE[d.data.kind]?.stroke ?? (EDGE_TIER_STYLE[d.data.confidenceTier] || EDGE_TIER_STYLE.DECLARED).stroke,
-          lineDash: d => UML_RELATION_STYLE[d.data.kind]?.lineDash ?? (EDGE_TIER_STYLE[d.data.confidenceTier] || EDGE_TIER_STYLE.DECLARED).lineDash,
-          endArrow: d => UML_RELATION_STYLE[d.data.kind]?.endArrow ?? true,
-          startArrow: d => UML_RELATION_STYLE[d.data.kind]?.startArrow ?? false,
+          // A label rotated to follow its edge (G6's own default) reads
+          // upside-down or sideways on plenty of edges — always horizontal
+          // is slower to visually trace back to its edge but never
+          // upside-down.
+          labelAutoRotate: false,
+          stroke: d => UML_RELATION_STYLE[d.data.relation]?.stroke ?? (EDGE_TIER_STYLE[d.data.confidenceTier] || EDGE_TIER_STYLE.DECLARED).stroke,
+          lineDash: d => UML_RELATION_STYLE[d.data.relation]?.lineDash ?? (EDGE_TIER_STYLE[d.data.confidenceTier] || EDGE_TIER_STYLE.DECLARED).lineDash,
+          endArrow: d => UML_RELATION_STYLE[d.data.relation]?.endArrow ?? true,
+          startArrow: d => UML_RELATION_STYLE[d.data.relation]?.startArrow ?? false,
           // Same undefined-clobbers-the-default risk as node fill/stroke
           // above (verified in base-edge.js's getArrowStyle: the arrow's
           // own style is the last Object.assign spread, so an explicit
@@ -209,10 +223,10 @@ export class DbGraphCanvas extends SignalWatcher(LitElement) {
           // of falling back) — every branch gets a real value matching this
           // edge type's prior un-styled default ('vee' chevron filled with
           // the edge's own stroke color) rather than risking that.
-          endArrowType: d => UML_RELATION_STYLE[d.data.kind]?.endArrowType ?? 'vee',
-          endArrowFill: d => UML_RELATION_STYLE[d.data.kind]?.endArrowFill ?? (EDGE_TIER_STYLE[d.data.confidenceTier] || EDGE_TIER_STYLE.DECLARED).stroke,
-          startArrowType: d => UML_RELATION_STYLE[d.data.kind]?.startArrowType ?? 'vee',
-          startArrowFill: d => UML_RELATION_STYLE[d.data.kind]?.startArrowFill ?? (EDGE_TIER_STYLE[d.data.confidenceTier] || EDGE_TIER_STYLE.DECLARED).stroke,
+          endArrowType: d => UML_RELATION_STYLE[d.data.relation]?.endArrowType ?? 'vee',
+          endArrowFill: d => UML_RELATION_STYLE[d.data.relation]?.endArrowFill ?? (EDGE_TIER_STYLE[d.data.confidenceTier] || EDGE_TIER_STYLE.DECLARED).stroke,
+          startArrowType: d => UML_RELATION_STYLE[d.data.relation]?.startArrowType ?? 'vee',
+          startArrowFill: d => UML_RELATION_STYLE[d.data.relation]?.startArrowFill ?? (EDGE_TIER_STYLE[d.data.confidenceTier] || EDGE_TIER_STYLE.DECLARED).stroke,
         },
       },
       combo: {
