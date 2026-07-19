@@ -177,7 +177,27 @@ export class DbGraphCanvas extends SignalWatcher(LitElement) {
         palette: { type: 'group', field: graphData.paletteField || 'kind', color: NODE_PALETTE_DARK },
       },
       edge: {
+        // Graph-wide, not per-datum: the "Style Edges" editor node sets one
+        // routing type for every edge (see editor.node-types.mjs). 'line'
+        // (a plain straight segment) matches this app's original, unstyled
+        // default when Style Edges isn't wired in.
+        type: graphData.edgeType || 'line',
         style: {
+          // Only 'polyline' bends around nodes — without an explicit router,
+          // a polyline edge with no control points draws identical to a
+          // straight line (reproduced directly by reading Polyline's own
+          // getControlPoints: it returns `attributes.controlPoints`, empty
+          // by default, unless `router` is set), so orthogonal routing is
+          // what actually delivers the "polyline" look, not just the type.
+          router: d => (graphData.edgeType === 'polyline' ? { type: 'orth' } : undefined),
+          labelText: d => (graphData.showEdgeLabels ? d.data.kind : ''),
+          labelFontSize: 9,
+          labelFill: DARK_INK_MUTED,
+          labelBackground: true,
+          labelBackgroundFill: DARK_SURFACE,
+          labelBackgroundOpacity: 0.85,
+          labelBackgroundRadius: 3,
+          labelPadding: [1, 4],
           stroke: d => UML_RELATION_STYLE[d.data.kind]?.stroke ?? (EDGE_TIER_STYLE[d.data.confidenceTier] || EDGE_TIER_STYLE.DECLARED).stroke,
           lineDash: d => UML_RELATION_STYLE[d.data.kind]?.lineDash ?? (EDGE_TIER_STYLE[d.data.confidenceTier] || EDGE_TIER_STYLE.DECLARED).lineDash,
           endArrow: d => UML_RELATION_STYLE[d.data.kind]?.endArrow ?? true,

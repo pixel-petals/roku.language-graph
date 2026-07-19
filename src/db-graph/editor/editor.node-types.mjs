@@ -19,7 +19,9 @@ import { matchesFilter, valueOptionsFor, summarizeValues, NODE_FIELDS, EDGE_FIEL
 import { buildUmlClasses, classifyUmlEdges, DEFAULT_CLASS_KINDS } from './editor.uml.mjs';
 import './editor.value-picker.mjs';
 
-const OUR_TYPES = ['Graph Source', 'Filter Nodes', 'Filter Edges', 'Cluster Nodes', 'Color Nodes By', 'Build UML Classes', 'Render Graph'];
+const OUR_TYPES = ['Graph Source', 'Filter Nodes', 'Filter Edges', 'Cluster Nodes', 'Color Nodes By', 'Build UML Classes', 'Style Edges', 'Render Graph'];
+
+const EDGE_TYPES = ['line', 'polyline', 'cubic', 'quadratic'];
 
 function openValuePicker({ x, y, options, selected, onChange }) {
   document.querySelector('db-graph-value-picker')?.remove();
@@ -164,11 +166,27 @@ export function setupPipeline({ canvasEl, rawData, onRender }) {
   };
   LiteGraph.registerNodeType('Build UML Classes', BuildUmlClassesNode);
 
+  function StyleEdgesNode() {
+    this.addInput('edges', 'edges');
+    this.addOutput('edges', 'edges');
+    this.addOutput('edgeStyle', 'edgeStyle');
+    this.fieldWidget = this.addWidget('combo', 'type', 'polyline', () => scheduleRun(), { values: EDGE_TYPES });
+    this.labelsWidget = this.addWidget('toggle', 'labels', true, () => scheduleRun());
+  }
+  StyleEdgesNode.title = 'Style Edges';
+  StyleEdgesNode.desc = "Sets the edge routing type (line/polyline/cubic/quadratic) and whether each edge shows its kind (e.g. a UML relation like INHERITANCE, or a raw edge kind like CALLS) as a label";
+  StyleEdgesNode.prototype.onExecute = function () {
+    this.setOutputData(0, this.getInputData(0) || []);
+    this.setOutputData(1, { type: this.fieldWidget.value, showLabels: this.labelsWidget.value });
+  };
+  LiteGraph.registerNodeType('Style Edges', StyleEdgesNode);
+
   function RenderGraphNode() {
     this.addInput('nodes', 'nodes');
     this.addInput('edges', 'edges');
     this.addInput('comboField', 'field');
     this.addInput('paletteField', 'field');
+    this.addInput('edgeStyle', 'edgeStyle');
   }
   RenderGraphNode.title = 'Render Graph';
   RenderGraphNode.desc = 'Terminal node: draws its inputs in the viewer';
@@ -177,7 +195,11 @@ export function setupPipeline({ canvasEl, rawData, onRender }) {
     const edges = this.getInputData(1) || [];
     const comboField = this.getInputData(2) ?? null;
     const paletteField = this.getInputData(3) || 'kind';
-    onRender({ ...toGraphData({ nodes, edges }, { comboField }), paletteField });
+    // Falls back to the plain, label-free straight edges this app always
+    // drew before Style Edges existed, so leaving it unwired doesn't change
+    // any existing pipeline's look.
+    const { type: edgeType, showLabels: showEdgeLabels } = this.getInputData(4) || { type: 'line', showLabels: false };
+    onRender({ ...toGraphData({ nodes, edges }, { comboField }), paletteField, edgeType, showEdgeLabels });
   };
   LiteGraph.registerNodeType('Render Graph', RenderGraphNode);
 
