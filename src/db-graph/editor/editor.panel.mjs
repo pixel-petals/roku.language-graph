@@ -11,7 +11,7 @@ import { LitElement, html, css } from 'lit';
 import { animate } from '@lit-labs/motion';
 import { ResizeController } from '@lit-labs/observers/resize-controller.js';
 import { setupPipeline } from './editor.node-types.mjs';
-import { graphDataSignal } from '../db-graph.state.mjs';
+import { graphDataSignal } from '../app/app.state.mjs';
 
 export class DbGraphEditorPanel extends LitElement {
   static properties = {

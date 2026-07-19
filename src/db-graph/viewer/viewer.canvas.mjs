@@ -19,7 +19,7 @@ import { LitElement, html, css } from 'lit';
 import { Graph } from '@antv/g6';
 import { SignalWatcher } from '@lit-labs/signals';
 import { ResizeController } from '@lit-labs/observers/resize-controller.js';
-import { graphDataSignal } from '../db-graph.state.mjs';
+import { graphDataSignal } from '../app/app.state.mjs';
 import { umlLabelText, umlNodeSize, umlLabelOffsetX, umlSectionAtFraction } from './viewer.uml-layout.mjs';
 import './viewer.stats.mjs';
 

@@ -3,7 +3,7 @@
 
 Visualization for graph databases.
 
-`db-graph` is a Lit web-components app, organized per CLAUDE.md's "Frontend organization" rules: a `viewer/` cluster and an `editor/` cluster, each a handful of small single-purpose components, composed together by one composition root (`db-graph.app.mjs`). It's broken into two conceptual tools: [[#Viewer]] and [[#Editor]].
+`db-graph` is a Lit web-components app, organized per CLAUDE.md's "Frontend organization" rules: an `app/` cluster (composition root + shared model/state/SSR), a `viewer/` cluster, and an `editor/` cluster — each a handful of small single-purpose modules. It's broken into two conceptual tools: [[#Viewer]] and [[#Editor]].
 
 ## Architecture
 
@@ -13,8 +13,8 @@ Plain JS, no TypeScript, no decorators (`static properties` instead of `@propert
 
 **`npm run build:db-graph`** (`vite build --config src/db-graph/db-graph.vite.config.mjs`) produces `.build/db-graph/index.html` (gitignored): one file, JS+CSS fully inlined, containing an **empty** `<db-graph-app></db-graph-app>` placeholder. This build is data-independent — a reusable shell, rebuilt only when component source changes, not per database.
 
-**SSR + splice** (`db-graph.ssr.mjs`, Node-only): per CLI invocation,
-- Imports `db-graph.app.mjs` directly (resolves via `node_modules`, since `lit`/`@lit/context`/etc. are real dependencies now) and uses `@lit-labs/ssr`'s `render()` + `collectResult()` to render `<db-graph-app .rawData=${rawData}>` — seeded with that database's `queryAll()` result — to an HTML string with declarative shadow roots.
+**SSR + splice** (`app/app.ssr.mjs`, Node-only): per CLI invocation,
+- Imports `app/app.root.mjs` directly (resolves via `node_modules`, since `lit`/`@lit/context`/etc. are real dependencies now) and uses `@lit-labs/ssr`'s `render()` + `collectResult()` to render `<db-graph-app .rawData=${rawData}>` — seeded with that database's `queryAll()` result — to an HTML string with declarative shadow roots.
 - Embeds that seed data as a `<script type="application/json" id="db-graph-raw-data">` tag alongside the rendered markup. **Property bindings only affect SSR's output** — the input value itself is never serialized into the page, so without this the client has no way to know what data produced the markup it's hydrating; `DbGraphApp`'s constructor reads this same tag back out client-side. (A real gotcha, not hypothetical — found by reproducing it: without the script tag, every client-side render silently used the constructor's empty-array default instead of the real data.)
 - Splices the rendered markup into the built shell in place of the empty placeholder and writes the result to `--out` — **still one `.html` file**, same CLI contract as before.
 - `npm run view-graph` chains `build:db-graph` first so `npm run view-graph -- <path>` works standalone; the bare `node src/cli/cli.view-graph.mjs` errors with a clear message if the shell is missing, rather than silently shelling out to Vite.
@@ -29,20 +29,21 @@ Plain JS, no TypeScript, no decorators (`static properties` instead of `@propert
 src/db-graph/
   spec.md
   index.html                Vite entry: <db-graph-app></db-graph-app> + one
-                             <script type="module"> importing db-graph.app.mjs
+                             <script type="module"> importing app/app.root.mjs
                              — the ONE allowed composition root
   db-graph.vite.config.mjs  Vite config (root=src/db-graph, outDir=../../.build/db-graph,
                              plugins=[viteSingleFile()])
-  db-graph.app.mjs          <db-graph-app> — composition root: reads seed data,
-                             provides graphData via @lit/context, sets up the
-                             #/ #/viewer #/editor router, composes
-                             <db-graph-canvas> + <db-graph-editor-panel>
-  db-graph.state.mjs        graphDataSignal (@lit-labs/signals) + graphDataContext
-                             (@lit/context) — the "model" layer
-  db-graph.data.mjs         toGraphData/dirname/basename/nodeFieldValue — shared
-                             by editor (Render Graph node) and viewer; zero
-                             Node-specific deps
-  db-graph.ssr.mjs          Node-only: SSR-render + splice (see above)
+  app/
+    app.root.mjs           <db-graph-app> — composition root: reads seed data,
+                            provides graphData via @lit/context, sets up the
+                            #/ #/viewer #/editor router, composes
+                            <db-graph-canvas> + <db-graph-editor-panel>
+    app.state.mjs          graphDataSignal (@lit-labs/signals) + graphDataContext
+                            (@lit/context) — the "model" layer
+    app.data.mjs           toGraphData/dirname/basename/nodeFieldValue — shared
+                            by editor (Render Graph node) and viewer; zero
+                            Node-specific deps
+    app.ssr.mjs             Node-only: SSR-render + splice (see above)
   editor/
     editor.panel.mjs         <db-graph-editor-panel> — hosts the LiteGraph canvas,
                               collapse/expand + full-width via @lit-labs/motion's
@@ -66,7 +67,7 @@ src/db-graph/
                               takes graphData as a plain property from its direct
                               parent (not its own signal subscription — see below)
 tests/
-  db-graph.data.test.mjs
+  app.data.test.mjs
   editor.pipeline.test.mjs
   editor.uml.test.mjs
   viewer.uml-layout.test.mjs

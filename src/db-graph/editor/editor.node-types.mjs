@@ -14,7 +14,7 @@
  * display badly.
  */
 import { LiteGraph, LGraph, LGraphCanvas } from 'litegraph.js';
-import { toGraphData } from '../db-graph.data.mjs';
+import { toGraphData } from '../app/app.data.mjs';
 import { matchesFilter, valueOptionsFor, summarizeValues, NODE_FIELDS, EDGE_FIELDS, CLUSTER_FIELDS, OPERATORS } from './editor.pipeline.mjs';
 import { buildUmlClasses, classifyUmlEdges, DEFAULT_CLASS_KINDS } from './editor.uml.mjs';
 import './editor.value-picker.mjs';

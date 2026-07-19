@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { toGraphData, dirname, basename, nodeFieldValue } from '../src/db-graph/db-graph.data.mjs';
+import { toGraphData, dirname, basename, nodeFieldValue } from '../src/db-graph/app/app.data.mjs';
 
 function makeNode(overrides = {}) {
   return {
@@ -18,7 +18,7 @@ function makeEdge(overrides = {}) {
   };
 }
 
-describe('db-graph.data: dirname/basename', () => {
+describe('app.data: dirname/basename', () => {
   it('splits a nested path into its directory and file parts', () => {
     assert.equal(dirname('components/Foo/file.brs'), 'components/Foo');
     assert.equal(basename('components/Foo/file.brs'), 'file.brs');
@@ -30,7 +30,7 @@ describe('db-graph.data: dirname/basename', () => {
   });
 });
 
-describe('db-graph.data: nodeFieldValue', () => {
+describe('app.data: nodeFieldValue', () => {
   it('derives folder from filePath even though it is not a stored column', () => {
     assert.equal(nodeFieldValue(makeNode(), 'folder'), 'components/Foo');
   });
@@ -40,7 +40,7 @@ describe('db-graph.data: nodeFieldValue', () => {
   });
 });
 
-describe('db-graph.data: toGraphData', () => {
+describe('app.data: toGraphData', () => {
   it('maps a node to its G6 id/data shape, clustered into its containing folder by default', () => {
     // Arrange
     const graph = { nodes: [makeNode()], edges: [] };

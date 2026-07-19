@@ -1,5 +1,5 @@
 /**
- * db-graph.ssr.mjs
+ * app.ssr.mjs
  *
  * Node-only: renders <db-graph-app> (seeded with a specific GraphStore's
  * data) to an HTML string via @lit-labs/ssr, and splices it into the
@@ -18,7 +18,7 @@ import { readFile } from 'fs/promises';
 import { render } from '@lit-labs/ssr';
 import { collectResult } from '@lit-labs/ssr/lib/render-result.js';
 import { html } from 'lit';
-import './db-graph.app.mjs';
+import './app.root.mjs';
 
 const PLACEHOLDER = '<db-graph-app></db-graph-app>';
 
@@ -38,7 +38,7 @@ export async function renderApp(rawData, { shellPath, title = 'db-graph' }) {
   // never serializes the input value itself into the page, so the client's
   // fresh module evaluation has no way to know what data produced this
   // markup unless we hand it over explicitly. DbGraphApp's constructor
-  // reads this same element back out (see db-graph.app.mjs).
+  // reads this same element back out (see app.root.mjs).
   const dataScript = `<script type="application/json" id="db-graph-raw-data">${serializeForScriptTag(rawData)}</script>`;
 
   return shell

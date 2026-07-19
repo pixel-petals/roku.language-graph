@@ -1,5 +1,5 @@
 /**
- * db-graph.data.mjs
+ * app.data.mjs
  *
  * Converts a GraphStore's queryAll() result ({ nodes, edges } shaped per
  * src/db/db.store.mjs) into the { nodes, edges, combos } shape @antv/g6's

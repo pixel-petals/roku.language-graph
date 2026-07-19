@@ -1,5 +1,5 @@
 /**
- * db-graph.app.mjs — composition root.
+ * app.root.mjs — composition root.
  *
  * The only file allowed top-level executing code (see CLAUDE.md's
  * "Frontend organization" section): index.html loads this directly, and
@@ -20,12 +20,12 @@ import { ContextProvider } from '@lit/context';
 // (see the comment on currentRoutePath below), so import its own subpath
 // and never load router.js at all.
 import { Routes } from '@lit-labs/router/routes.js';
-import { graphDataContext, graphDataSignal } from './db-graph.state.mjs';
-import './viewer/viewer.canvas.mjs';
-import './editor/editor.panel.mjs';
+import { graphDataContext, graphDataSignal } from './app.state.mjs';
+import '../viewer/viewer.canvas.mjs';
+import '../editor/editor.panel.mjs';
 
 /**
- * Reads the seed data db-graph.ssr.mjs embeds next to the SSR-rendered
+ * Reads the seed data app.ssr.mjs embeds next to the SSR-rendered
  * markup; empty when there isn't one — either previewing the built shell
  * directly (no CLI involved), or this constructor running server-side
  * during the SSR pass itself, where `document` isn't a global at all (only
@@ -33,7 +33,7 @@ import './editor/editor.panel.mjs';
  * classes are consumed by `lit` as local imports, not globalThis patches —
  * verified directly, this doesn't match the DOM-shim README's framing).
  * The SSR pass gets its data from the explicit `.rawData=` binding in
- * db-graph.ssr.mjs's render() call instead.
+ * app.ssr.mjs's render() call instead.
  */
 function readSeedRawData() {
   if (typeof document === 'undefined') return { nodes: [], edges: [] };
@@ -85,7 +85,7 @@ class DbGraphApp extends LitElement {
     super();
     // Property bindings only affect SSR's *output* — the input value itself
     // is never serialized into the page, so the client re-reads it from a
-    // JSON script tag db-graph.ssr.mjs embeds alongside the rendered markup
+    // JSON script tag app.ssr.mjs embeds alongside the rendered markup
     // (falls back to empty when opened without going through the CLI, e.g.
     // previewing the built shell directly).
     this.rawData = readSeedRawData();
