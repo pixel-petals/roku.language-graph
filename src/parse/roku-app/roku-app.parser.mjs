@@ -11,6 +11,7 @@ import fs from 'fs';
 import path from 'path';
 import { extractBrsFile } from './roku-app.brs.mjs';
 import { extractXmlFile } from './roku-app.xml.mjs';
+import { safe } from './roku-app.ast-utils.mjs';
 
 function findSourceFiles(appDir) {
   const results = [];
@@ -37,10 +38,26 @@ export function parseRokuApp(appDir, { costModel } = {}) {
   }
   program.validate();
 
+  // Map each script file to the Component that <script>-imports it, so a .brs
+  // file's m.top.createChild/appendChild/etc. calls (see roku-app.brs.mjs)
+  // can resolve "the node I'm running on" back to that Component's qname.
+  const scriptOwners = new Map();
+  for (const file of Object.values(program.files)) {
+    if (!isXmlFile(file)) continue;
+    const componentName = file.componentName?.text;
+    if (!componentName) continue;
+    const qname = `${file.srcPath}::${componentName}`;
+    for (const script of file.scriptTagImports) {
+      const target = script.destPath ?? script.text;
+      const resolved = target ? safe(() => program.getFile(target)) : undefined;
+      if (resolved?.srcPath) scriptOwners.set(resolved.srcPath, qname);
+    }
+  }
+
   const nodes = [];
   const edges = [];
   for (const file of Object.values(program.files)) {
-    const result = isBrsFile(file) ? extractBrsFile(file, program, costModel)
+    const result = isBrsFile(file) ? extractBrsFile(file, program, costModel, scriptOwners.get(file.srcPath))
       : isXmlFile(file) ? extractXmlFile(file, program)
       : null;
     if (!result) continue;

@@ -135,6 +135,20 @@ function enclosingScope(node, fp, scope) {
   return { qname: `${outer.qname}::<anonymous@${pos.line}:${pos.col}>`, classChain: outer.classChain };
 }
 
+/** ifNode methods that structurally add a child to the node calling them — the runtime counterpart of a component's declarative XML <children> tree. */
+const SG_CHILD_METHODS = new Set(['createchild', 'appendchild', 'insertchild', 'replacechild']);
+
+/** True when `objText` is a self-reference to the node the enclosing code is running on (m.top always; bare `m` only outside a class, where m.top-in-XML-interface-functions is the same node). */
+function isSelfNodeReceiver(objText, classChainForSite) {
+  const lower = objText?.toLowerCase();
+  return lower === 'm.top' || (lower === 'm' && !classChainForSite);
+}
+
+function literalStringArg(expr, index) {
+  const text = expr.args?.[index]?.tokens?.value?.text;
+  return text ? text.replace(/^"|"$/g, '') : null;
+}
+
 function resolveCallTarget(calleeExpr, calleeText, classChainForSite, scope) {
   const obj = calleeExpr.obj;
   const memberName = calleeExpr.name?.text ?? calleeExpr.tokens?.name?.text;
@@ -338,13 +352,35 @@ function extractImports(file, fp, fileQname, program, addEdge) {
   }
 }
 
-function extractCallsAndWrites(ast, fp, scope, addEdge, costModel) {
+function extractCallsAndWrites(ast, fp, lang, scope, program, componentQname, addNode, addEdge, costModel) {
   ast.walk(createVisitor({
     CallExpression: (expr) => {
       if (isNewExpression(expr.parent)) return;
       const calleeText = exprText(expr.callee);
       if (!calleeText) return;
       const site = enclosingScope(expr, fp, scope);
+
+      const memberName = expr.callee.name?.text ?? expr.callee.tokens?.name?.text;
+      const objText = exprText(expr.callee.obj);
+      if (componentQname && memberName && SG_CHILD_METHODS.has(memberName.toLowerCase()) && isSelfNodeReceiver(objText, site.classChain)) {
+        const pos = posOf(expr);
+        const childType = literalStringArg(expr, 0) ?? 'unknown';
+        const childQname = `${componentQname}::child:dynamic@${pos.line}:${pos.col}`;
+        addNode({
+          kind: 'SGNodeInstance', name: childType, qualifiedName: childQname, filePath: fp,
+          lineStart: pos.line, lineEnd: pos.line, language: lang, parentName: componentQname,
+          params: null, returnType: null, modifiers: null, isTest: false, fileHash: null,
+          extra: { nodeType: childType, dynamic: true, viaMethod: memberName },
+        });
+        addEdge({ kind: 'CONTAINS', sourceQualified: componentQname, targetQualified: childQname, filePath: fp, line: pos.line, extra: { dynamic: true, viaMethod: memberName }, confidence: 0.7, confidenceTier: 'TEXTUAL' });
+        if (childType !== 'unknown') {
+          const local = safe(() => program.getComponent(childType));
+          const target = local?.file ? `${local.file.srcPath}::${childType}` : `sg:${childType}`;
+          addEdge({ kind: 'USES_TYPE', sourceQualified: childQname, targetQualified: target, filePath: fp, line: pos.line, extra: {}, confidence: local?.file ? 0.9 : 0.6, confidenceTier: local?.file ? 'RESOLVED' : 'TEXTUAL' });
+        }
+        return;
+      }
+
       const resolved = resolveCallTarget(expr.callee, calleeText, site.classChain, scope);
       const costEstimate = costModel ? estimateMicroseconds(calleeText, costModel) : null;
       addEdge({
@@ -422,8 +458,9 @@ function tagRecursion(nodes, edges) {
  * interfaces, enums, consts, imports, calls, instantiations, writes.
  * @param {object} file @param {object} program
  * @param {object} [costModel] optional benchmark cost model (see db.benchmark.mjs) for best-effort CALLS cost estimates
+ * @param {string} [componentQname] qualifiedName of the Component whose <script> owns this file (see roku-app.parser.mjs), if any — lets m.top.createChild/appendChild/insertChild/replaceChild resolve to a real CONTAINS edge instead of an unresolved CALLS
  */
-export function extractBrsFile(file, program, costModel) {
+export function extractBrsFile(file, program, costModel, componentQname) {
   const nodes = [];
   const edges = [];
   const seenEdges = new Set();
@@ -459,7 +496,7 @@ export function extractBrsFile(file, program, costModel) {
   extractClasses(ast, fp, fileQname, lang, scope, lines, addNode, addEdge);
   extractInterfaces(ast, fp, fileQname, lang, scope, lines, addNode, addEdge);
   extractEnumsAndConsts(ast, fp, fileQname, lang, lines, addNode, addEdge);
-  extractCallsAndWrites(ast, fp, scope, addEdge, costModel);
+  extractCallsAndWrites(ast, fp, lang, scope, program, componentQname, addNode, addEdge, costModel);
   tagRecursion(nodes, edges);
 
   return { nodes, edges };
