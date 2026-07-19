@@ -7,10 +7,9 @@
  * `data`.
  *
  * No `node:path` import, and no other Node-specific dependency — this
- * module's source is inlined verbatim into the generated HTML's <script>
- * (see db-graph.html.mjs) so the viewer's node-based editor (db-graph.editor.mjs)
- * can call the exact same function in the browser instead of duplicating
- * its logic client-side.
+ * module is bundled by Vite (db-graph.vite.config.mjs) straight into the
+ * browser, so both viewer and editor call the exact same function instead
+ * of duplicating its logic client-side.
  */
 
 /** path.dirname, hand-rolled (no node:path — see file header) */

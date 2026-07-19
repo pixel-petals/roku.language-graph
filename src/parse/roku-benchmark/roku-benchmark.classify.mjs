@@ -3,7 +3,7 @@
  *
  * Splits the benchmark catalog into SceneGraph vs BrightScript rows, to
  * match the same split applied to the SDK reference graph (see
- * roku-sdk.records.js's partitionRecords and cli.generate-sdk-exports.mjs).
+ * roku-sdk.records.mjs's partitionRecords and cli.generate-sdk-exports.mjs).
  *
  * Verified against the real catalog (492 rows): 145 SceneGraph / 347
  * BrightScript. 13 suites are genuinely cross-cutting by design — they

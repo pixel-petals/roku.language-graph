@@ -20,17 +20,12 @@ import {
   isNamespaceStatement,
   isNewExpression,
 } from 'brighterscript';
-import * as crypto from 'crypto';
 import * as path from 'path';
-import { posOf, endLineOf, exprText, safe, classifyValueKind } from './roku-app.ast-utils.mjs';
+import { posOf, endLineOf, exprText, safe, classifyValueKind, fileHash } from './roku-app.ast-utils.mjs';
 import { buildFunctionCfg } from './roku-app.cfg.mjs';
 import { buildFunctionDfg } from './roku-app.dfg.mjs';
 import { estimateMicroseconds } from '../../db/db.benchmark.mjs';
 import { extractJsDoc } from '../jsdoc/jsdoc.extract.mjs';
-
-function fileHash(contents) {
-  return crypto.createHash('sha1').update(contents).digest('hex');
-}
 
 function typeExpressionText(typeExpr) {
   return typeExpr ? exprText(typeExpr.expression) : null;

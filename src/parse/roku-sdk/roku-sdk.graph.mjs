@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Builds a graphify-compatible graph of the Roku SDK:
  *   - BrightScript ro* component nodes       (type: Node)
@@ -15,10 +13,10 @@
  *   - has_field    roSGNode → field
  */
 
-const fs = require('fs');
-const path = require('path');
-const { loadGraphFromData } = require('@sentropic/graphify');
-const {
+import fs from 'fs';
+import path from 'path';
+import { loadGraphFromData } from '@sentropic/graphify';
+import {
   extractFrontmatterTitle,
   extractFrontmatterDeprecated,
   extractDescription,
@@ -27,7 +25,7 @@ const {
   extractMethods,
   extractFields,
   readMarkdownFiles,
-} = require('./roku-sdk.scrape.js');
+} from './roku-sdk.scrape.mjs';
 
 const SCENEGRAPH_NODE_DIRS = [
   'abstract-nodes',
@@ -48,7 +46,7 @@ const SCENEGRAPH_NODE_DIRS = [
 
 // ── Graph builder ─────────────────────────────────────────────────────────────
 
-function buildRokuSdkGraph(sdkDocsPath) {
+export function buildRokuSdkGraph(sdkDocsPath) {
   const bsRoot = path.join(sdkDocsPath, 'docs/REFERENCES/brightscript');
   const sgRoot = path.join(sdkDocsPath, 'docs/REFERENCES/scenegraph');
 
@@ -158,8 +156,6 @@ function buildRokuSdkGraph(sdkDocsPath) {
 
 // ── Public API ────────────────────────────────────────────────────────────────
 
-function loadRokuSdkGraph(sdkDocsPath) {
+export function loadRokuSdkGraph(sdkDocsPath) {
   return loadGraphFromData(buildRokuSdkGraph(sdkDocsPath));
 }
-
-module.exports = { buildRokuSdkGraph, loadRokuSdkGraph };

@@ -1,13 +1,11 @@
-'use strict';
-
-const path = require('path');
+import path from 'path';
 
 /**
- * Adapt roku-sdk.graph.js's buildRokuSdkGraph() {nodes, links} shape into
+ * Adapt roku-sdk.graph.mjs's buildRokuSdkGraph() {nodes, links} shape into
  * the {nodes, edges} record shape src/db's GraphStore expects — the same
  * shape src/parse/roku-app produces, so both parsers can share one store.
  */
-function toGraphRecords(raw) {
+export function toGraphRecords(raw) {
   const source = raw.graph.source;
 
   // function nodes' real owner (ro:/if: OR sg:) — from the has_method edge
@@ -53,7 +51,7 @@ function toGraphRecords(raw) {
 }
 
 /** SceneGraph (roSGNode types + their fields) vs BrightScript (core ro-prefixed/if-prefixed language objects) — by qualifiedName prefix, or a function node's real owner. */
-function categorize(qualifiedName, parentName) {
+export function categorize(qualifiedName, parentName) {
   const prefix = qualifiedName.split(':')[0];
   if (prefix === 'sg' || prefix === 'field') return 'sceneGraph';
   if (prefix === 'ro' || prefix === 'if') return 'brightScript';
@@ -62,7 +60,7 @@ function categorize(qualifiedName, parentName) {
 }
 
 /** Split toGraphRecords()' output into SceneGraph and BrightScript subsets — same schema, two logical databases (see cli.generate-sdk-exports.mjs). */
-function partitionRecords(nodes, edges) {
+export function partitionRecords(nodes, edges) {
   const categoryByQname = new Map(nodes.map(n => [n.qualifiedName, categorize(n.qualifiedName, n.parentName)]));
 
   const sceneGraph = { nodes: [], edges: [] };
@@ -77,5 +75,3 @@ function partitionRecords(nodes, edges) {
 
   return { sceneGraph, brightScript };
 }
-
-module.exports = { toGraphRecords, categorize, partitionRecords };

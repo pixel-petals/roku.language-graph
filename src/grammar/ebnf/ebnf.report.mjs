@@ -55,31 +55,22 @@ export function formatReport(astResult, textResult) {
     lines.push('');
   }
 
-  // Filter out known terminal keywords and pattern names that aren't non-terminals
-  const KNOWN_TERMINALS = new Set([
-    'as', 'in', 'to', 'or', 'and', 'not', 'mod', 'for', 'sub',
-    'rem', 'each', 'step', 'goto', 'then', 'else', 'true', 'exit',
-    'void', 'print', 'while', 'false', 'float', 'return', 'object',
-    'double', 'string', 'invalid', 'integer', 'boolean', 'dynamic',
-    'function', 'longeinteger',
-  ]);
-  const realUndefined = textResult.undefinedRefs.filter(r => !KNOWN_TERMINALS.has(r));
+  const { undefinedRefs } = textResult;
 
-  if (realUndefined.length) {
+  if (undefinedRefs.length) {
     lines.push('### Potentially Undefined References in Generated Text');
-    lines.push('*(may be false positives for keyword terminals)*');
-    for (const r of realUndefined.sort()) lines.push(`- ⚠️  "${r}"`);
+    for (const r of undefinedRefs.sort()) lines.push(`- ⚠️  "${r}"`);
     lines.push('');
   }
 
-  if (!hasDups && !realUndefined.length) {
+  if (!hasDups && !undefinedRefs.length) {
     lines.push('✅ No issues found in generated EBNF text.');
     lines.push('');
   }
 
   // ── Summary ───────────────────────────────────────────────────────────────
   const totalErrors   = astResult.errors.length + textResult.duplicates.syntax.length + textResult.duplicates.sdk.length;
-  const totalWarnings = astResult.warnings.length + realUndefined.length;
+  const totalWarnings = astResult.warnings.length + undefinedRefs.length;
   lines.push('## Summary');
   lines.push('');
   lines.push(`| | Count |`);

@@ -2,10 +2,16 @@
  * roku-app.ast-utils.mjs
  *
  * Low-level AST helpers shared across roku-app.brs.mjs, roku-app.cfg.mjs,
- * roku-app.dfg.mjs, and roku-app.flow-adapter.mjs.
+ * roku-app.dfg.mjs, roku-app.flow-adapter.mjs, and roku-app.xml.mjs.
  */
 
+import * as crypto from 'crypto';
+
 const ORIGIN = { line: 0, col: 0 };
+
+export function fileHash(contents) {
+  return crypto.createHash('sha1').update(contents).digest('hex');
+}
 
 export function posOf(node) {
   const start = node?.location?.range?.start;
@@ -27,14 +33,9 @@ export function exprText(node) {
   let cur = node;
   while (cur) {
     const nameText = cur.name?.text ?? cur.tokens?.name?.text;
-    if (nameText) {
-      parts.unshift(nameText);
-      cur = cur.obj;
-    } else {
-      const varName = cur.tokens?.name?.text ?? cur.name?.text;
-      if (varName) parts.unshift(varName);
-      break;
-    }
+    if (!nameText) break;
+    parts.unshift(nameText);
+    cur = cur.obj;
   }
   return parts.length > 0 ? parts.join('.') : null;
 }

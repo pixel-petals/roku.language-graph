@@ -108,9 +108,7 @@ function walkStatement(stmt, block, g, ctx) {
     case 'ExitStatement': {
       g.append(block, stmt);
       g.finalize(block);
-      const isFor = /for/i.test(stmt.tokens?.loopType?.text ?? '');
-      const target = isFor ? ctx.loopBreak : ctx.loopBreak; // same target regardless; kept explicit for readability
-      if (target) g.flow(block, target, 'break', posOf(stmt).line);
+      if (ctx.loopBreak) g.flow(block, ctx.loopBreak, 'break', posOf(stmt).line);
       return null;
     }
     case 'ContinueStatement': {
