@@ -57,6 +57,7 @@ export class DbGraphEditorPanel extends LitElement {
   `;
 
   #pipeline = null;
+  #resizeDebounce = null;
 
   constructor() {
     super();
@@ -65,7 +66,7 @@ export class DbGraphEditorPanel extends LitElement {
     this.full = false;
     this.width = 440;
     this._resize = new ResizeController(this, {
-      callback: () => this.#resizeCanvas(),
+      callback: () => this.#scheduleResize(),
     });
   }
 
@@ -98,8 +99,20 @@ export class DbGraphEditorPanel extends LitElement {
       // normal (split-view) state — collapsed/full stay driven by CSS.
       if (this.collapsed || this.full) this.style.removeProperty('width');
       else this.style.width = `${this.width}px`;
-      requestAnimationFrame(() => this.#resizeCanvas());
+      this.#scheduleResize();
     }
+  }
+
+  // Debounced for the same reason as the G6 viewer canvas (see
+  // viewer.canvas.mjs): the `width` property changes on every pointermove
+  // while the divider is being dragged (see app.root.mjs's #onDividerPointerDown),
+  // and #resizeCanvas sets canvasEl.width/height, which clears the canvas's
+  // pixel buffer immediately per spec — doing that every frame is what
+  // produces the black-flash/lag while dragging. Only resize once movement
+  // pauses.
+  #scheduleResize() {
+    clearTimeout(this.#resizeDebounce);
+    this.#resizeDebounce = setTimeout(() => this.#resizeCanvas(), 120);
   }
 
   #resizeCanvas() {
@@ -120,6 +133,11 @@ export class DbGraphEditorPanel extends LitElement {
   /** The LiteGraph { graph, canvas } this panel hosts — for introspection/debugging (e.g. from a devtools console), not needed by other components. */
   get pipeline() {
     return this.#pipeline;
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    clearTimeout(this.#resizeDebounce);
   }
 }
 customElements.define('db-graph-editor-panel', DbGraphEditorPanel);
