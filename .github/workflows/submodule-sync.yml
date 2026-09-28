@@ -1,20 +1,35 @@
 name: Submodules
 
-# Notifies the parents following this repository on a push to main, and syncs
-# this repository's own followed submodules when a child notifies it. See
-# pixel-petals/.devops/.github/readme.md#following-submodule-branches.
+# Tells pixel-petals/.devops this repository's main moved; .devops syncs every
+# parent following it. Self-contained, so public repositories can run it too.
+# See pixel-petals/.devops/.github/readme.md#following-submodule-branches.
 
 on:
   push:
     branches: [main]
-  repository_dispatch:
-    types: [submodule-sync]
-  workflow_dispatch:
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
-  submodules:
-    uses: pixel-petals/.devops/.github/workflows/submodules.yml@main
-    secrets: inherit
+  notify:
+    name: Notify .devops
+    runs-on: ubuntu-latest
+    environment: submodule-sync
+
+    steps:
+      # Actions write on .devops alone: it can start the sync and nothing else
+      - uses: actions/create-github-app-token@v2
+        id: notify-token
+        with:
+          app-id: ${{ secrets.GH_SUBMODULE_NOTIFY_ID }}
+          private-key: ${{ secrets.GH_SUBMODULE_NOTIFY_SECRET }}
+          owner: ${{ github.repository_owner }}
+          repositories: .devops
+
+      - run: |
+          gh api --method POST "repos/${OWNER}/.devops/actions/workflows/submodules.yml/dispatches" \
+            -f ref=main -f "inputs[repository]=${GITHUB_REPOSITORY}" -f "inputs[branch]=${GITHUB_REF_NAME}"
+          echo "notified .devops of ${GITHUB_REPOSITORY}@${GITHUB_REF_NAME}"
+        env:
+          GH_TOKEN: ${{ steps.notify-token.outputs.token }}
+          OWNER: ${{ github.repository_owner }}
