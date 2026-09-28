@@ -5,7 +5,7 @@
  * types (see editor.node-types.mjs). Split out from the LiteGraph wiring
  * so this logic is unit-testable without a canvas/DOM.
  */
-import { dirname } from '../db-graph.data.mjs';
+import { dirname } from '../app/app.data.mjs';
 
 export const NODE_FIELDS = ['kind', 'name', 'language', 'parentName', 'folder', 'filePath'];
 export const EDGE_FIELDS = ['kind', 'confidenceTier', 'filePath'];

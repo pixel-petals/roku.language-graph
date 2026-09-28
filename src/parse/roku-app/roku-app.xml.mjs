@@ -9,19 +9,7 @@
  */
 
 import { ParseMode } from 'brighterscript';
-import * as crypto from 'crypto';
-
-function fileHash(contents) {
-  return crypto.createHash('sha1').update(contents).digest('hex');
-}
-
-function safe(fn) {
-  try {
-    return fn();
-  } catch {
-    return undefined;
-  }
-}
+import { safe, fileHash } from './roku-app.ast-utils.mjs';
 
 function lineOf(node) {
   return node?.location?.range?.start?.line != null ? node.location.range.start.line + 1 : 0;
@@ -80,7 +68,7 @@ function attrsOf(el) {
   return out;
 }
 
-/** USES_TYPE target: a local custom component if one exists, else the roku-sdk.graph.js `sg:` node ID convention (unverified at parse time). */
+/** USES_TYPE target: a local custom component if one exists, else the roku-sdk.graph.mjs `sg:` node ID convention (unverified at parse time). */
 function usesTypeEdge(program, tag, qname, fp, line) {
   const local = safe(() => program.getComponent(tag));
   const target = local?.file ? `${local.file.srcPath}::${tag}` : `sg:${tag}`;

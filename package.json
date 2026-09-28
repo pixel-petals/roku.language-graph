@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build-grammar": "cd packages/graphify && npx tree-sitter generate && npx node-gyp configure && npx node-gyp build",
-    "test": "node --check src/cli/cli.analyze-file.mjs && node --check src/cli/cli.analyze-app.mjs && node --check src/cli/cli.generate-sdk-exports.mjs && node --check src/cli/cli.generate-ebnf.mjs && node --check src/cli/cli.run-benchmark.mjs && node --check src/cli/cli.inspect-db.mjs && node --check src/cli/cli.view-graph.mjs && node --check src/db-graph/db-graph.ssr.mjs && node --test",
+    "test": "node --check src/cli/cli.analyze-file.mjs && node --check src/cli/cli.analyze-app.mjs && node --check src/cli/cli.generate-sdk-exports.mjs && node --check src/cli/cli.generate-ebnf.mjs && node --check src/cli/cli.run-benchmark.mjs && node --check src/cli/cli.inspect-db.mjs && node --check src/cli/cli.view-graph.mjs && node --check src/db-graph/app/app.ssr.mjs && node --test",
     "analyze-app": "node src/cli/cli.analyze-app.mjs",
     "analyze-file": "node src/cli/cli.analyze-file.mjs",
     "generate-sdk-exports": "node src/cli/cli.generate-sdk-exports.mjs",

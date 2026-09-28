@@ -1,23 +1,21 @@
-'use strict';
-
 /**
  * Scrapes structured data out of one Roku SDK markdown doc page: title,
  * deprecation flag, prose description, supported interfaces, parent type,
  * methods, and fields. Pure text-in/data-out — no knowledge of the graph
- * shape these get assembled into (see roku-sdk.graph.js).
+ * shape these get assembled into (see roku-sdk.graph.mjs).
  */
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 // ── Frontmatter helpers ───────────────────────────────────────────────────────
 
-function extractFrontmatterTitle(content) {
+export function extractFrontmatterTitle(content) {
   const m = content.match(/^---\s*\n(?:[\s\S]*?\n)?title:\s*["']?([^"'\n]+?)["']?\s*\n/);
   return m ? m[1].trim() : null;
 }
 
-function extractFrontmatterDeprecated(content) {
+export function extractFrontmatterDeprecated(content) {
   const m = content.match(/\ndeprecated:\s*(true|false)/);
   return m ? m[1] === 'true' : false;
 }
@@ -28,7 +26,7 @@ function extractFrontmatterDeprecated(content) {
  * some docs, absent on others that go straight into a table). This is the
  * text meant to be fed to upsertEmbedding() for semantic search.
  */
-function extractDescription(content) {
+export function extractDescription(content) {
   const fm = content.match(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/);
   const frontmatter = fm ? fm[0] : '';
   const body = fm ? content.slice(fm[0].length) : content;
@@ -45,7 +43,7 @@ function extractDescription(content) {
 
 // ── Interface extraction ──────────────────────────────────────────────────────
 
-function extractSupportedInterfaces(content) {
+export function extractSupportedInterfaces(content) {
   const m = content.match(/##\s+Supported interfaces\s*\n([\s\S]*?)(?:\n##|\n---|\n\*\*|$)/i);
   if (!m) return [];
   const names = [];
@@ -55,7 +53,7 @@ function extractSupportedInterfaces(content) {
   return names;
 }
 
-function extractExtends(content) {
+export function extractExtends(content) {
   const m = content.match(/Extends\s+\[(?:\*\*)?([^\]]+?)(?:\*\*)?\]\(/);
   return m ? m[1].trim() : null;
 }
@@ -66,7 +64,7 @@ function extractExtends(content) {
  * Parse "### FunctionName(params) As ReturnType" headers from a ## Supported methods section.
  * Returns array of { name, signature, params, returnType }.
  */
-function extractMethods(content) {
+export function extractMethods(content) {
   const sectionMatch = content.match(/##\s+Supported methods\s*\n([\s\S]*?)(?:\n## [^#]|$)/i);
   if (!sectionMatch) return [];
 
@@ -92,7 +90,7 @@ function extractMethods(content) {
  * Parse fields from ## Fields section — handles both HTML <table> and markdown | table | formats.
  * Returns array of { name, type, defaultValue, access }.
  */
-function extractFields(content) {
+export function extractFields(content) {
   const sectionMatch = content.match(/##\s+Fields\s*\n([\s\S]*?)(?:\n## [^#]|$)/i);
   if (!sectionMatch) return [];
   const section = sectionMatch[1];
@@ -134,20 +132,9 @@ function extractFields(content) {
 
 // ── File helpers ──────────────────────────────────────────────────────────────
 
-function readMarkdownFiles(dir) {
+export function readMarkdownFiles(dir) {
   if (!fs.existsSync(dir)) return [];
   return fs.readdirSync(dir)
     .filter(f => f.endsWith('.md') && f !== 'index.md')
     .map(f => ({ file: f, content: fs.readFileSync(path.join(dir, f), 'utf-8') }));
 }
-
-module.exports = {
-  extractFrontmatterTitle,
-  extractFrontmatterDeprecated,
-  extractDescription,
-  extractSupportedInterfaces,
-  extractExtends,
-  extractMethods,
-  extractFields,
-  readMarkdownFiles,
-};

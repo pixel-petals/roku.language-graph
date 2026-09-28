@@ -1,5 +1,5 @@
 /**
- * db-graph.state.mjs
+ * app.state.mjs
  *
  * Shared reactive state for the db-graph app: signals for data that changes
  * over the app's lifetime, and the @lit/context keys used to provide them

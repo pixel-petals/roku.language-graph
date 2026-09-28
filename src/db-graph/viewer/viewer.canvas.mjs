@@ -19,7 +19,8 @@ import { LitElement, html, css } from 'lit';
 import { Graph } from '@antv/g6';
 import { SignalWatcher } from '@lit-labs/signals';
 import { ResizeController } from '@lit-labs/observers/resize-controller.js';
-import { graphDataSignal } from '../db-graph.state.mjs';
+import { graphDataSignal } from '../app/app.state.mjs';
+import { umlLabelText, umlNodeSize, umlLabelOffsetX, umlSectionAtFraction } from './viewer.uml-layout.mjs';
 import './viewer.stats.mjs';
 
 // Dark-surface-validated (see dataviz skill's references/palette.md): the
@@ -40,6 +41,22 @@ const DARK_SURFACE = '#1a1a19';
 const DARK_INK = '#ffffff';
 const DARK_INK_MUTED = '#c3c2b7';
 const DARK_BORDER = 'rgba(255,255,255,0.15)';
+
+// UML edges (the "Build UML Classes" editor node's output — see
+// editor.uml.mjs) carry a relation kind instead of a confidenceTier, styled
+// per UML convention: relationship *shape* (arrowhead/dash) carries the
+// meaning, not hue — real UML diagrams don't color-code relationship lines.
+const UML_RELATION_STYLE = {
+  INHERITANCE: { stroke: DARK_INK_MUTED, lineDash: null, endArrow: true, endArrowType: 'triangle', endArrowFill: DARK_SURFACE, startArrow: false },
+  COMPOSITION: { stroke: DARK_INK_MUTED, lineDash: null, endArrow: false, startArrow: true, startArrowType: 'diamond', startArrowFill: DARK_INK_MUTED },
+  DEPENDENCY: { stroke: DARK_INK_MUTED, lineDash: [4, 2], endArrow: true, endArrowType: 'vee', endArrowFill: DARK_INK_MUTED, startArrow: false },
+  ASSOCIATION: { stroke: DARK_INK_MUTED, lineDash: null, endArrow: true, endArrowType: 'vee', endArrowFill: DARK_INK_MUTED, startArrow: false },
+};
+
+/** 'IMPORTS_FROM' -> 'imports from' — an edge kind constant is a fine label once it's not shouting in underscored caps. */
+function humanizeEdgeKind(kind) {
+  return kind ? kind.toLowerCase().replace(/_/g, ' ') : '';
+}
 
 export class DbGraphCanvas extends SignalWatcher(LitElement) {
   static styles = css`
@@ -62,6 +79,20 @@ export class DbGraphCanvas extends SignalWatcher(LitElement) {
   #pending = Promise.resolve();
 
   #resizeDebounce = null;
+
+  // Per-node fold overrides on top of the "Build UML Classes" editor node's
+  // graph-wide section toggles (id -> {fields?, publicMethods?,
+  // privateMethods?}) — lets one box's Private Functions stay expanded
+  // while every other box follows the global default. Reset on every
+  // pipeline re-run (a fresh #applyGraphData gets a fresh graphData object,
+  // so old node ids' overrides simply go unused) rather than threaded
+  // through — a brand-new render is a legitimate point to fall back to the
+  // editor node's own settings.
+  #foldOverrides = new Map();
+
+  #visibilityFor(d) {
+    return { ...d.data.sectionVisibility, ...this.#foldOverrides.get(d.id) };
+  }
 
   constructor() {
     super();
@@ -104,20 +135,98 @@ export class DbGraphCanvas extends SignalWatcher(LitElement) {
 
   async #applyGraphData(graphData) {
     const container = this.renderRoot.querySelector('#container');
+    // UML class boxes run 130-300px tall/wide (see umlNodeSize) vs a plain
+    // node's fixed 24px circle — force layout's default spacing assumes the
+    // latter, so UML boxes need a much larger collision/link distance or
+    // they render stacked on top of each other (reproduced directly: the
+    // default spacing left boxes overlapping until this was widened).
+    const isUml = graphData.nodes.some(n => n.data.members);
     this.#g6Graph?.destroy();
     this.#g6Graph = new Graph({
       container,
       autoFit: 'view',
       data: graphData,
       node: {
-        style: { size: 24, labelText: d => d.data.name, labelFontSize: 10, labelFill: DARK_INK },
+        // A node with `members` came through the "Build UML Classes" editor
+        // node (editor.uml.mjs) — render it as a UML class box (a `rect`
+        // sized/labeled to its member count) instead of the default circle.
+        type: d => (d.data.members ? 'rect' : 'circle'),
+        style: {
+          size: d => (d.data.members ? umlNodeSize(d.data, this.#visibilityFor(d)) : 24),
+          labelText: d => (d.data.members ? umlLabelText(d.data, this.#visibilityFor(d)) : d.data.name),
+          // G6's own default is labelPlacement: 'bottom' — a label rendered
+          // *below* the key shape, not inside it (fine for a small circle's
+          // name tag, but it left a UML box's text floating away from its
+          // own rectangle entirely). 'center' anchors the label to the key
+          // shape's own bounds instead.
+          labelPlacement: d => (d.data.members ? 'center' : 'bottom'),
+          // See umlLabelOffsetX's own doc comment: 'center' placement
+          // anchors the label's x position at the key shape's horizontal
+          // center, not its left edge, regardless of labelTextAlign.
+          labelOffsetX: d => (d.data.members ? umlLabelOffsetX(d.data, this.#visibilityFor(d)) : 0),
+          labelFontSize: 10,
+          labelFontFamily: 'monospace',
+          labelTextAlign: d => (d.data.members ? 'left' : 'center'),
+          labelFill: DARK_INK,
+          // Not `fill`/`stroke`: G6's per-datum style callbacks are merged
+          // via Object.assign *after* the palette's computed fill (see
+          // @antv/g6's runtime/element.js ElementController), so a callback
+          // that returns `undefined` for the non-UML branch would still win
+          // the merge and blank out the palette color entirely — verified
+          // by reading that merge order directly, not assumed. fillOpacity
+          // is never touched by the palette, so it's safe to override only
+          // for UML boxes (a lightly-tinted panel instead of a solid-color
+          // circle) without that risk.
+          fillOpacity: d => (d.data.members ? 0.18 : 1),
+        },
         palette: { type: 'group', field: graphData.paletteField || 'kind', color: NODE_PALETTE_DARK },
       },
       edge: {
+        // Graph-wide, not per-datum: the "Style Edges" editor node sets one
+        // routing type for every edge (see editor.node-types.mjs). 'line'
+        // (a plain straight segment) matches this app's original, unstyled
+        // default when Style Edges isn't wired in.
+        type: graphData.edgeType || 'line',
         style: {
-          stroke: d => (EDGE_TIER_STYLE[d.data.confidenceTier] || EDGE_TIER_STYLE.DECLARED).stroke,
-          lineDash: d => (EDGE_TIER_STYLE[d.data.confidenceTier] || EDGE_TIER_STYLE.DECLARED).lineDash,
-          endArrow: true,
+          // Only 'polyline' bends around nodes — without an explicit router,
+          // a polyline edge with no control points draws identical to a
+          // straight line (reproduced directly by reading Polyline's own
+          // getControlPoints: it returns `attributes.controlPoints`, empty
+          // by default, unless `router` is set), so orthogonal routing is
+          // what actually delivers the "polyline" look, not just the type.
+          router: d => (graphData.edgeType === 'polyline' ? { type: 'orth' } : undefined),
+          // The specific edge kind (CALLS, EXTENDS, HAS_SCRIPT, ...), not
+          // the UML bucket it styles by — "DEPENDENCY" on every non-
+          // inheritance edge told a reader nothing about what the
+          // relationship actually was.
+          labelText: d => (graphData.showEdgeLabels ? humanizeEdgeKind(d.data.kind) : ''),
+          labelFontSize: 9,
+          labelFill: DARK_INK_MUTED,
+          labelBackground: true,
+          labelBackgroundFill: DARK_SURFACE,
+          labelBackgroundOpacity: 0.85,
+          labelBackgroundRadius: 3,
+          labelPadding: [1, 4],
+          // A label rotated to follow its edge (G6's own default) reads
+          // upside-down or sideways on plenty of edges — always horizontal
+          // is slower to visually trace back to its edge but never
+          // upside-down.
+          labelAutoRotate: false,
+          stroke: d => UML_RELATION_STYLE[d.data.relation]?.stroke ?? (EDGE_TIER_STYLE[d.data.confidenceTier] || EDGE_TIER_STYLE.DECLARED).stroke,
+          lineDash: d => UML_RELATION_STYLE[d.data.relation]?.lineDash ?? (EDGE_TIER_STYLE[d.data.confidenceTier] || EDGE_TIER_STYLE.DECLARED).lineDash,
+          endArrow: d => UML_RELATION_STYLE[d.data.relation]?.endArrow ?? true,
+          startArrow: d => UML_RELATION_STYLE[d.data.relation]?.startArrow ?? false,
+          // Same undefined-clobbers-the-default risk as node fill/stroke
+          // above (verified in base-edge.js's getArrowStyle: the arrow's
+          // own style is the last Object.assign spread, so an explicit
+          // `undefined` here would blank the arrowhead's fill/shape instead
+          // of falling back) — every branch gets a real value matching this
+          // edge type's prior un-styled default ('vee' chevron filled with
+          // the edge's own stroke color) rather than risking that.
+          endArrowType: d => UML_RELATION_STYLE[d.data.relation]?.endArrowType ?? 'vee',
+          endArrowFill: d => UML_RELATION_STYLE[d.data.relation]?.endArrowFill ?? (EDGE_TIER_STYLE[d.data.confidenceTier] || EDGE_TIER_STYLE.DECLARED).stroke,
+          startArrowType: d => UML_RELATION_STYLE[d.data.relation]?.startArrowType ?? 'vee',
+          startArrowFill: d => UML_RELATION_STYLE[d.data.relation]?.startArrowFill ?? (EDGE_TIER_STYLE[d.data.confidenceTier] || EDGE_TIER_STYLE.DECLARED).stroke,
         },
       },
       combo: {
@@ -133,7 +242,12 @@ export class DbGraphCanvas extends SignalWatcher(LitElement) {
         type: 'combo-combined',
         comboPadding: 20,
         comboSpacing: 40,
-        layout: comboId => ({ type: 'force', preventOverlap: true, linkDistance: comboId ? 40 : 80 }),
+        layout: comboId => ({
+          type: 'force',
+          preventOverlap: true,
+          nodeSize: isUml ? 320 : 24,
+          linkDistance: comboId ? 40 : (isUml ? 360 : 80),
+        }),
       },
       behaviors: ['drag-canvas', 'zoom-canvas', 'drag-element', 'click-select', 'hover-activate', 'collapse-expand'],
       plugins: [
@@ -156,12 +270,57 @@ export class DbGraphCanvas extends SignalWatcher(LitElement) {
       ],
     });
     await this.#g6Graph.render();
+    this.#g6Graph.on('node:click', (e) => this.#onUmlNodeClick(e));
+  }
+
+  /**
+   * A click on a UML class box's section header (or its member list) folds
+   * or unfolds that section for *this node only*, layered on top of the
+   * editor node's graph-wide default (see #foldOverrides). `getElementRenderBounds`
+   * and the click event's own coordinates turned out to live in two
+   * different coordinate spaces (world/layout units vs. on-screen pixels;
+   * `getViewportByCanvas` converts between them) — found by logging both
+   * and comparing, not assumed from the method names alone. Using the
+   * *fraction* of the way down the box's own rendered height sidesteps ever
+   * needing to know the current zoom scale explicitly.
+   */
+  #onUmlNodeClick(e) {
+    const id = e.target?.id;
+    if (!id) return;
+    const datum = this.#g6Graph.getNodeData(id);
+    if (!datum?.data?.members) return;
+
+    const bbox = this.#g6Graph.getElementRenderBounds(id);
+    // getViewportByCanvas returns a plain [x, y, z] tuple (unlike the click
+    // event's own `viewport`, which is an {x, y} object — verified by
+    // logging both rather than assumed from one matching the other).
+    const [, viewportMinY] = this.#g6Graph.getViewportByCanvas(bbox.min);
+    const [, viewportMaxY] = this.#g6Graph.getViewportByCanvas(bbox.max);
+    const fraction = (e.viewport.y - viewportMinY) / (viewportMaxY - viewportMinY);
+    if (fraction < 0 || fraction > 1) return;
+
+    const visibility = this.#visibilityFor(datum);
+    const section = umlSectionAtFraction(datum.data, visibility, fraction);
+    if (!section) return;
+
+    this.#foldOverrides.set(id, { ...this.#foldOverrides.get(id), [section]: !visibility[section] });
+    // Re-derive this node's own style (size/labelText read #visibilityFor
+    // via the node-level style functions already wired in #applyGraphData)
+    // rather than a full #applyGraphData rebuild — cheap, and avoids
+    // disturbing every other node's current position.
+    this.#g6Graph.updateNodeData([{ id }]);
+    this.#g6Graph.draw();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     clearTimeout(this.#resizeDebounce);
     this.#g6Graph?.destroy();
+  }
+
+  /** The live G6 Graph instance — for introspection/debugging (e.g. from a devtools console), not needed by other components. */
+  get g6Graph() {
+    return this.#g6Graph;
   }
 }
 customElements.define('db-graph-canvas', DbGraphCanvas);

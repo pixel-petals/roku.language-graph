@@ -18,7 +18,7 @@ import { existsSync } from 'fs';
 import { writeFile } from 'fs/promises';
 import { fileURLToPath } from 'url';
 import { openGraphStore } from '../db/db.store.mjs';
-import { renderApp } from '../db-graph/db-graph.ssr.mjs';
+import { renderApp } from '../db-graph/app/app.ssr.mjs';
 
 const SHELL_PATH = fileURLToPath(new URL('../../.build/db-graph/index.html', import.meta.url));
 

@@ -3,7 +3,7 @@
 
 Visualization for graph databases.
 
-`db-graph` is a Lit web-components app, organized per CLAUDE.md's "Frontend organization" rules: a `viewer/` cluster and an `editor/` cluster, each a handful of small single-purpose components, composed together by one composition root (`db-graph.app.mjs`). It's broken into two conceptual tools: [[#Viewer]] and [[#Editor]].
+`db-graph` is a Lit web-components app, organized per CLAUDE.md's "Frontend organization" rules: an `app/` cluster (composition root + shared model/state/SSR), a `viewer/` cluster, and an `editor/` cluster — each a handful of small single-purpose modules. It's broken into two conceptual tools: [[#Viewer]] and [[#Editor]].
 
 ## Architecture
 
@@ -13,8 +13,8 @@ Plain JS, no TypeScript, no decorators (`static properties` instead of `@propert
 
 **`npm run build:db-graph`** (`vite build --config src/db-graph/db-graph.vite.config.mjs`) produces `.build/db-graph/index.html` (gitignored): one file, JS+CSS fully inlined, containing an **empty** `<db-graph-app></db-graph-app>` placeholder. This build is data-independent — a reusable shell, rebuilt only when component source changes, not per database.
 
-**SSR + splice** (`db-graph.ssr.mjs`, Node-only): per CLI invocation,
-- Imports `db-graph.app.mjs` directly (resolves via `node_modules`, since `lit`/`@lit/context`/etc. are real dependencies now) and uses `@lit-labs/ssr`'s `render()` + `collectResult()` to render `<db-graph-app .rawData=${rawData}>` — seeded with that database's `queryAll()` result — to an HTML string with declarative shadow roots.
+**SSR + splice** (`app/app.ssr.mjs`, Node-only): per CLI invocation,
+- Imports `app/app.root.mjs` directly (resolves via `node_modules`, since `lit`/`@lit/context`/etc. are real dependencies now) and uses `@lit-labs/ssr`'s `render()` + `collectResult()` to render `<db-graph-app .rawData=${rawData}>` — seeded with that database's `queryAll()` result — to an HTML string with declarative shadow roots.
 - Embeds that seed data as a `<script type="application/json" id="db-graph-raw-data">` tag alongside the rendered markup. **Property bindings only affect SSR's output** — the input value itself is never serialized into the page, so without this the client has no way to know what data produced the markup it's hydrating; `DbGraphApp`'s constructor reads this same tag back out client-side. (A real gotcha, not hypothetical — found by reproducing it: without the script tag, every client-side render silently used the constructor's empty-array default instead of the real data.)
 - Splices the rendered markup into the built shell in place of the empty placeholder and writes the result to `--out` — **still one `.html` file**, same CLI contract as before.
 - `npm run view-graph` chains `build:db-graph` first so `npm run view-graph -- <path>` works standalone; the bare `node src/cli/cli.view-graph.mjs` errors with a clear message if the shell is missing, rather than silently shelling out to Vite.
@@ -29,20 +29,21 @@ Plain JS, no TypeScript, no decorators (`static properties` instead of `@propert
 src/db-graph/
   spec.md
   index.html                Vite entry: <db-graph-app></db-graph-app> + one
-                             <script type="module"> importing db-graph.app.mjs
+                             <script type="module"> importing app/app.root.mjs
                              — the ONE allowed composition root
   db-graph.vite.config.mjs  Vite config (root=src/db-graph, outDir=../../.build/db-graph,
                              plugins=[viteSingleFile()])
-  db-graph.app.mjs          <db-graph-app> — composition root: reads seed data,
-                             provides graphData via @lit/context, sets up the
-                             #/ #/viewer #/editor router, composes
-                             <db-graph-canvas> + <db-graph-editor-panel>
-  db-graph.state.mjs        graphDataSignal (@lit-labs/signals) + graphDataContext
-                             (@lit/context) — the "model" layer
-  db-graph.data.mjs         toGraphData/dirname/basename/nodeFieldValue — shared
-                             by editor (Render Graph node) and viewer; zero
-                             Node-specific deps
-  db-graph.ssr.mjs          Node-only: SSR-render + splice (see above)
+  app/
+    app.root.mjs           <db-graph-app> — composition root: reads seed data,
+                            provides graphData via @lit/context, sets up the
+                            #/ #/viewer #/editor router, composes
+                            <db-graph-canvas> + <db-graph-editor-panel>
+    app.state.mjs          graphDataSignal (@lit-labs/signals) + graphDataContext
+                            (@lit/context) — the "model" layer
+    app.data.mjs           toGraphData/dirname/basename/nodeFieldValue — shared
+                            by editor (Render Graph node) and viewer; zero
+                            Node-specific deps
+    app.ssr.mjs             Node-only: SSR-render + splice (see above)
   editor/
     editor.panel.mjs         <db-graph-editor-panel> — hosts the LiteGraph canvas,
                               collapse/expand + full-width via @lit-labs/motion's
@@ -59,12 +60,17 @@ src/db-graph/
   viewer/
     viewer.canvas.mjs        <db-graph-canvas> — owns the G6 Graph instance
                               lifecycle, consumes graphDataSignal
+    viewer.uml-layout.mjs    Pure UML class-box layout: label text, box size,
+                              and click-position -> section-key hit-testing,
+                              shared so all three can't disagree
     viewer.stats.mjs         <db-graph-stats> — node/edge/group-count readout,
                               takes graphData as a plain property from its direct
                               parent (not its own signal subscription — see below)
 tests/
-  db-graph.data.test.mjs
+  app.data.test.mjs
   editor.pipeline.test.mjs
+  editor.uml.test.mjs
+  viewer.uml-layout.test.mjs
 ```
 
 ## Viewer
@@ -77,6 +83,7 @@ Rendered graph features:
 - Nodes colored by whatever field the pipeline's Color Nodes By node picks (`kind` by default) with an auto-generated legend.
 - Edges colored/dashed by `confidenceTier` (`DECLARED` gray, `RESOLVED` blue solid, `TEXTUAL` orange dashed) — fixed, not yet pipeline-configurable.
 - Hover tooltip showing a node's kind/qualifiedName/file:line, or an edge's kind/endpoints/file:line/confidence.
+- In UML mode (see Build UML Classes above), clicking a class box's section header (or its member list) folds/unfolds that section *for that one box*, layered on top of the editor node's graph-wide toggle — one dense class's Public Functions can stay expanded while every other box follows the global default. The click-to-section geometry (which line a click's fractional position down the box lands on) is pure logic in `viewer/viewer.uml-layout.mjs` (unit-tested, `tests/viewer.uml-layout.test.mjs`), shared with the label/size calculation so all three can never disagree about a box's layout. `getElementRenderBounds()`'s coordinate space turned out to differ from a click event's own `viewport` coordinates (world/layout units vs. on-screen pixels) — `getViewportByCanvas()` converts between them, found by logging both and comparing rather than assumed from the method names.
 
 **`<db-graph-stats>` takes `graphData` as a plain property**, not its own `graphDataSignal` subscription, even though `SignalWatcher` would seem like the obvious fit (per the `lit-app-structure` skill: direct parent-child data doesn't need context/signals). This isn't just a style preference — using `SignalWatcher` here hit a real `@lit-labs/ssr` hydration bug: `db-graph-canvas` (which does read the signal directly, since it's the actual data owner) re-rendered correctly after hydration, but `db-graph-stats`'s own `SignalWatcher`-driven update silently failed to patch its text into the DOM the first time real data replaced the SSR default — no error, just frozen text, reproduced directly by comparing the two components' behavior. A second, related hydration bug: the stats template must render as **one** interpolated part (`html\`${text}\`` built from a single JS string), not several adjacent parts — a part whose SSR value is an empty string that later becomes non-empty (the "N groups" suffix, empty until the pipeline runs) never hydrates correctly either. Both are real, reproduced gotchas in an explicitly experimental package, not assumptions — worth revisiting if a newer `@lit-labs/ssr` fixes empty-string/multi-part hydration.
 
@@ -92,15 +99,17 @@ Node-based editor (LiteGraph.js — the same interaction model as Blender's shad
 
 ### Node types
 
-All registered under plain display names (not a `"category/name"` namespace) — LiteGraph's add-node search box displays a node's raw registered type string verbatim, not its `.title`, so a namespaced type would search/display badly. The default library (math/audio/3d/network nodes, plus a parallel "searchbox extras" registry for things like `MAX`/`==`) is unregistered at setup so the search only ever offers these six:
+All registered under plain display names (not a `"category/name"` namespace) — LiteGraph's add-node search box displays a node's raw registered type string verbatim, not its `.title`, so a namespaced type would search/display badly. The default library (math/audio/3d/network nodes, plus a parallel "searchbox extras" registry for things like `MAX`/`==`) is unregistered at setup so the search only ever offers these:
 
 - **Graph Source** — no inputs; outputs this view's raw `nodes`/`edges` (the GraphStore's `queryAll()` result).
 - **Filter Nodes** / **Filter Edges** — input + output of the same kind; widgets `field` (combo), `operator` (`is` / `is not` / `is one of` / `is not one of` / `contains`), and `value` (see tag-cloud picker below). An empty value list is a no-op filter (passes everything through) so adding the node doesn't blank the graph before it's configured.
 - **Cluster Nodes** — input/output `nodes`, plus a `comboField` output; widget `field` (`folder` / `kind` / `parentName` / `language` / `(none)`).
 - **Color Nodes By** — input/output `nodes`, plus a `paletteField` output; widget `field` (same options as Filter Nodes' field, minus `(none)`).
-- **Render Graph** — terminal node, no outputs; inputs `nodes`, `edges`, `comboField`, `paletteField`. Calls `toGraphData()` and writes the result to `graphDataSignal`.
+- **Build UML Classes** — input/output `nodes`/`edges`; folds members into their owning `Class`/`Interface`/`Component` into three buckets — **Properties** (`Field`/`ComponentField`, via `CONTAINS` ownership), **Public Functions** (`ComponentFunction` — always public, since it exists precisely because it's declared in the component's XML `<interface>` — plus any `Method` whose access modifier isn't `private`), and **Private Functions** (a `private`-modifier `Method`, or a bare `Function` — a component's internal `.brs` functions are only reachable at all via a `HAS_SCRIPT` ownership bridge, since Roku never exposes them unless the XML interface declares them). `members.privateMethods` is real, tested data, but the viewer never renders it — a UML diagram is for a class's public interface, and private members are noise there, not just something to fold away (see `UML_SECTIONS` in `viewer/viewer.uml-layout.mjs`). Also retargets member-level edges up to their class, deduplicating same-pair-same-relation edges to the highest-confidence one, and classifies each into a `relation` bucket (`EXTENDS` → `INHERITANCE`, `INSTANTIATES` → `COMPOSITION`, `CALLS`/`READS`/`WRITES`/`USES`/`USES_TYPE`/`IMPORTS_FROM`/`HAS_SCRIPT`/`OBSERVES` → `DEPENDENCY`, anything else → `ASSOCIATION`) the viewer uses for arrowhead/dash styling — `kind` itself is left as the original, specific edge kind (`CALLS`, `EXTENDS`, `HAS_SCRIPT`, ...) rather than overwritten with the bucket, since a label reading "DEPENDENCY" on every non-inheritance edge told a reader nothing about what the relationship actually was. The node's two `toggle` widgets (Properties/Public Functions, both **off** by default — a class diagram reads easiest as class names first, expanded on demand) don't change what's *collected* — every member is always gathered so a folded section still knows its own count — only `sectionVisibility`, which the viewer reads to render that section's full list or a one-line "N members (folded)" summary. Pure logic lives in `editor/editor.uml.mjs` (unit-tested, `tests/editor.uml.test.mjs`), independent of the LiteGraph wiring.
+- **Style Edges** — input/output `edges` (unchanged passthrough), plus an `edgeStyle` output (`{type, showLabels}`); widgets `type` (`line` / `polyline` / `cubic` / `quadratic`, default `polyline`) and `labels` (toggle, default on). Purely a rendering concern — it never touches edge data, only how the viewer draws it. `polyline` alone draws the same straight segment as `line` unless something also asks for a router; the viewer sets `router: {type: 'orth'}` whenever `edgeType === 'polyline'`, which is what actually produces bent (orthogonal) connectors — found by reproducing the "still looks like a straight line" case directly, not assumed from the type name. `showLabels` puts each edge's `data.kind`, humanized (`imports from`, `has script`, `extends`, ...) — the specific edge kind, never the coarser `relation` bucket a "DEPENDENCY" label would show — on the edge itself, always horizontal (`labelAutoRotate: false`; G6's own default rotates a label to match its edge, reading upside-down or sideways on plenty of edges) and with a background so it stays legible crossing other edges/boxes.
+- **Render Graph** — terminal node, no outputs; inputs `nodes`, `edges`, `comboField`, `paletteField`, `edgeStyle`. Calls `toGraphData()` and writes the result to `graphDataSignal`. `edgeStyle` defaults to `{type: 'line', showLabels: false}` when nothing's wired to it — the plain, label-free straight edges this app always drew before Style Edges existed, so leaving it unwired doesn't change any existing pipeline's look.
 
-The default graph wires **Graph Source → Cluster Nodes (`field: folder`) → Render Graph**, with Source's `edges` going straight to Render (unfiltered) — "cluster by folder, show everything."
+The default graph wires **Graph Source → Cluster Nodes (`field: folder`) → Render Graph**, with Source's `edges` going straight to Render (unfiltered) — "cluster by folder, show everything." Wiring **Graph Source → Build UML Classes → Style Edges → Render Graph** instead (in place of Cluster Nodes) renders a UML class diagram: the viewer (`viewer/viewer.canvas.mjs`) switches any node carrying a `members` field to a `rect`-typed UML class box (stereotype, name, then one divider per populated Properties/Public Functions section — each either its full member list, capped at 8 lines with "… and N more", or, folded by default, a single "― Public Functions (N, folded) ―" summary line until expanded) instead of the default circle, and box width/height fit the box's own content (see `umlNodeSize`/`umlLabelOffsetX`) rather than a fixed size. Edges are styled by arrowhead shape and dash per `INHERITANCE`/`COMPOSITION`/`DEPENDENCY`/`ASSOCIATION` relation (hollow triangle / filled diamond / dashed vee / solid vee) rather than by hue, matching real UML convention that relationship *shape* carries the meaning, not color; with Style Edges wired in as above, they also bend orthogonally around boxes and carry their relation as a label. `Filter Nodes`/`Filter Edges` can still sit before or after Build UML Classes to narrow which classes or relations end up on the diagram.
 
 ### Execution model
 
@@ -130,3 +139,4 @@ Every scenario below was checked with zero console/page errors, against a real a
 - Default pipeline render (SSR shell + client hydration + G6/LiteGraph paint).
 - Adding a Filter Nodes node via the search box, wiring it into the pipeline, opening its tag-cloud picker, searching, selecting a value, confirming the render drops to the correct filtered node/edge count (56 nodes/28 edges for `kind = Function`).
 - `#/`, `#/viewer`, `#/editor` hash navigation, including the LiteGraph canvas recentering correctly after a large width change between modes.
+- Rewiring the pipeline to Graph Source → Build UML Classes → Render Graph and confirming the correct class/relation count (9 classes/5 relations for this app's Component graph) and that UML class boxes/relation arrows actually paint (not just that the node/edge counts match).

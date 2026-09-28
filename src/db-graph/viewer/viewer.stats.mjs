@@ -13,7 +13,7 @@
  * (`${a}${b}${c}`) — found, by reproducing it directly, that an
  * SSR-hydrated multi-part template whose LAST part is an empty string at
  * SSR time (no combos yet — the editor pipeline hasn't run server-side,
- * see db-graph.ssr.mjs) never properly hydrates that part: the property
+ * see app.ssr.mjs) never properly hydrates that part: the property
  * updates correctly afterward (confirmed via the live DOM property) but
  * the corresponding text silently never appears, with no console error.
  * Not documented behavior of @lit-labs/ssr — an experimental package's

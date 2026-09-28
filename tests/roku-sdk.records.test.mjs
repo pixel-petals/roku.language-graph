@@ -1,6 +1,6 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
-import { toGraphRecords, partitionRecords } from '../src/parse/roku-sdk/roku-sdk.records.js';
+import { toGraphRecords, partitionRecords } from '../src/parse/roku-sdk/roku-sdk.records.mjs';
 
 function makeRaw({ nodes, links }) {
   return { directed: true, graph: { label: 'test', source: '/sdk-docs' }, nodes, links };

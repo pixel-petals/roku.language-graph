@@ -1,5 +1,5 @@
 /**
- * db-graph.data.mjs
+ * app.data.mjs
  *
  * Converts a GraphStore's queryAll() result ({ nodes, edges } shaped per
  * src/db/db.store.mjs) into the { nodes, edges, combos } shape @antv/g6's
@@ -7,10 +7,9 @@
  * `data`.
  *
  * No `node:path` import, and no other Node-specific dependency — this
- * module's source is inlined verbatim into the generated HTML's <script>
- * (see db-graph.html.mjs) so the viewer's node-based editor (db-graph.editor.mjs)
- * can call the exact same function in the browser instead of duplicating
- * its logic client-side.
+ * module is bundled by Vite (db-graph.vite.config.mjs) straight into the
+ * browser, so both viewer and editor call the exact same function instead
+ * of duplicating its logic client-side.
  */
 
 /** path.dirname, hand-rolled (no node:path — see file header) */
@@ -59,6 +58,13 @@ export function toGraphData({ nodes, edges }, { comboField = null } = {}) {
         language: n.language,
         parentName: n.parentName,
         folder: dirname(n.filePath),
+        // Present only on class-shaped nodes the "Build UML Classes" editor
+        // node produces ({fields, publicMethods, privateMethods}, each
+        // string[]) plus which of those three sections should render
+        // expanded vs folded; the viewer switches a node to its UML box
+        // rendering when `members` is set.
+        members: n.members,
+        sectionVisibility: n.sectionVisibility,
       },
     };
   });
@@ -83,6 +89,13 @@ export function toGraphData({ nodes, edges }, { comboField = null } = {}) {
           line: e.line,
           confidence: e.confidence,
           confidenceTier: e.confidenceTier,
+          // Present only on edges the "Build UML Classes" editor node
+          // produces — the UML relation bucket (INHERITANCE/COMPOSITION/
+          // DEPENDENCY/ASSOCIATION) `kind` was classified into, for arrow
+          // styling; `kind` itself stays the original specific edge kind
+          // (CALLS, EXTENDS, HAS_SCRIPT, ...) so a label can show what the
+          // relationship actually is instead of just its UML bucket.
+          relation: e.relation,
         },
       })),
   };
