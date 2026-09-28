@@ -1,0 +1,20 @@
+name: Submodules
+
+# Notifies the parents following this repository on a push to main, and syncs
+# this repository's own followed submodules when a child notifies it. See
+# pixel-petals/.devops/.github/readme.md#following-submodule-branches.
+
+on:
+  push:
+    branches: [main]
+  repository_dispatch:
+    types: [submodule-sync]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  submodules:
+    uses: pixel-petals/.devops/.github/workflows/submodules.yml@main
+    secrets: inherit
