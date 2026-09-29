@@ -1,6 +1,7 @@
 {
   "name": "tree-sitter-brightscript",
   "version": "0.1.0",
+  "private": true,
   "description": "Tree-sitter grammar for Roku BrightScript",
   "main": "bindings/node/index.js",
   "files": [
