@@ -39,7 +39,7 @@ tree-sitter-brightscript/
 ### Prerequisites
 
 - Node.js (v14+)
-- npm or yarn
+- npm
 - tree-sitter CLI: `npm install -g tree-sitter-cli`
 
 ### Installation
