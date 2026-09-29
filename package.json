@@ -1,5 +1,5 @@
 {
-  "name": "roku-graphify",
+  "name": "@px-petals/roku.language-graph",
   "version": "0.1.0",
   "description": "BrightScript code graph analysis tool powered by brighterscript",
   "bin": {
