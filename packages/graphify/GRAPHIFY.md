@@ -10,8 +10,11 @@ Graphify is a tool for creating abstract syntax graph (ASG) representations of s
 
 ### 1. Install the Grammar
 
+It isn't published (`"private": true`). Take this repo as a git submodule and depend on the package by path, with `install-links=true` in your `.npmrc`:
+
 ```bash
-npm install tree-sitter-brightscript
+git submodule add ../roku.language-graph.git src/.submodules/roku.language-graph
+npm install --save-dev file:src/.submodules/roku.language-graph/packages/graphify
 ```
 
 Or link locally:
