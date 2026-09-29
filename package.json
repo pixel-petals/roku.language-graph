@@ -1,6 +1,7 @@
 {
   "name": "@px-petals/roku.language-graph",
   "version": "0.1.0",
+  "private": true,
   "description": "BrightScript code graph analysis tool powered by brighterscript",
   "bin": {
     "roku-graphify": "src/cli/cli.analyze-file.mjs"
