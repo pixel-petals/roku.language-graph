@@ -6,6 +6,7 @@
 !/.claude/**
 !/.gitignore
 !/.gitmodules
+!/.npmrc
 !/CLAUDE.md
 !/KNOWN_ISSUES.md
 !/README.md
@@ -23,6 +24,9 @@
 !/tests/**
 
 # 3. Blacklist nested exceptions inside whitelisted trees
+
+# per-machine links to sibling checkouts (tools.packager)
+**/package-local.json
 
 # local-only Claude settings — must never be committed
 .claude/settings.local.json

@@ -11,6 +11,7 @@
     "test": "node --check src/cli/cli.analyze-file.mjs && node --check src/cli/cli.analyze-app.mjs && node --check src/cli/cli.generate-sdk-exports.mjs && node --check src/cli/cli.generate-ebnf.mjs && node --check src/cli/cli.run-benchmark.mjs && node --check src/cli/cli.inspect-db.mjs && node --check src/cli/cli.view-graph.mjs && node --check src/db-graph/app/app.ssr.mjs && node --test",
     "analyze-app": "node src/cli/cli.analyze-app.mjs",
     "analyze-file": "node src/cli/cli.analyze-file.mjs",
+    "dependencies": "packager link || exit 0",
     "generate-sdk-exports": "node src/cli/cli.generate-sdk-exports.mjs",
     "generate-ebnf": "node src/cli/cli.generate-ebnf.mjs",
     "run-benchmark": "node src/cli/cli.run-benchmark.mjs",
@@ -50,6 +51,7 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "@px-petals/tools.packager": "github:pixel-petals/tools.packager",
     "vite": "^8.1.5",
     "vite-plugin-singlefile": "^2.3.3"
   }
