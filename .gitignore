@@ -6,6 +6,7 @@
 !/.claude/**
 !/.gitignore
 !/.gitmodules
+!/.npmrc
 !/CLAUDE.md
 !/KNOWN_ISSUES.md
 !/README.md
@@ -39,3 +40,6 @@ examples/**/graphify-output/
 
 # code-review-graph generated files
 examples/**/.code-review-graph/
+
+# links this checkout's dependencies to sibling checkouts (packager)
+**/package-local.json
