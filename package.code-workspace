@@ -1,0 +1,10 @@
+{
+  // The repo root, then every third-party submodule at any depth as its own
+  // folder, one per repository at its shallowest path. Other org repositories
+  // are `github:` dependencies, not submodules, so they aren't listed here.
+  "folders": [
+    { "name": "roku.language-graph", "path": "." },
+    { "name": "dev-doc", "path": "src/.submodules/dev-doc" },
+    { "name": "bsbench", "path": "src/.submodules/bsbench" }
+  ]
+}

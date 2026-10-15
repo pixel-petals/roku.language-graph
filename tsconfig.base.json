@@ -1,0 +1,11 @@
+{
+  // Compiler options come from the shared @px-petals/web.config base. This
+  // file adds what must resolve from the repo root, and every tsconfig here
+  // extends it.
+  "extends": "@px-petals/web.config/tsconfig.base.json",
+
+  // Resolved from the repo root, so `**/` reaches into every package. Needed
+  // because packages include dot-prefixed folders, which `.artifacts` also is.
+  // A package that sets its own `exclude` replaces this list, so restate it.
+  "exclude": ["**/node_modules", "**/.artifacts"]
+}

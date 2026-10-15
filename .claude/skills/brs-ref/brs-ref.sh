@@ -10,7 +10,7 @@
 
 set -e
 
-GRAPH_FILE="${GRAPH_FILE:-.}/exports/studio/graph.json"
+GRAPH_FILE="${GRAPH_FILE:-.}/src/tools/lang-graph/.artifacts/exports/studio/graph.json"
 COMPONENT_NAME="${1:-}"
 
 if [[ -z "$COMPONENT_NAME" ]]; then
@@ -36,7 +36,7 @@ fi
 
 if [[ ! -f "$GRAPH_FILE" ]]; then
   echo "❌ Graph file not found at: $GRAPH_FILE"
-  echo "Run: npm run generate-sdk-exports"
+  echo "Run: npm run tool:lang-graph generate-sdk-exports"
   exit 1
 fi
 

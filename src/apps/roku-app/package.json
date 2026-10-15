@@ -1,0 +1,6 @@
+{
+  "name": "@app/roku-app",
+  "private": true,
+  "description": "Roku hero-grid sample channel, the example app the lang-graph tool analyzes",
+  "type": "commonjs"
+}
