@@ -68,7 +68,7 @@ module.exports = grammar({
       'while'
     ),
 
-    exit_while_statement: $ => seq(
+    exit_while_statement: () => seq(
       'exit',
       'while'
     ),
@@ -86,7 +86,7 @@ module.exports = grammar({
       'for'
     ),
 
-    exit_for_statement: $ => seq(
+    exit_for_statement: () => seq(
       'exit',
       'for'
     ),
@@ -161,7 +161,7 @@ module.exports = grammar({
       $.subscript_access
     ),
 
-    empty_statement: $ => ';',
+    empty_statement: () => ';',
 
     // Expressions — all types listed directly so every single expression
     // is a valid _expression without needing a chain of pass-throughs.
@@ -414,33 +414,33 @@ module.exports = grammar({
       $.integer,
     ),
 
-    hexadecimal: $ => /0[xX][0-9a-fA-F]+/,
+    hexadecimal: () => /0[xX][0-9a-fA-F]+/,
 
-    double: $ => /[0-9]+\.[0-9]+[dD]/,
+    double: () => /[0-9]+\.[0-9]+[dD]/,
 
-    long_integer: $ => /[0-9]+[lL]/,
+    long_integer: () => /[0-9]+[lL]/,
 
-    float: $ => /[0-9]+\.[0-9]+[fF]?/,
+    float: () => /[0-9]+\.[0-9]+[fF]?/,
 
-    integer: $ => /[0-9]+/,
+    integer: () => /[0-9]+/,
 
-    string: $ => seq('"', repeat(/[^"\n]/), '"'),
+    string: () => seq('"', repeat(/[^"\n]/), '"'),
 
-    boolean: $ => choice(
+    boolean: () => choice(
       'true',
       'false',
       'TRUE',
       'FALSE'
     ),
 
-    invalid_literal: $ => choice(
+    invalid_literal: () => choice(
       'invalid',
       'INVALID'
     ),
 
-    identifier: $ => /[a-zA-Z_][a-zA-Z0-9_]*[%$!#]?/,
+    identifier: () => /[a-zA-Z_][a-zA-Z0-9_]*[%$!#]?/,
 
-    comment: $ => token(choice(
+    comment: () => token(choice(
       seq("'", /.*/),
       seq(/[Rr][Ee][Mm]/, /.*/)
     )),

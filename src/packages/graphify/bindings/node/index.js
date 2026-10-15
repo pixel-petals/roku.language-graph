@@ -16,4 +16,6 @@ try {
 
 try {
   module.exports.nodeTypeInfo = require("../../src/node-types.json");
-} catch (_) {}
+} catch {
+  // node-types.json is optional
+}
