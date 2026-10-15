@@ -1,0 +1,54 @@
+name: CI
+
+# A starter. Every step comes from pixel-petals/.devops; this file names only
+# what is specific to the repository. See the github-ci skill.
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+# a second push to a PR makes the first run's result irrelevant
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  static:
+    name: Lint & types
+    runs-on: ubuntu-latest
+    steps:
+      # mints a GitHub App token, which reaches the private org repositories
+      # `npm ci` fetches as `github:` dependencies, then checks out, installs
+      # Node from .nvmrc and runs `npm ci`. Without the two secrets it falls
+      # back to the run's own token.
+      - uses: pixel-petals/.devops/.github/actions/setup@main
+        with:
+          app-id: ${{ secrets.GH_DEVOPS_READER_ID }}
+          private-key: ${{ secrets.GH_DEVOPS_READER_KEY }}
+          # this repository and every private org repository `npm ci` fetches,
+          # transitively: its providers, tools.packager and .dependencies
+          repositories: ${{ github.event.repository.name }}, shell.toolkit, web.toolkit, tools.packager, .dependencies
+
+      - uses: pixel-petals/.devops/.github/actions/npm-run@main
+        with:
+          # metapak exits 1 in CI when package.json, .npmrc or .gitignore
+          # drift from the @px-petals/metapak-dependencies plugin. A provider
+          # adds `hoist:check` here too.
+          scripts: lint typecheck metapak
+
+  unit:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: pixel-petals/.devops/.github/actions/setup@main
+        with:
+          app-id: ${{ secrets.GH_DEVOPS_READER_ID }}
+          private-key: ${{ secrets.GH_DEVOPS_READER_KEY }}
+          repositories: ${{ github.event.repository.name }}, shell.toolkit, web.toolkit, tools.packager, .dependencies
+
+      - uses: pixel-petals/.devops/.github/actions/npm-run@main
+        with:
+          scripts: test

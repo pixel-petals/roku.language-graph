@@ -1,4 +1,17 @@
 {
+  "enabledPlugins": {
+    "rules-code@pixel-petals": true,
+    "rules-git@pixel-petals": true,
+    "skills-monorepo@pixel-petals": true
+  },
+  "extraKnownMarketplaces": {
+    "pixel-petals": {
+      "source": {
+        "source": "git",
+        "url": "git@github.com:pixel-petals/.agents.git"
+      }
+    }
+  },
   "skills": {
     "brs-ref": {
       "label": "BrightScript Reference",

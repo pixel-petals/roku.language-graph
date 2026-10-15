@@ -1,0 +1,20 @@
+# Line endings are normalised in the repository, not left to whoever committed.
+#
+# `text=auto eol=lf` stores LF and checks out LF everywhere. Editors handle LF
+# on Windows fine; the tools here already assume it.
+* text=auto eol=lf
+
+# Binary, never touched
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.ico binary
+*.pdf binary
+
+# Was already explicit, and still worth stating: a CRLF shebang line is a
+# syntax error, not a formatting preference.
+*.sh text eol=lf

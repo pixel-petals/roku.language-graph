@@ -7,17 +7,38 @@
   "name": "@px-petals/roku.language-graph",
   "version": "0.1.0",
   "private": true,
+  "author": "Pixel Petals",
+  "license": "PolyForm-Noncommercial-1.0.0",
   "description": "BrightScript code graph analysis tool powered by brighterscript",
+  "repository": {
+    "url": "https://github.com/pixel-petals/roku.language-graph",
+    "type": "git"
+  },
+  "keywords": [
+    "roku",
+    "brightscript",
+    "brighterscript",
+    "graph",
+    "code-analysis"
+  ],
+  "// EXPORTS": "■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■",
+  "bin": {},
   "scripts": {
     "app:roku-app": "npm run --workspace @app/roku-app",
     "build-grammar": "npm run --workspace @package/graphify build",
     "dependencies": "packager link || exit 0",
+    "lint": "eslint .",
     "metapak": "metapak-px",
     "package:code-review-graph": "npm run --workspace @package/code-review-graph",
     "package:graphify": "npm run --workspace @package/graphify",
-    "test": "npm run --workspace @tool/lang-graph test",
-    "tool:lang-graph": "npm run --workspace @tool/lang-graph"
+    "test": "ws-run test",
+    "tool:lang-graph": "npm run --workspace @tool/lang-graph",
+    "typecheck": "ws-run typecheck"
   },
+  "imports": {},
+  "exports": {},
+  "files": [],
+  "// USES": "■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■",
   "workspaces": [
     "src/.tests/*",
     "src/apps/*",
@@ -26,17 +47,21 @@
     "src/tools/*",
     "src/utils/*"
   ],
-  "keywords": [
-    "roku",
-    "brightscript",
-    "brighterscript",
-    "graph",
-    "code-analysis"
-  ],
-  "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
+  "allowScripts": {},
   "devDependencies": {
     "@px-petals/metapak-dependencies": "github:pixel-petals/.dependencies",
+    "@px-petals/shell.toolkit": "github:pixel-petals/shell.toolkit",
     "@px-petals/tools.packager": "github:pixel-petals/tools.packager",
-    "metapak": "7.1.1"
-  }
+    "@px-petals/web.toolkit": "github:pixel-petals/web.toolkit",
+    "@types/node": "24.13.6",
+    "eslint": "9.39.5",
+    "metapak": "7.1.1",
+    "typescript": "6.0.3",
+    "vitest": "5.0.1"
+  },
+  "peerDependenciesMeta": {},
+  "type": "module"
 }

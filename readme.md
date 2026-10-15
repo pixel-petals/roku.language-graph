@@ -175,4 +175,4 @@ git submodule update --init --recursive
 
 ## License
 
-MIT
+[PolyForm Noncommercial 1.0.0](LICENSE)

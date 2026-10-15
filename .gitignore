@@ -1,32 +1,119 @@
-# 1. Ignore everything by default
+
+# █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█
+# █
+# █ .gitignore
+# █
+# █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█
+
+# How to Use
+# ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+
+# Allowlist strategy: ignore everything, then explicitly allow what belongs.
+# This prevents accidental commits of new files or folders.
+#
+# Pattern reference:
+#   /foo    — root only
+#   foo/    — folders only
+#   *       — any chars (no /)
+#   ?       — any single char (no /)
+#   **/     — any depth of folders
+#   /**     — everything inside
+#   a/**/b — anything between a and b
+
+# Rules
+# ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+
+# ignore ALL files & folders
 *
 
-# 2. Whitelist tracked files and folders
-!/.claude/
-!/.claude/**
-!/.gitignore
-!/.gitmodules
-!/.npmrc
-!/CLAUDE.md
-!/readme.md
-!/package.json
-!/package-lock.json
-!/src/
+# Whitelist
+# ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+# project files
+# ——————————————————————————————
+
+# root project files
+!/*.*
+!/LICENSE
+# allow .gitignore, .gitattributes, .gitmodules
+!/.git?*
+
+# continuous integration
+# ——————————————————————————————
+
+# workflows and the composite actions they call. Package-scoped actions live
+# under their own package and are already covered by its whitelist entry.
+!/.github/
+!/.github/**
+
+# IDE
+# ——————————————————————————————
+
+!/.vscode/
+!/.vscode/**
+
+# coding agents
+# ——————————————————————————————
+
+!/.claude*/
+!/.claude*/**
+
+# ignore local overrides
+**/.claude/settings.local.json
+**/claude.local.md
+
+# source code
+# ——————————————————————————————
+
+!/src
 !/src/**
 
-# 3. Blacklist nested exceptions inside whitelisted trees
+# Third-party submodules are registered with `git submodule add -f`; once
+# registered, this rule no longer applies to them. It stops an unregistered
+# folder being committed as ordinary files.
+/src/.submodules/*/
 
-# local-only Claude settings — must never be committed
-.claude/settings.local.json
+# Blacklist
+# ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 
-# An analyzed app's own output (cli.analyze-app.mjs, e.g.
-# src/apps/roku-app/graphify-output/).
-**/graphify-output/
+**/.git
 
-# generated output: reference databases, raw bsbench captures, the db-graph
-# build. The durable benchmark output lives in checked-in files like
-# src/tools/lang-graph/src/parse/roku-benchmark/roku-benchmark.catalog.json
+# dependencies
+# ——————————————————————————————
+
+**/node_modules/
+**/roku_modules/
+
+# artifacts
+# ——————————————————————————————
+
 **/.artifacts/
+**/build/
+**/dist/
+**/out/
+
+**/.wrangler/
+**/.dev.vars
+
+# secrets
+# ——————————————————————————————
+
+**/.env*
+**/.env*.bak
+# allow example file
+!**/.env*.example
+
+# Encrypted with age, so the ciphertext is safe to commit; the plaintext it
+# came from never is.
+!**/*.age
+!/.age-recipients
+
+# generated output
+# ——————————————————————————————
+
+# an analyzed app's own output (cli.analyze-app.mjs, e.g.
+# src/apps/roku-app/graphify-output/)
+**/graphify-output/
 
 # code-review-graph generated files
 **/.code-review-graph/
