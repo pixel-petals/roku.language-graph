@@ -8,38 +8,28 @@
 !/.gitmodules
 !/.npmrc
 !/CLAUDE.md
-!/KNOWN_ISSUES.md
-!/README.md
+!/readme.md
 !/package.json
 !/package-lock.json
-!/examples/
-!/examples/**
-!/modules/
-!/modules/*/
-!/packages/
-!/packages/**
 !/src/
 !/src/**
-!/tests/
-!/tests/**
 
 # 3. Blacklist nested exceptions inside whitelisted trees
 
 # local-only Claude settings — must never be committed
 .claude/settings.local.json
 
-# Generated CLI output — reference databases (cli.generate-sdk-exports.mjs)
-# and any analyzed app's own output (cli.analyze-app.mjs, e.g.
-# examples/roku-app/graphify-output/).
-examples/**/exports/
-examples/**/graphify-output/
+# An analyzed app's own output (cli.analyze-app.mjs, e.g.
+# src/apps/roku-app/graphify-output/).
+**/graphify-output/
 
-# raw/ephemeral captures (bsbench, etc.) — the durable output lives in
-# checked-in files like src/parse/roku-benchmark/roku-benchmark.catalog.json
-.artifacts/
+# generated output: reference databases, raw bsbench captures, the db-graph
+# build. The durable benchmark output lives in checked-in files like
+# src/tools/lang-graph/src/parse/roku-benchmark/roku-benchmark.catalog.json
+**/.artifacts/
 
 # code-review-graph generated files
-examples/**/.code-review-graph/
+**/.code-review-graph/
 
 # links this checkout's dependencies to sibling checkouts (packager)
 **/package-local.json

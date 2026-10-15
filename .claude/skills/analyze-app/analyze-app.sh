@@ -55,4 +55,4 @@ echo "Running roku-graphify on: $APP_DIR"
 echo "Output: $OUTPUT_DIR"
 echo ""
 
-node "$ROKU_GRAPHIFY_DIR/src/cli/analyze-app.mjs" "$APP_DIR" "$OUTPUT_DIR"
+node "$ROKU_GRAPHIFY_DIR/src/tools/lang-graph/src/cli/cli.analyze-app.mjs" "$APP_DIR" "$OUTPUT_DIR"
